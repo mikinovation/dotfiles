@@ -45,6 +45,7 @@
 !/.i3/**
 /.i3/config
 /.i3/config.local
+!/.github
 !/.github/**
 !/.ideavimrc
 !/.Xmodmap
