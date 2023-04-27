@@ -11,7 +11,7 @@ jobs:
       - name: Install required packages
         run: apt-get update && apt-get install -y git sudo
       - name: Install dotfiles
-        run: .bin/install.sh install
+        run: ./.bin/install.sh install
 
   centos:
     runs-on: ubuntu-latest
