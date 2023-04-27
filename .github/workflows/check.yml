@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Install required packages
         run: apt-get update && apt-get install -y git sudo
       - name: Install dotfiles
@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     container: centos:latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Install required packages
         run: yum install -y git sudo
       - name: Install dotfiles
@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     container: alpine:latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Install required packages
         run: apk add git sudo bash
       - name: Install dotfiles
@@ -37,7 +37,7 @@ jobs:
     runs-on: ubuntu-latest
     container: archlinux/base:latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Update packages
         run: pacman -Syu --noconfirm
       - name: Install required packages
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     container: ubuntu:latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Update packages
         run: apt-get update
       - name: Install packages for install repository
