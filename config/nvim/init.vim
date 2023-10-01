@@ -60,7 +60,23 @@ set clipboard=unnamed
 " 検索した文字をハイライトする
 set hls
 
-:nmap <space>e <Cmd>CocCommand explorer<CR>
+" leaderをスペースへ設定
+let mapleader = "\<Space>"
+
+:nmap <Leader>e <Cmd>CocCommand explorer<CR>
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-let g:coc_global_extensions = ['coc-explorer']
+let g:coc_global_extensions = ['coc-explorer', 'coc-fzf-preview']
+
+nmap <Leader>f [fzf-p]
+xmap <Leader>f [fzf-p]
+
+nnoremap <silent> [fzf-p]p     :<C-u>CocCommand fzf-preview.FromResources project_mru git<CR>
+nnoremap <silent> [fzf-p]gs    :<C-u>CocCommand fzf-preview.GitStatus<CR>
+nnoremap <silent> [fzf-p]ga    :<C-u>CocCommand fzf-previewnnoremap <silent> [fzf-p]b     :<C-u>CocCommandnnoremap <silent> [fzf-p]B     :<C-u>CocCommand fzf-preview.AllBuffers<CR>
+nnoremap <silent> [fzf-p]o     :<C-u>CocCommand fzf-preview.FromResources buffer project_mrunnoremap <silent> [fzf-p]<C-o> :<C-u>CocCommandnnoremap <silent> [fzf-p]g;    :<C-u>CocCommand fzf-preview.Changes<CR>
+nnoremap <silent> [fzf-p]/     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--quietnnoremap <silent> [fzf-p]*     :<C-u>CocCommand fzf-preview.Lines --add-fzf-arg=--no-sort --add-fzf-arg=--query="'<C-r>=expand('<cword>')<CR>"<CR>
+nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
+xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/binnnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
+nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
+nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>

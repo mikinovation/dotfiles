@@ -70,3 +70,5 @@ source $SCRIPT_DIR/zsh/p10k.zsh
 [[ ! -f ~/dotfiles/zsh/p10k.zsh ]] || source ~/dotfiles/zsh/p10k.zsh
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
