@@ -9,22 +9,26 @@ ZSH_INIT_FILE="$ZSH_CONFIG_DIR/.zshrc"
 
 # Neovimの設定ファイルへのパス
 NVIM_CONFIG_DIR="$HOME/.config/nvim"
-NVIM_INIT_FILE="$NVIM_CONFIG_DIR/init.vim"
 
 # zshの設定ファイルをdotfilesリポジトリからシンボリックリンクとして配置
 link_zsh_config() {
   echo "Linking zsh config..."
-  ln -sf "$DOTFILES_DIR/.zshrc" "$ZSH_INIT_FILE"
+  ln -snfv "$DOTFILES_DIR/.zshrc" "$ZSH_INIT_FILE"
+  echo "Linking zsh done."
 }
 
 # Neovimの設定ファイルをdotfilesリポジトリからシンボリックリンクとして配置
 link_nvim_config() {
   echo "Linking neovim config..."
-  ln -sf "$DOTFILES_DIR/config/nvim/init.vim" "$NVIM_INIT_FILE"
+  for file in  $(ls -a ${DOTFILES_DIR}/config/nvim); do
+    ln -snfv "$DOTFILES_DIR/config/nvim/$file" "$NVIM_CONFIG_DIR/$file"
+  done
+  echo "Linking neovim done."
 }
 
 # メインのスクリプト実行
 main() {
+  echo "start setup dotfiles..."
   link_zsh_config
   link_nvim_config
   echo "Linking dotfiles completed."
