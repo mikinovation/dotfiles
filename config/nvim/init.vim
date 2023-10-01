@@ -62,3 +62,5 @@ set hls
 
 :nmap <space>e <Cmd>CocCommand explorer<CR>
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+let g:coc_global_extensions = ['coc-explorer']

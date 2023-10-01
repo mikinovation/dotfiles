@@ -1,4 +1,4 @@
 [[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
-# hook_add = '''exec 'source ' . s:dir . '/settings/coc-setting.vim' '''
+# hook_add = '''exec 'coc#util#install()' '''
