@@ -41,6 +41,22 @@ if dein#check_install()
  call dein#install()
 endif
 
+" 文字コード
+set encoding=utf-8
+" 行番号を表示
+set number
+" タブ文字の代わりにスペースを使う
+set expandtab
+" 改行時に自動でインデント
+set autoindent
+" 自動インデント時に入力する空白の数
+set shiftwidth=2
+" タブの空白の数
+set tabstop=2
+" yankした文字列をクリップボードにコピー
+set clipboard=unnamed
+" 検索した文字をハイライトする
+set hls
 
 :nmap <space>e <Cmd>CocCommand explorer<CR>
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
