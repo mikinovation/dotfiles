@@ -66,7 +66,7 @@ let mapleader = "\<Space>"
 :nmap <Leader>e <Cmd>CocCommand explorer<CR>
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-let g:coc_global_extensions = ['coc-explorer', 'coc-fzf-preview']
+let g:coc_global_extensions = ['coc-explorer', 'coc-fzf-preview', 'coc-copilot']
 
 nmap <Leader>f [fzf-p]
 xmap <Leader>f [fzf-p]

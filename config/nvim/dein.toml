@@ -11,5 +11,9 @@ repo = 'yuki-yano/fzf-preview.vim'
 rev = 'release/rpc'
 
 [[plugins]]
+repo = 'github/copilot.vim'
+rev = 'release'
+
+[[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
