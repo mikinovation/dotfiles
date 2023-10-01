@@ -1,6 +1,9 @@
 [[plugins]]                                    
 repo = 'Shougo/dein.vim'                                          
 
+[[plugins]]
+repo = 'scrooloose/nerdtree'
+
 # ------------------------------------                                    
 # colorscheme tender setting                                    
 # ------------------------------------
@@ -13,3 +16,6 @@ hook_add = '''
   set t_Co=256                                            
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1                                    
 '''
+
+[[plugins]]
+repo = 'neoclide/coc.nvim'

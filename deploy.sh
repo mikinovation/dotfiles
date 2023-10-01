@@ -20,7 +20,7 @@ link_zsh_config() {
 # Neovimの設定ファイルをdotfilesリポジトリからシンボリックリンクとして配置
 link_nvim_config() {
   echo "Linking neovim config..."
-  ln -sf "$DOTFILES_DIR/nvim/init.vim" "$NVIM_INIT_FILE"
+  ln -sf "$DOTFILES_DIR/config/nvim/init.vim" "$NVIM_INIT_FILE"
 }
 
 # メインのスクリプト実行
