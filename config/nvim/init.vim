@@ -1,28 +1,36 @@
-" Ward off unexpected things that your distro might have made, as
-" well as sanely reset options when re-sourcing .vimrc
-set nocompatible
+if &compatible
+  set nocompatible
+endif
 
-" Set Dein base path (required)
-let s:dein_base = '/home/ubuntu/.cache/dein'
+let $CACHE = expand('~/.cache')
+if !($CACHE->isdirectory())
+  call mkdir($CACHE, 'p')
+endif
+if &runtimepath !~# '/dein.vim'
+  let s:dir = 'dein.vim'->fnamemodify(':p')
+  if !(s:dir->isdirectory())
+    let s:dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'    
+    if !(s:dir->isdirectory())
+      execute '!git clone https://github.com/Shougo/dein.vim' s:dir
+    endif
+  endif
+  execute 'set runtimepath^='
+    \ .. s:dir->fnamemodify(':p')->substitute('[/\\]$', '', '')
+  
 
-" Set Dein source path (required)
-let s:dein_src = '/home/ubuntu/.cache/dein/repos/github.com/Shougo/dein.vim'
+  if dein#load_state(s:dir)
+    " Call Dein initialization (required)
+    call dein#begin(s:dir)
 
-" Set Dein runtime path (required)
-execute 'set runtimepath+=' . s:dein_src
+    " Your plugins go here:
+    call dein#add('Shougo/neosnippet.vim')
+    call dein#add('Shougo/neosnippet-snippets')
+    call dein#add('neoclide/coc.nvim', {'rev': 'release'})
 
-" Call Dein initialization (required)
-call dein#begin(s:dein_base)
-
-call dein#add(s:dein_src)
-
-" Your plugins go here:
-call dein#add('Shougo/neosnippet.vim')
-call dein#add('Shougo/neosnippet-snippets')
-call dein#add('neoclide/coc.nvim', {'rev': 'release'})
-
-" Finish Dein initialization (required)
-call dein#end()
+    " Finish Dein initialization (required)
+    call dein#end()
+  endif
+endif
 
 " Attempt to determine the type of a file based on its name and possibly its
 " contents. Use this to allow intelligent auto-indenting for each filetype,
