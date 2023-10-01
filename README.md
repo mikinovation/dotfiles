@@ -10,7 +10,7 @@ cd ~/.dotfiles
 ./deploy.sh
 ```
 
-### Copilotの設定
+### Setup Copilot
 
 ```bash
 :Copilot setup
