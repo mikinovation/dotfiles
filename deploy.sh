@@ -17,6 +17,13 @@ link_zsh_config() {
   echo "Linking zsh done."
 }
 
+link_tmux_config() {
+  echo "Linking tmux config..."
+  ln -snfv "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.tmux.conf"
+  tmux source ~/.tmux.conf
+  echo "Linking tmux done."
+}
+
 # Neovimの設定ファイルをdotfilesリポジトリからシンボリックリンクとして配置
 link_nvim_config() {
   echo "Linking neovim config..."
@@ -30,6 +37,7 @@ link_nvim_config() {
 main() {
   echo "start setup dotfiles..."
   link_zsh_config
+  link_tmux_config
   link_nvim_config
   echo "Linking dotfiles completed."
 }
