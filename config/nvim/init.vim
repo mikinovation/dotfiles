@@ -66,7 +66,19 @@ let mapleader = "\<Space>"
 :nmap <Leader>e <Cmd>CocCommand explorer<CR>
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-let g:coc_global_extensions = ['coc-explorer', 'coc-fzf-preview', 'coc-copilot']
+let g:coc_global_extensions = [
+  \ 'coc-explorer', 
+  \ 'coc-fzf-preview', 
+  \ 'coc-copilot',
+  \ 'coc-json',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ '@yaegassy/coc-volar',
+  \ '@yaegassy/coc-volar-tools',
+  \ '@yaegassy/coc-typescript-vue-plugin',
+  \ 'coc-highlight'
+  \ ]
 
 nmap <Leader>f [fzf-p]
 xmap <Leader>f [fzf-p]
