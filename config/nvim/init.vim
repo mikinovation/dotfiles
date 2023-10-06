@@ -59,6 +59,10 @@ set tabstop=2
 set clipboard=unnamed
 " 検索した文字をハイライトする
 set hls
+" バックアップファイルを作らない
+set nobackup
+set nowritebackup
+set noswapfile
 
 " leaderをスペースへ設定
 let mapleader = "\<Space>"
