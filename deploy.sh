@@ -14,6 +14,7 @@ NVIM_CONFIG_DIR="$HOME/.config/nvim"
 link_zsh_config() {
   echo "Linking zsh config..."
   ln -snfv "$DOTFILES_DIR/.zshrc" "$ZSH_INIT_FILE"
+  source "$ZSH_INIT_FILE"
   echo "Linking zsh done."
 }
 
@@ -30,6 +31,7 @@ link_nvim_config() {
   for file in  $(ls -a ${DOTFILES_DIR}/config/nvim); do
     ln -snfv "$DOTFILES_DIR/config/nvim/$file" "$NVIM_CONFIG_DIR/$file"
   done
+  ln -snfv "$DOTFILES_DIR/config/nvim/settings/coc-settings.json" "$NVIM_CONFIG_DIR/coc-settings.json"
   echo "Linking neovim done."
 }
 

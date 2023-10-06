@@ -72,3 +72,23 @@ export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# alias
+
+## vim
+alias vim="nvim"
+
+## git
+alias ga="git add"
+alias gc="git checkout"
+alias gcb="git checkout -b"
+alias gcm="git commit -m" 
+alias gclean="git branch| egrep -v 'master|develop' | xargs git branch -D" # master, develop以外のブランチを削除
+
+## docker
+alias d="docker"
+alias dc="docker compose"
+alias dcb="docker compose build"
+alias dcu="docker compose up"
+alias dcd="docker compose down"
+alias dprune="docker system prune --all --force --volumes" # dockerの全てのコンテナ、イメージ、ネットワーク、ボリュームを削除
