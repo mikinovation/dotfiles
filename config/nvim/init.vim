@@ -77,7 +77,6 @@ let g:coc_global_extensions = [
   \ '@yaegassy/coc-volar',
   \ '@yaegassy/coc-volar-tools',
   \ '@yaegassy/coc-typescript-vue-plugin',
-  \ 'coc-highlight'
   \ ]
 
 nmap <Leader>f [fzf-p]
@@ -92,3 +91,15 @@ nnoremap          [fzf-p]gr    :<C-u>CocCommand fzf-preview.ProjectGrep<Space>
 xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F<Space>"<C-r>=substitute(substitute(@s, '\n', '', 'g'), '/', '\\/binnnoremap <silent> [fzf-p]t     :<C-u>CocCommand fzf-preview.BufferTags<CR>
 nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
 nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
+
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"typescript", "javascript", "vue", "html", "css", "json", "yaml", "bash", "lua"},
+  highlight = {
+    enable = true,
+  },
+  indent = {
+    enable = true,
+  },
+}
+EOF

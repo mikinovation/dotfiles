@@ -11,6 +11,10 @@ repo = 'yuki-yano/fzf-preview.vim'
 rev = 'release/rpc'
 
 [[plugins]]
+repo = 'nvim-treesitter/nvim-treesitter'
+do = 'TSUpdate'
+
+[[plugins]]
 repo = 'github/copilot.vim'
 rev = 'release'
 
