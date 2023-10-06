@@ -70,7 +70,10 @@ let g:coc_global_extensions = [
   \ 'coc-explorer', 
   \ 'coc-fzf-preview', 
   \ 'coc-copilot',
+  \ 'coc-git',
   \ 'coc-json',
+  \ 'coc-html',
+  \ 'coc-css',
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-prettier',
@@ -78,6 +81,21 @@ let g:coc_global_extensions = [
   \ '@yaegassy/coc-volar-tools',
   \ '@yaegassy/coc-typescript-vue-plugin',
   \ ]
+
+" coc mappings
+
+" 定義元へジャンプ
+nmap <silent> gd <Plug>(coc-definition)
+" 参照元の閲覧
+nmap <silent> gr <Plug>(coc-references)
+" リネーム
+nmap <silent> <Leader>rn <Plug>(coc-rename)
+" フォーマット
+nmap <silent> <Leader>f <Plug>(coc-format)
+" ホバー
+nmap <silent> K <Plug>(coc-hover)
+
+" coc-fzf-preview
 
 nmap <Leader>f [fzf-p]
 xmap <Leader>f [fzf-p]
@@ -92,6 +110,8 @@ xnoremap          [fzf-p]gr    "sy:CocCommand   fzf-preview.ProjectGrep<Space>-F
 nnoremap <silent> [fzf-p]q     :<C-u>CocCommand fzf-preview.QuickFix<CR>
 nnoremap <silent> [fzf-p]l     :<C-u>CocCommand fzf-preview.LocationList<CR>
 
+" nvim-treesitter
+
 lua << EOF
 require'nvim-treesitter.configs'.setup {
   ensure_installed = {"typescript", "javascript", "vue", "html", "css", "json", "yaml", "bash", "lua"},
@@ -101,5 +121,21 @@ require'nvim-treesitter.configs'.setup {
   indent = {
     enable = true,
   },
+  autotag = {
+    enable = true,
+  },
 }
 EOF
+
+" coc-git
+
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+nmap [c <Plug>(coc-git-prevconflict)
+nmap ]c <Plug>(coc-git-nextconflict)
+nmap gs <Plug>(coc-git-chunkinfo)
+nmap gc <Plug>(coc-git-commit)
+omap ig <Plug>(coc-git-chunk-inner)
+xmap ig <Plug>(coc-git-chunk-inner)
+omap ag <Plug>(coc-git-chunk-outer)
+xmap ag <Plug>(coc-git-chunk-outer)

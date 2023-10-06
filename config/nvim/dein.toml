@@ -2,6 +2,9 @@
 repo = 'Shougo/dein.vim'
 
 [[plugins]]
+repo = 'windwp/nvim-ts-autotag'
+
+[[plugins]]
 repo = 'junegunn/fzf'
 build = './install --all'
 merged = '0'

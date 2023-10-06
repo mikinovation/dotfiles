@@ -1,4 +1,5 @@
 {
   "coc.preferences.formatOnSaveFiletypes": ["*"],
-  "explorer.file.showHiddenFiles": true
+  "explorer.file.showHiddenFiles": true,
+  "semanticTokens.enable": true
 }
