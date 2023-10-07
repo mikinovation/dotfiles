@@ -82,6 +82,7 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ 'coc-java',
+  \ 'coc-rust-analyzer',
   \ '@yaegassy/coc-volar',
   \ '@yaegassy/coc-volar-tools',
   \ '@yaegassy/coc-typescript-vue-plugin',

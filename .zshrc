@@ -91,4 +91,5 @@ alias dc="docker compose"
 alias dcb="docker compose build"
 alias dcu="docker compose up"
 alias dcd="docker compose down"
+alias dce="docker compose exec"
 alias dprune="docker system prune --all --force --volumes" # dockerの全てのコンテナ、イメージ、ネットワーク、ボリュームを削除
