@@ -74,6 +74,7 @@ let g:coc_global_extensions = [
   \ 'coc-explorer', 
   \ 'coc-fzf-preview', 
   \ 'coc-copilot',
+  \ 'coc-docker',
   \ 'coc-git',
   \ 'coc-json',
   \ 'coc-html',
