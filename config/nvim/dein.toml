@@ -24,3 +24,9 @@ rev = 'release'
 [[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
+
+[[plugins]]
+repo = 'tpope/vim-dadbod'
+
+[[plugins]]
+repo = 'kristijanhusak/vim-dadbod-ui'
