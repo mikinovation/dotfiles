@@ -5,6 +5,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# .bashrcの再読み込み
+if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+fi
+
 #################################  HISTORY  #################################
 # history
 HISTFILE=$HOME/.zsh-history # 履歴を保存するファイル
