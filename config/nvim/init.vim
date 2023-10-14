@@ -67,8 +67,19 @@ set noswapfile
 " leaderをスペースへ設定
 let mapleader = "\<Space>"
 
+" file explorerを開く
 :nmap <Leader>e <Cmd>CocCommand explorer<CR>
+" 補完を利用できるようにする
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+
+" ターミナルの設定
+
+" :Tコマンドで Terminalを開くと現在のウィンドウの下部に別ウィンドウで表示されるようにする
+command! -nargs=* T split | wincmd j | resize 20 | terminal <args>
+" ターミナルを閉じてノーマルモードに戻る
+:tnoremap <ESC> <C-\><C-n>
+" ターミナルモードを開いたら自動でインサートモードにする
+autocmd TermOpen * startinsert
 
 let g:coc_global_extensions = [
   \ 'coc-explorer', 
