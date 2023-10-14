@@ -72,7 +72,12 @@ let mapleader = "\<Space>"
 " 補完を利用できるようにする
 :inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
 
-" ターミナルの設定
+" インサートモード
+
+" jjでノーマルモードに戻る
+inoremap <silent> jj <ESC>
+
+" ターミナルモード
 
 " :Tコマンドで Terminalを開くと現在のウィンドウの下部に別ウィンドウで表示されるようにする
 command! -nargs=* T split | wincmd j | resize 20 | terminal <args>
