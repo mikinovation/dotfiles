@@ -30,3 +30,12 @@ repo = 'tpope/vim-dadbod'
 
 [[plugins]]
 repo = 'kristijanhusak/vim-dadbod-ui'
+
+[[plugins]]
+repo = 'lewis6991/gitsigns.nvim'
+
+[[plugins]]
+repo = 'nvim-tree/nvim-web-devicons'
+
+[[plugins]]
+repo = 'romgrk/barbar.nvim'

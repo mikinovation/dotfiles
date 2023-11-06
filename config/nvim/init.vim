@@ -168,3 +168,13 @@ omap ig <Plug>(coc-git-chunk-inner)
 xmap ig <Plug>(coc-git-chunk-inner)
 omap ag <Plug>(coc-git-chunk-outer)
 xmap ag <Plug>(coc-git-chunk-outer)
+
+" barbar.nvim
+
+" 次へ・前へ
+
+nmap <silent> tn <Cmd>BufferNext<CR>
+nmap <silent> tb <Cmd>BufferNext<CR>
+
+" バッファの削除
+nnoremap <silent> tc <Cmd>BufferClose<CR>
