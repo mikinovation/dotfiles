@@ -154,6 +154,8 @@ require'nvim-treesitter.configs'.setup {
     enable = true,
   },
 }
+
+require'nvim-gitui'.setup {}
 EOF
 
 " coc-git
