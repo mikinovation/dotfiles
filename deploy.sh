@@ -28,9 +28,8 @@ link_tmux_config() {
 # Neovimの設定ファイルをdotfilesリポジトリからシンボリックリンクとして配置
 link_nvim_config() {
   echo "Linking neovim config..."
-  for file in "${DOTFILES_DIR}"/config/nvim; do
-    [[ -f "$file" ]] || continue
-    ln -snfv "$DOTFILES_DIR/config/nvim/$file" "$NVIM_CONFIG_DIR/$file"
+  for file in "$DOTFILES_DIR"/config/nvim/*; do
+    ln -snfv "$file" "$NVIM_CONFIG_DIR/$(basename "$file")"
   done
   ln -snfv "$DOTFILES_DIR/config/nvim/settings/coc-settings.json" "$NVIM_CONFIG_DIR/coc-settings.json"
   echo "Linking neovim done."
