@@ -9,7 +9,7 @@ if !isdirectory($CACHE)
 endif
 
 if &runtimepath !~# '/dein.vim'
-  let s:dir = 'dein.vim'->fnamemodify(':p')
+  let s:dir = fnamemodify('dein.vim', ':p')
   if !(s:dir->isdirectory())
     let s:dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'    
     if !(s:dir->isdirectory())
