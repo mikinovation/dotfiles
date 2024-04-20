@@ -14,7 +14,7 @@ NVIM_CONFIG_DIR="$HOME/.config/nvim"
 link_zsh_config() {
   echo "Linking zsh config..."
   ln -snfv "$DOTFILES_DIR/.zshrc" "$ZSH_INIT_FILE"
-  # shellcheck source=../.zshrc
+  # shellcheck source=dev/null
   source "$ZSH_INIT_FILE"
   echo "Linking zsh done."
 }
