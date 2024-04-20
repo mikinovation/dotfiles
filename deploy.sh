@@ -15,7 +15,7 @@ link_zsh_config() {
   echo "Linking zsh config..."
   ln -snfv "$DOTFILES_DIR/.zshrc" "$ZSH_INIT_FILE"
   # shellcheck source=../.zshrc
-  source ~/.zshrc
+  source "$ZSH_INIT_FILE"
   echo "Linking zsh done."
 }
 
