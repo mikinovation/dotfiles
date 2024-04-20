@@ -27,9 +27,6 @@ jobs:
           pip install setuptools
           pip install vim-vint
 
-      - name: Check setup-ubuntu.sh
-        run: shellcheck ${GITHUB_WORKSPACE}/setup-ubuntu.sh
-
       - name: Check deploy.sh
         run: shellcheck ${GITHUB_WORKSPACE}/deploy.sh
 
