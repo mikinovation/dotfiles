@@ -15,11 +15,11 @@ jobs:
         with:
           python-version: "3.x"
           architecture: "x64"
-      
+
       - name: Display Python version
         run: python -c "import sys; print(sys.version)"
-      
-      - name Install required packages
+
+      - name: Install required packages
         run: |
           brew install shellcheck
           pip install --upgrade pip
