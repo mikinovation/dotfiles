@@ -22,6 +22,6 @@ jobs:
 
       - name: Install required packages
         run: |
-          apt install shellcheck
+          sudo apt install shellcheck
           pip install --upgrade pip
           pip install vim-vint
