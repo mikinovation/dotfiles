@@ -110,3 +110,6 @@ alias dprune="docker system prune --all --force --volumes" # dockerの全ての�
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+## tmuxの保存先を固定
+export TMUX_TMPDIR=/tmp
