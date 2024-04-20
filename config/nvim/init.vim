@@ -17,7 +17,7 @@ if &runtimepath !~# '/dein.vim'
     endif
   endif
   execute 'set runtimepath^='
-    \ . fnamemodify(s:dir, ':p')->substitute('[/\\]$', '', '')
+    \ . substitute(fnamemodify(s:dir, ':p'), '[/\\]$', '', '')
   
 
   if dein#load_state(s:dir)
