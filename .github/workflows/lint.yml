@@ -25,3 +25,6 @@ jobs:
           sudo apt install shellcheck
           pip install --upgrade pip
           pip install vim-vint
+
+      - name: Check deploy.sh
+        run: shellcheck ${GITHUB_WORKSPACE}/deploy.sh
