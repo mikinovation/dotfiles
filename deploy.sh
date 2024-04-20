@@ -14,7 +14,7 @@ NVIM_CONFIG_DIR="$HOME/.config/nvim"
 link_zsh_config() {
   echo "Linking zsh config..."
   ln -snfv "$DOTFILES_DIR/.zshrc" "$ZSH_INIT_FILE"
-  # source ~/.zshrc
+  source ~/.zshrc
   echo "Linking zsh done."
 }
 
@@ -28,10 +28,17 @@ link_tmux_config() {
 # Neovimの設定ファイルをdotfilesリポジトリからシンボリックリンクとして配置
 link_nvim_config() {
   echo "Linking neovim config..."
+ 
+ # ディレクトリが存在しない場合は作成
+  if [ ! -d "$NVIM_CONFIG_DIR" ]; then
+    mkdir -p "$NVIM_CONFIG_DIR"
+  fi
+ 
   for file in "$DOTFILES_DIR"/config/nvim/*; do
     ln -snfv "$file" "$NVIM_CONFIG_DIR/$(basename "$file")"
   done
   ln -snfv "$DOTFILES_DIR/config/nvim/settings/coc-settings.json" "$NVIM_CONFIG_DIR/coc-settings.json"
+ 
   echo "Linking neovim done."
 }
 
