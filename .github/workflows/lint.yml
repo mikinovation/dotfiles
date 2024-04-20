@@ -1,0 +1,26 @@
+name: lint
+
+on:
+  push:
+    branches:
+      - "*"
+
+jobs:
+  lint-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python 3.x
+        with:
+          python-version: "3.x"
+          architecture: "x64"
+      
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+      
+      - name Install required packages
+        run: |
+          brew install shellcheck
+          pip install --upgrade pip
+          pip install vim-vint

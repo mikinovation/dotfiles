@@ -103,3 +103,10 @@ alias dcu="docker compose up"
 alias dcd="docker compose down"
 alias dce="docker compose exec"
 alias dprune="docker system prune --all --force --volumes" # dockerの全てのコンテナ、イメージ、ネットワーク、ボリュームを削除
+
+# bun completions
+[ -s "/home/ubuntu/.bun/_bun" ] && source "/home/ubuntu/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

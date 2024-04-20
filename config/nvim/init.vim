@@ -56,7 +56,7 @@ set shiftwidth=2
 " タブの空白の数
 set tabstop=2
 " yankした文字列をクリップボードにコピー
-set clipboard=unnamed
+set clipboard=unnamedplus
 " 検索した文字をハイライトする
 set hls
 " バックアップファイルを作らない
