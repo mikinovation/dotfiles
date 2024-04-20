@@ -3,9 +3,11 @@ if &compatible
 endif
 
 let $CACHE = expand('~/.cache')
-if !($CACHE->isdirectory())
+
+if !isdirectory($CACHE)
   call mkdir($CACHE, 'p')
 endif
+
 if &runtimepath !~# '/dein.vim'
   let s:dir = 'dein.vim'->fnamemodify(':p')
   if !(s:dir->isdirectory())
