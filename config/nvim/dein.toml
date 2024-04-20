@@ -42,5 +42,3 @@ repo = 'romgrk/barbar.nvim'
 
 [[plugins]]
 repo = 'mikinovation/nvim-gitui'
-
-[[plugins]
