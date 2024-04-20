@@ -30,14 +30,8 @@ echo "eval \"\$($(brew --prefix)/bin/brew shellenv)\"" >> ~/.bashrc
 
 # 各種ツールのバージョン確認
 git --version
-curl --version
-wget --version
 vim --version
 zsh --version
 tmux --version
-ca-certificates --version
-build-essential --version
-procps --version
-file --version
 docker --version
 brew --version
