@@ -30,3 +30,4 @@ jobs:
         run: shellcheck ${GITHUB_WORKSPACE}/deploy.sh
 
       - name: Check init.vim
+        run: vint ${GITHUB_WORKSPACE}/config/nvim/*.vim -cstV --enable-neovim
