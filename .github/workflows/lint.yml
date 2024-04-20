@@ -24,6 +24,7 @@ jobs:
         run: |
           sudo apt install shellcheck
           pip install --upgrade pip
+          pip install setuptools
           pip install vim-vint
 
       - name: Check deploy.sh
