@@ -1,10 +1,6 @@
 set encoding=utf-8
 scriptencoding utf-8
 
-if &compatible
-  set nocompatible
-endif
-
 let $CACHE = expand('~/.cache')
 
 if !isdirectory($CACHE)
@@ -48,8 +44,6 @@ if dein#check_install()
  call dein#install()
 endif
 
-" 文字コード
-set encoding=utf-8
 " 行番号を表示
 set number
 " タブ文字の代わりにスペースを使う
@@ -63,7 +57,7 @@ set tabstop=2
 " yankした文字列をクリップボードにコピー
 set clipboard=unnamedplus
 " 検索した文字をハイライトする
-set hls
+set hlsearch
 " バックアップファイルを作らない
 set nobackup
 set nowritebackup
