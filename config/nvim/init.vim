@@ -10,9 +10,9 @@ endif
 
 if &runtimepath !~# '/dein.vim'
   let s:dir = fnamemodify('dein.vim', ':p')
-  if !(s:dir->isdirectory())
+  if(!isdirectory(s:dir))
     let s:dir = $CACHE .. '/dein/repos/github.com/Shougo/dein.vim'    
-    if !(s:dir->isdirectory())
+    if !isdirectory(s:dir)
       execute '!git clone https://github.com/Shougo/dein.vim' s:dir
     endif
   endif
