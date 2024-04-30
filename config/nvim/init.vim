@@ -96,7 +96,6 @@ let g:coc_global_extensions = [
   \ 'coc-css',
   \ 'coc-tsserver',
   \ 'coc-eslint',
-" \ 'coc-prettier',
   \ 'coc-java',
   \ 'coc-rust-analyzer',
   \ '@yaegassy/coc-volar',
