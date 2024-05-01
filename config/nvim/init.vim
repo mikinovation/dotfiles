@@ -110,8 +110,6 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gr <Plug>(coc-references)
 " リネーム
 nmap <silent> <Leader>rn <Plug>(coc-rename)
-" フォーマット
-nmap <silent> <Leader>f <Plug>(coc-format)
 " ホバー
 nmap <silent> K <Plug>(coc-hover)
 
