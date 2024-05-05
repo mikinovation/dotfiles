@@ -100,7 +100,6 @@ let g:coc_global_extensions = [
   \ 'coc-rust-analyzer',
   \ '@yaegassy/coc-volar',
   \ '@yaegassy/coc-volar-tools',
-  \ '@yaegassy/coc-typescript-vue-plugin',
   \ ]
 
 " coc mappings
