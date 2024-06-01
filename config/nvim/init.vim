@@ -153,6 +153,19 @@ require'nvim-treesitter.configs'.setup {
 require'nvim-gitui'.setup {}
 EOF
 
+" CopilotChat
+
+lua << EOF
+require'CopilotChat'.setup {
+  debug = true,
+}
+EOF
+
+nmap <Leader>cc [copilot-chat]
+xmap <Leader>cc [copilot-chat]
+
+nnoremap <silent> [copilot-chat]i     :<C-u>CopilotChat<CR>
+
 " coc-git
 
 nmap [g <Plug>(coc-git-prevchunk)
