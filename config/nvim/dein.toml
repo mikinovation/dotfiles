@@ -22,6 +22,13 @@ repo = 'github/copilot.vim'
 rev = 'release'
 
 [[plugins]]
+repo = 'CopilotC-Nvim/CopilotChat.nvim'
+rev = 'canary'
+
+[[plugins]]
+repo = 'nvim-lua/plenary.nvim'
+
+[[plugins]]
 repo = 'neoclide/coc.nvim'
 rev = 'release'
 
