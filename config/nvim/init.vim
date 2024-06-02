@@ -70,6 +70,17 @@ set noswapfile
 " leaderをスペースへ設定
 let mapleader = "\<Space>"
 
+" 現在開いているファイル名の変更
+command! -nargs=1 RenameFile call s:RenameFile(<f-args>)
+
+function! s:RenameFile(new_name)
+  execute ':f ' . a:new_name
+  call delete(expand('#'))
+  execute ':w'
+endfunction
+
+:nmap <Leader>rf :RenameFile<Space>
+
 " file explorerを開く
 :nmap <Leader>e <Cmd>CocCommand explorer<CR>
 " 補完を利用できるようにする
@@ -191,8 +202,8 @@ xmap ag <Plug>(coc-git-chunk-outer)
 
 " 次へ・前へ
 
+nmap <silent> tb <Cmd>BufferPrevious<CR>
 nmap <silent> tn <Cmd>BufferNext<CR>
-nmap <silent> tb <Cmd>BufferNext<CR>
 
 " バッファの削除
 nnoremap <silent> tc <Cmd>BufferClose<CR>
