@@ -44,6 +44,10 @@ if dein#check_install()
  call dein#install()
 endif
 
+" カラースキームの復元
+" TODO: legacyモードなので新しいschemeに変更したい
+colorscheme vim
+
 " 行番号を表示
 set number
 " タブ文字の代わりにスペースを使う
@@ -164,7 +168,11 @@ EOF
 nmap <Leader>cc [copilot-chat]
 xmap <Leader>cc [copilot-chat]
 
-nnoremap <silent> [copilot-chat]i     :<C-u>CopilotChat<CR>
+nnoremap <silent> [copilot-chat]t     :<C-u>CopilotChatToggle<CR>
+nnoremap <silent> [copilot-chat]r     :<C-u>CopilotChatReview<CR>
+nnoremap <silent> [copilot-chat]o     :<C-u>CopilotChatOptimize<CR>
+nnoremap <silent> [copilot-chat]f     :<C-u>CopilotChatFix<CR>
+nnoremap <silent> [copilot-chat]fd    :<C-u>CopilotChatFixDiagnostic<CR>
 
 " coc-git
 
