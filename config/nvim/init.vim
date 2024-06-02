@@ -70,16 +70,14 @@ set noswapfile
 " leaderをスペースへ設定
 let mapleader = "\<Space>"
 
-" 現在開いているファイル名の変更
-command! -nargs=1 RenameFile call s:RenameFile(<f-args>)
-
 function! s:RenameFile(new_name)
-  execute ':f ' . a:new_name
+  let l:current_file_dir = expand('%:p:h')
+  let l:new_file_path = l:current_file_dir . '/' . a:new_name
+  execute ':saveas ' . l:new_file_path
   call delete(expand('#'))
-  execute ':w'
 endfunction
 
-:nmap <Leader>rf :RenameFile<Space>
+:nmap <Leader>rf :call <SID>RenameFile(input('New file name: '))<CR>
 
 " file explorerを開く
 :nmap <Leader>e <Cmd>CocCommand explorer<CR>
