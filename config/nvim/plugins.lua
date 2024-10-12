@@ -15,6 +15,7 @@ require("lazy").setup({
 	require("plugins.which-key").config(),
 	require("plugins.telescope").config(),
 	require("plugins.neo-tree").config(),
+	require("plugins.neogit").config(),
 	{
 		"folke/lazydev.nvim",
 		ft = "lua",
