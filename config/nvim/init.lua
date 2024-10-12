@@ -1,4 +1,5 @@
 -- luacheck: globals vim
+package.path = package.path .. ";" .. vim.fn.expand("~/.config/nvim") .. "/?.lua"
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
