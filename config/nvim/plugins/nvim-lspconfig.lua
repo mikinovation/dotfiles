@@ -93,6 +93,27 @@ function nvimLspconfig.config()
 					end,
 				},
 			})
+
+			local lspconfig = require("lspconfig")
+
+			-- Volar(Vue)の設定
+			lspconfig.volar.setup({
+				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+			})
+
+			-- TailwindCSSの設定
+			lspconfig.tailwindcss.setup({
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"typescript",
+					"javascriptreact",
+					"typescriptreact",
+					"vue",
+				},
+			})
 		end,
 	}
 end

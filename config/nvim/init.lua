@@ -1,4 +1,6 @@
 -- luacheck: globals vim
+
+-- デフォルトだと相対パスになってしまうので、絶対パスに変更
 package.path = package.path .. ";" .. vim.fn.expand("~/.config/nvim") .. "/?.lua"
 
 vim.g.mapleader = " "
@@ -18,4 +20,5 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 require("plugins")
 
+-- Vimを起動したときにNeotreeを開く
 vim.cmd([[autocmd VimEnter * Neotree]])
