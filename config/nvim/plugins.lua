@@ -23,7 +23,7 @@ require("lazy").setup({
 	require("plugins.nvim-cmp").config(),
 	require("plugins.tokyonight").config(),
 	require("plugins.todo-comments").config(),
-	require("plugins.mini").config(),
+	require("plugins.lualine").config(),
 	require("plugins.nvim-treesitter").config(),
 	require("plugins.copilot-chat").config(),
 }, {
