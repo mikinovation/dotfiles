@@ -15,7 +15,15 @@ sudo apt install luarocks
 linter for lua
 
 ```
-luarocks install luacheck
+sudo luarocks install luacheck
+```
+
+### luaformatter
+
+formatter for lua
+
+```
+brew install stylua
 ```
 
 ## install
@@ -26,6 +34,13 @@ Run this:
 git clone git@github.com:mikinovation/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
 ./setup.sh
+```
+
+## lint and fomat
+
+```bash
+sh ./scripts/lint.sh
+sh ./scripts/format.sh
 ```
 
 ### Setup Copilot
