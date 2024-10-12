@@ -1,6 +1,0 @@
-{
-  "coc.preferences.formatOnSave": true,
-  "explorer.file.showHiddenFiles": true,
-  "semanticTokens.enable": true,
-  "tsserver.enable": true
-}

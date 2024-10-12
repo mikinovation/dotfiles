@@ -1,5 +1,31 @@
 # dotfiles
 
+## prerequisite
+
+### LuaRocks
+
+package manager for Lua modules
+
+```
+sudo apt install luarocks
+```
+
+### luacheck
+
+linter for lua
+
+```
+sudo luarocks install luacheck
+```
+
+### luaformatter
+
+formatter for lua
+
+```
+brew install stylua
+```
+
 ## install
 
 Run this:
@@ -7,7 +33,14 @@ Run this:
 ```bash
 git clone git@github.com:mikinovation/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-./deploy.sh
+./setup.sh
+```
+
+## lint and fomat
+
+```bash
+sh ./scripts/lint.sh
+sh ./scripts/format.sh
 ```
 
 ### Setup Copilot
