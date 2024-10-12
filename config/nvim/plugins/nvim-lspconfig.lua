@@ -96,6 +96,11 @@ function nvimLspconfig.config()
 
 			local lspconfig = require("lspconfig")
 
+			-- NOTE: JAVAの設定をしようとしたが、うまくいかなかったのでしばらくIDEを使用
+			-- lspconfig.jdtls.setup({
+			--	cmd = { "jdtls" },
+			-- })
+
 			-- Volar(Vue)の設定
 			lspconfig.volar.setup({
 				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
