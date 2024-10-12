@@ -28,7 +28,7 @@ jobs:
           pip install vim-vint
 
       - name: Check deploy.sh
-        run: shellcheck ${GITHUB_WORKSPACE}/deploy.sh
+        run: shellcheck ${GITHUB_WORKSPACE}/setup.sh
 
       - name: Check init.vim
         run: vint ${GITHUB_WORKSPACE}/config/nvim/*.vim -cstV --enable-neovim
