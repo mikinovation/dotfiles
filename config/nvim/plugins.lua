@@ -14,6 +14,7 @@ require("lazy").setup({
 	require("plugins.gitsigns").config(),
 	require("plugins.which-key").config(),
 	require("plugins.telescope").config(),
+	require("plugins.toggleterm").config(),
 	require("plugins.neo-tree").config(),
 	require("plugins.neogit").config(),
 	require("plugins.lazydev").config(),

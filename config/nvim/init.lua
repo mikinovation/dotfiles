@@ -8,7 +8,6 @@ vim.g.maplocalleader = " "
 vim.g.have_nerd_font = false
 
 require("options")
-require("keymaps")
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -19,6 +18,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 require("plugins")
+require("keymaps")
 
 -- Vimを起動したときにNeotreeを開く
 vim.cmd([[autocmd VimEnter * Neotree]])
