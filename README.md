@@ -18,6 +18,12 @@ linter for lua
 sudo luarocks install luacheck
 ```
 
+### npm packages
+
+```
+npm install -g @vue/language-server @tailwindcss/language-server 
+```
+
 ### luaformatter
 
 formatter for lua
