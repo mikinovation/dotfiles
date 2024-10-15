@@ -28,6 +28,7 @@ require("lazy").setup({
 	require("plugins.nvim-treesitter").config(),
 	require("plugins.copilot-chat").config(),
 	require("plugins.nvim-dap").config(),
+	require("plugins.neotest").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
