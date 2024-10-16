@@ -20,7 +20,7 @@ require("lazy").setup({
 	require("plugins.lazydev").config(),
 	require("plugins.luvit-meta").config(),
 	require("plugins.nvim-lspconfig").config(),
-	require("plugins.conform").config(),
+	require("plugins.none-ls").config(),
 	require("plugins.nvim-cmp").config(),
 	require("plugins.tokyonight").config(),
 	require("plugins.todo-comments").config(),
