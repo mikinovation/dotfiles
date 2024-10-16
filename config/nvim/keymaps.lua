@@ -11,7 +11,7 @@ keymap("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Toggleterm
 -- ターミナルを開く
-keymap("n", "<leader>T", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
+keymap("n", "<leader>tt", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
 
 -- jjでノーマルモードに戻る
 keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
