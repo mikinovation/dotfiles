@@ -9,9 +9,13 @@ keymap("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 keymap("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 keymap("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
+-- jjでノーマルモードに戻る
+keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
+
 -- Toggleterm
 -- ターミナルを開く
 keymap("n", "<leader>tt", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
 
--- jjでノーマルモードに戻る
-keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
+-- Neotest
+keymap("n", "<leader>tn", ":lua require('neotest').run.run({strategy = 'dap'})<CR>", { desc = "Run test nearest" })
+keymap("n", "<leader>tf", ":lua require('neotest').run.run(vim.fn.expand('%'))<CR>", { desc = "Run test file" })
