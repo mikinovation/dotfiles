@@ -5,15 +5,28 @@ use axum::{
     Json, Router,
 };
 use serde::{Deserialize, Serialize};
+use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
+use sqlx::postgres::PgPoolOptions;
 
 #[tokio::main]
 async fn main() {
-    tracing_subscriber::fmt::init();
+    init_tracing();
 
-    let app = create_router();
-
+    let app = create_app().await;
     let listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
+
+    tracing::debug!("Listening on: {}", listener.local_addr().unwrap());
     axum::serve(listener, app).await.unwrap();
+}
+
+fn init_tracing() {
+    tracing_subscriber::registry()
+        .with(
+            tracing_subscriber::EnvFilter::try_from_default_env()
+            .unwrap_or_else(|_| format!("{}=debug", env!("CARGO_CRATE_NAME")).into())
+        )
+        .with(tracing_subscriber::fmt::layer())
+        .init();
 }
 
 async fn root() -> &'static str {
@@ -21,10 +34,20 @@ async fn root() -> &'static str {
 }
 
 
-fn create_router() -> Router {
+async fn create_app() -> Router {
+    let db_connection_str = std::env::var("DATABASE_URL")
+        .unwrap_or_else(|_| "postgres://postgres:password@localhost".to_string());
+
+    let pool = PgPoolOptions::new()
+        .max_connections(5)
+        .connect(&db_connection_str)
+        .await
+        .expect("Failed to create connection pool");
+
     Router::new()
         .route("/", get(root))
         .route("/users", post(create_user))
+        .with_state(pool)
 }
 
 async fn create_user(
@@ -53,8 +76,6 @@ struct User {
 mod test {
     use super::*;
     use axum::{body::Body, http::Request};
-    use tower::util::ServiceExt;
-    use http_body_util::BodyExt;
 
     #[tokio::test]
     async fn test_root() {

@@ -1,12 +1,23 @@
 # コンセプトから理解するRust
 
-## コマンド
+## 前提
 
-アプリケーションの実行
+.env.exampleをコピーして.envを作成し、環境変数を設定。
 
 ```bash
+cp .env.example .env
+```
+
+## Setup
+
+```bash
+# dockerの起動
+docker compose up -d
+# アプリケーションの起動
 cargo run
 ```
+
+## コマンド
 
 ビルド
 
