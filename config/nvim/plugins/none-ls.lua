@@ -40,8 +40,13 @@ function noneLs.config()
 
 			null_ls.setup({
 				sources = {
-					null_ls.builtins.diagnostics.stylua,
-					null_ls.builtins.formatting.stylua,
+					-- lua
+					-- null_ls.builtins.diagnostics.stylua,
+					-- null_ls.builtins.formatting.stylua,
+					-- rust
+				        -- null_ls.builtins.diagnostics.ltrs,
+					-- null_ls.builtins.formatting.ltrs,
+					-- javascript
 					require("none-ls.diagnostics.eslint_d"),
 					require("none-ls.formatting.eslint_d"),
 				},

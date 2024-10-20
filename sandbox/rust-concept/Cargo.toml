@@ -1,0 +1,13 @@
+[package]
+name = "rust-concept"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7.7"
+serde = { version = "1.0.210", features = ["derive"] }
+tokio = { version = "1.40.0", features = ["full"] }
+tracing-subscriber = "0.3.18"
+tower = "0.5.0"
+http-body-util = "0.1.2"
+

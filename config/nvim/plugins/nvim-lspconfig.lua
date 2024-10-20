@@ -65,7 +65,6 @@ function nvimLspconfig.config()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 			local servers = {
-
 				lua_ls = {
 					settings = {
 						Lua = {
@@ -76,11 +75,13 @@ function nvimLspconfig.config()
 					},
 				},
 			}
+
 			require("mason").setup()
 
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
-				"stylua", -- Used to format Lua code
+				"stylua",
+				"rust_analyzer"
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -95,6 +96,19 @@ function nvimLspconfig.config()
 			})
 
 			local lspconfig = require("lspconfig")
+
+			-- Rustの設定
+			lspconfig.rust_analyzer.setup({
+				filetypes = { "rust" },
+				root_dir = lspconfig.util.root_pattern("Cargo.toml"),
+				settings = {
+					["rust-analyzer"] = {
+						checkOnSave = {
+							command = "clippy",
+						},
+					},
+				},
+			})
 
 			-- NOTE: JAVAの設定をしようとしたが、うまくいかなかったのでしばらくIDEを使用
 			-- lspconfig.jdtls.setup({
