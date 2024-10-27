@@ -21,7 +21,7 @@ sudo luarocks install luacheck
 ### npm packages
 
 ```
-npm install -g @vue/language-server @tailwindcss/language-server 
+npm install -g typescript typescript-language-server @tailwindcss/language-server 
 ```
 
 ### luaformatter
