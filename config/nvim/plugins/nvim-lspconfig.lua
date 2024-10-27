@@ -11,6 +11,24 @@ function nvimLspconfig.config()
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
+			local util = require("lspconfig.util")
+
+			local function get_typescript_server_path(root_dir)
+				local global_ts = '/usr/local/lib/node_modules/typescript/lib'
+				local found_ts = ''
+				local function check_dir(path)
+					found_ts = util.path.join(path, 'node_modules', 'typescript', 'lib')
+					if util.path.join(found_ts) then
+						return path
+					end
+				end
+				if util.search_ancestors(root_dir, check_dir) then
+					return found_ts
+				else
+					return global_ts
+				end
+			end
+
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 				callback = function(event)
@@ -31,33 +49,6 @@ function nvimLspconfig.config()
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
-					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-						local highlight_augroup =
-							vim.api.nvim_create_augroup("kickstart-lsp-highlight", { clear = false })
-						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.document_highlight,
-						})
-						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
-							group = highlight_augroup,
-							callback = vim.lsp.buf.clear_references,
-						})
-						vim.api.nvim_create_autocmd("LspDetach", {
-							group = vim.api.nvim_create_augroup("kickstart-lsp-detach", { clear = true }),
-							callback = function(event2)
-								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds({ group = "kickstart-lsp-highlight", buffer = event2.buf })
-							end,
-						})
-					end
-					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-						map("<leader>th", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
-						end, "[T]oggle Inlay [H]ints")
-					end
 				end,
 			})
 
@@ -115,9 +106,42 @@ function nvimLspconfig.config()
 			--	cmd = { "jdtls" },
 			-- })
 
+			-- TypeScriptの設定
+			lspconfig.ts_ls.setup({
+				init_options = {
+					plugins = {
+						{
+							name = "@vue/typescript-plugin",
+							location = "/usr/local/lib/node_modules/@vue/typescript-plugin",
+							langages = {
+								"javascript",
+								"typescript",
+								"vue",
+							}
+						},
+					},
+				},
+				filetypes = {
+					"javascript",
+					"typescript",
+					"vue",
+				},
+			})
+
 			-- Volar(Vue)の設定
 			lspconfig.volar.setup({
-				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+				on_new_config = function(new_config, new_root_dir)
+					new_config.init_options.typescript.tsdk = get_typescript_server_path(new_root_dir)
+				end,
+				filetypes = {
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"vue",
+					"json"
+				},
+				root_dir = lspconfig.util.root_pattern({ "package.json", "node_modules" }),
 			})
 
 			-- TailwindCSSの設定
