@@ -20,3 +20,10 @@ keymap("n", "<leader>tt", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
 -- Neotest
 keymap("n", "<leader>tn", ":lua require('neotest').run.run({strategy = 'dap'})<CR>", { desc = "Run test nearest" })
 keymap("n", "<leader>tf", ":lua require('neotest').run.run(vim.fn.expand('%'))<CR>", { desc = "Run test file" })
+
+-- Copilot Chat
+vim.keymap.set("n", "<leader>cco", ":CopilotChatToggle<CR>", { desc = "[C]opilot [C]hat [T]oggle" })
+vim.keymap.set("n", "<leader>ccr", ":CopilotChatReview<CR>", { desc = "[C]opilot [C]hat [R]eview" })
+vim.keymap.set("n", "<leader>ccf", ":CopilotChatFix<CR>", { desc = "[C]opilot [C]hat [F]ix" })
+vim.keymap.set("n", "<leader>ccd", ":CopilotChatDoc<CR>", { desc = "[C]opilot [C]hat [D]oc" })
+vim.keymap.set("n", "<leader>cct", ":CopilotChatTest<CR>", { desc = "[C]opilot [C]hat [T]est" })
