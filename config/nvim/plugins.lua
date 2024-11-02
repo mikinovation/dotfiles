@@ -10,7 +10,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	"tpope/vim-sleuth",
+	require("plugins.nvim-lspconfig").config(),
 	require("plugins.nvim-notify").config(),
 	require("plugins.gitsigns").config(),
 	require("plugins.which-key").config(),
@@ -20,7 +20,6 @@ require("lazy").setup({
 	require("plugins.neogit").config(),
 	require("plugins.lazydev").config(),
 	require("plugins.luvit-meta").config(),
-	require("plugins.nvim-lspconfig").config(),
 	require("plugins.none-ls").config(),
 	require("plugins.nvim-cmp").config(),
 	require("plugins.vim-matchup").config(),
@@ -37,6 +36,7 @@ require("lazy").setup({
 	require("plugins.tsc").config(),
 	require("plugins.nvim-bqf").config(),
 	require("plugins.yanky").config(),
+	"tpope/vim-sleuth",
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
