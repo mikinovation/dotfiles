@@ -11,6 +11,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
 	"tpope/vim-sleuth",
+	require("plugins.nvim-notify").config(),
 	require("plugins.gitsigns").config(),
 	require("plugins.which-key").config(),
 	require("plugins.telescope").config(),
@@ -33,6 +34,7 @@ require("lazy").setup({
 	require("plugins.nvim-dap").config(),
 	require("plugins.neotest").config(),
 	require("plugins.git-conflict").config(),
+	require("plugins.tsc").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
