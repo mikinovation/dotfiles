@@ -36,6 +36,7 @@ require("lazy").setup({
 	require("plugins.git-conflict").config(),
 	require("plugins.tsc").config(),
 	require("plugins.nvim-bqf").config(),
+	require("plugins.yanky").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
