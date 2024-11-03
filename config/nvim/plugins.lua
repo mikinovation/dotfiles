@@ -36,6 +36,7 @@ require("lazy").setup({
 	require("plugins.tsc").config(),
 	require("plugins.nvim-bqf").config(),
 	require("plugins.yanky").config(),
+	require("plugins.indent-blankline").config(),
 	"tpope/vim-sleuth",
 }, {
 	ui = {
