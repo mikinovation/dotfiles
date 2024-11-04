@@ -10,7 +10,6 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	require("plugins.nvim-lspconfig").config(),
 	require("plugins.nvim-notify").config(),
 	require("plugins.gitsigns").config(),
 	require("plugins.which-key").config(),
@@ -22,6 +21,7 @@ require("lazy").setup({
 	require("plugins.luvit-meta").config(),
 	require("plugins.none-ls").config(),
 	require("plugins.nvim-cmp").config(),
+	require("plugins.nvim-lspconfig").config(),
 	require("plugins.vim-matchup").config(),
 	require("plugins.nvim-autopairs").config(),
 	require("plugins.nvim-ts-autotag").config(),
