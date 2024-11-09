@@ -13,7 +13,7 @@ https://wezfurlong.org/wezterm/
 Windowsの場合は以下のようにweztermの設定ファイルをホストOSのWindows側にファイルをコピーする
 
 ```bash
-cp ~/dotfiles/config/wezterm/wezterm.lua /mnt/c/Users/[UserName]/
+cp ~/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
 ### LuaRocks

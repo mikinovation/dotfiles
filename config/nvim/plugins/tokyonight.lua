@@ -7,6 +7,7 @@ function tokyonight.config()
 		init = function()
 			vim.cmd.colorscheme("tokyonight-night")
 			vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+			vim.cmd("hi TelescopeNormal guibg=NONE ctermbg=NONE")
 		end,
 	}
 end
