@@ -8,7 +8,7 @@ Install Wezterm
 
 https://wezfurlong.org/wezterm/
 
-** TODO: 暫定対応なのでコマンドで実行できるように改善したい**
+**TODO: 暫定対応なのでコマンドで実行できるように改善したい**
 
 Windowsの場合は以下のようにweztermの設定ファイルをホストOSのWindows側にファイルをコピーする
 
