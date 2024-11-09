@@ -30,3 +30,6 @@ vim.keymap.set("n", "<leader>cct", ":CopilotChatTest<CR>", { desc = "[C]opilot [
 
 -- Vim-Argwrap
 vim.keymap.set("n", "<leader>a", ":ArgWrap<CR>", { desc = "Argwrap" })
+
+-- Markdown Preview
+vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>", { desc = "[M]arkdown [P]review" })

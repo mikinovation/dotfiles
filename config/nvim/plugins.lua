@@ -43,6 +43,7 @@ require("lazy").setup({
 	require("plugins.comment").config(),
 	require("plugins.nvim-ts-context-commentstring").config(),
 	require("plugins.orgmode").config(),
+	require("plugins.markdown-preview").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
