@@ -1,12 +1,9 @@
-local neoscroll = {}
+local vimSleuth = {}
 
-function neoscroll.config()
+function vimSleuth.config()
 	return {
-		"karb94/neoscroll.nvim",
-		config = function()
-			require("neoscroll").setup()
-		end,
+		"tpope/vim-sleuth",
 	}
 end
 
-return neoscroll
+return vimSleuth

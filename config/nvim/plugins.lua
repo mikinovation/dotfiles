@@ -39,7 +39,7 @@ require("lazy").setup({
 	require("plugins.indent-blankline").config(),
 	require("plugins.neoscroll").config(),
 	require("plugins.vim-argwrap").config(),
-	"tpope/vim-sleuth",
+	require("plugins.vim-sleuth").config(),
 	{
 		'numToStr/Comment.nvim',
 		config = function()
