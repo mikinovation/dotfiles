@@ -16,6 +16,16 @@ Windowsの場合は以下のようにweztermの設定ファイルをホストOS�
 cp ~/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
+### Shelldon
+
+Install Shelldon
+
+https://github.com/rossmacarthur/sheldon
+
+```bash
+brew install sheldon
+```
+
 ### LuaRocks
 
 package manager for Lua modules
