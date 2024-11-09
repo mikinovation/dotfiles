@@ -14,10 +14,10 @@ function nvimLspconfig.config()
 			local util = require("lspconfig.util")
 
 			local function get_typescript_server_path(root_dir)
-				local global_ts = '/usr/local/lib/node_modules/typescript/lib'
-				local found_ts = ''
+				local global_ts = "/usr/local/lib/node_modules/typescript/lib"
+				local found_ts = ""
 				local function check_dir(path)
-					found_ts = util.path.join(path, 'node_modules', 'typescript', 'lib')
+					found_ts = util.path.join(path, "node_modules", "typescript", "lib")
 					if util.path.join(found_ts) then
 						return path
 					end
@@ -72,7 +72,7 @@ function nvimLspconfig.config()
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua",
-				"rust_analyzer"
+				"rust_analyzer",
 			})
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
@@ -117,7 +117,7 @@ function nvimLspconfig.config()
 								"javascript",
 								"typescript",
 								"vue",
-							}
+							},
 						},
 					},
 				},
@@ -139,7 +139,7 @@ function nvimLspconfig.config()
 					"typescript",
 					"typescriptreact",
 					"vue",
-					"json"
+					"json",
 				},
 				root_dir = lspconfig.util.root_pattern({ "package.json", "node_modules" }),
 			})

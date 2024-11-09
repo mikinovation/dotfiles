@@ -20,11 +20,10 @@ local async_formatting = function(bufnr)
 
 			if res then
 				local client = vim.lsp.get_client_by_id(ctx.client_id)
-				vim.lsp.util.apply_text_edits(res, bufnr,
-					client and client.offset_encoding or "utf-16")
-				vim.api.nvim_buf_call(bufnr, function()
-					vim.cmd("silent noautocmd update")
-				end)
+				vim.lsp.util.apply_text_edits(res, bufnr, client and client.offset_encoding or "utf-16")
+				-- vim.api.nvim_buf_call(bufnr, function()
+				-- 	vim.cmd("silent noautocmd update")
+				-- end)
 			end
 		end
 	)
@@ -44,7 +43,7 @@ function noneLs.config()
 					-- null_ls.builtins.diagnostics.stylua,
 					-- null_ls.builtins.formatting.stylua,
 					-- rust
-				        -- null_ls.builtins.diagnostics.ltrs,
+					-- null_ls.builtins.diagnostics.ltrs,
 					-- null_ls.builtins.formatting.ltrs,
 					-- javascript
 					require("none-ls.diagnostics.eslint_d"),
@@ -58,7 +57,7 @@ function noneLs.config()
 							group = augroup,
 							buffer = bufnr,
 							callback = function()
-								-- async_formatting(bufnr)
+								async_formatting(bufnr)
 							end,
 						})
 					end
