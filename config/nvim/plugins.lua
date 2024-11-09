@@ -37,12 +37,7 @@ require("lazy").setup({
 	require("plugins.nvim-bqf").config(),
 	require("plugins.yanky").config(),
 	require("plugins.indent-blankline").config(),
-	{
-		"karb94/neoscroll.nvim",
-		config = function()
-			require("neoscroll").setup()
-		end,
-	},
+	require("plugins.neoscroll").config(),
 	require("plugins.vim-argwrap").config(),
 	"tpope/vim-sleuth",
 	{
