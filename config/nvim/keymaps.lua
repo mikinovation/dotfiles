@@ -27,3 +27,6 @@ vim.keymap.set("n", "<leader>ccr", ":CopilotChatReview<CR>", { desc = "[C]opilot
 vim.keymap.set("n", "<leader>ccf", ":CopilotChatFix<CR>", { desc = "[C]opilot [C]hat [F]ix" })
 vim.keymap.set("n", "<leader>ccd", ":CopilotChatDoc<CR>", { desc = "[C]opilot [C]hat [D]oc" })
 vim.keymap.set("n", "<leader>cct", ":CopilotChatTest<CR>", { desc = "[C]opilot [C]hat [T]est" })
+
+-- Vim-Argwrap
+vim.keymap.set("n", "<leader>a", ":ArgWrap<CR>", { desc = "Argwrap" })
