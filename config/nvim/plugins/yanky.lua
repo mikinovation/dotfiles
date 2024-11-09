@@ -8,7 +8,7 @@ function yanky.config()
 			require("yanky").setup({
 				highlight = {
 					timer = 200,
-				}
+				},
 			})
 		end,
 	}
