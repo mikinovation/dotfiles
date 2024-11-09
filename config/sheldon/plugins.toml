@@ -10,7 +10,6 @@ github = "romkatv/zsh-defer"
 
 [plugins.oh-my-zsh]
 github = "ohmyzsh/ohmyzsh"
-apply = ["defer"]
 
 [plugins.powerlevel10k]
 github = "romkatv/powerlevel10k"
@@ -18,17 +17,13 @@ github = "romkatv/powerlevel10k"
 [plugins.zsh-autosuggestions]
 github = "zsh-users/zsh-autosuggestions"
 use = ["{{ name }}.zsh"]
-apply = ["defer"]
 
 [plugins.zsh-syntax-highlighting]
 github = "zsh-users/zsh-syntax-highlighting"
-apply = ["defer"]
 
 [plugins.zsh-completions]
 github = "zsh-users/zsh-completions"
-apply = ["defer"]
 
 [plugins.zsh-abbr]
 github = "olets/zsh-abbr"
-apply = ["defer"]
 
