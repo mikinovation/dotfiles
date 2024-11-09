@@ -40,22 +40,8 @@ require("lazy").setup({
 	require("plugins.neoscroll").config(),
 	require("plugins.vim-argwrap").config(),
 	require("plugins.vim-sleuth").config(),
-	{
-		'numToStr/Comment.nvim',
-		config = function()
-			require('Comment').setup({
-				pre_hook = require('ts_context_commentstring.integrations.comment_nvim').create_pre_hook()
-			})
-		end,
-	},
-	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		config = function()
-			require("ts_context_commentstring").setup({
-				enable_autocmd = false,
-			})
-		end,
-	}
+	require("plugins.comment").config(),
+	require("plugins.nvim-ts-context-commentstring").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
