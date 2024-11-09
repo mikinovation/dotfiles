@@ -8,6 +8,14 @@ Install Wezterm
 
 https://wezfurlong.org/wezterm/
 
+** TODO: 暫定対応なのでコマンドで実行できるように改善したい**
+
+Windowsの場合は以下のようにweztermの設定ファイルをホストOSのWindows側にファイルをコピーする
+
+```bash
+cp ~/dotfiles/config/wezterm/wezterm.lua /mnt/c/Users/[UserName]/
+```
+
 ### LuaRocks
 
 package manager for Lua modules
