@@ -2,6 +2,12 @@
 
 ## prerequisite
 
+### Terminal
+
+Install Wezterm
+
+https://wezfurlong.org/wezterm/
+
 ### LuaRocks
 
 package manager for Lua modules
