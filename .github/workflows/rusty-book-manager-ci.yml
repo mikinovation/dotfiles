@@ -19,6 +19,8 @@ jobs:
 
       - name: Cache dependencies
         uses: Swatinem/rust-cache@v2
+        with:
+          workspace: sandbox/rusty-book-manager
 
       - name: Install Rust toolchain
         run: |
