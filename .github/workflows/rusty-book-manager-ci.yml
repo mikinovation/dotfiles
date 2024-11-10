@@ -33,7 +33,7 @@ jobs:
         run: cargo make test-ci
 
       - name: Clippy
-      - run: cargo make clippy-ci -- -Dwarnings
+        run: cargo make clippy-ci -- -Dwarnings
 
       - name: Rustfmt
         run: cargo make fmt -- --check
