@@ -1,0 +1,9 @@
+[package]
+name = "adapter"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+shared.workspace = true
+anyhow.workspace = true
+sqlx.workspace = true
