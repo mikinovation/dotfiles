@@ -35,6 +35,7 @@ JAEGER_PORT = 6831
 run_task = [
 	{ name = [
 		"compose-up-db",
+		"migrate",
 		"compose-up-redis",
 	]},
 ]
@@ -163,6 +164,11 @@ command = "docker"
 args = ["compose", "up", "-d", "redis"]
 
 [tasks.compose-down]
+extend = "set-env-docker"
+command = "docker"
+args = ["compose", "down", "-v"]
+
+[tasks.compose-remove]
 extend = "set-env-docker"
 command = "docker"
 args = ["compose", "down", "-v"]
