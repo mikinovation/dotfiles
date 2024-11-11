@@ -84,9 +84,3 @@ Input Authentication Code on Browser. And enable Copilot
 ```bash
 :Copilot enable
 ```
-
-## delete cache
-
-```bash
-:call dein#recache_runtimepath()
-```
