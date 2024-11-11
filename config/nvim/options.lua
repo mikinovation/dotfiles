@@ -21,3 +21,6 @@ vim.opt.scrolloff = 10
 vim.opt.termguicolors = true
 vim.opt.winblend = 10
 vim.opt.pumblend = 10
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.shell = "/bin/zsh"
