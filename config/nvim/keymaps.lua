@@ -10,7 +10,7 @@ keymap("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 keymap("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 keymap("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
-keymap("n", "<leader>ts", ":%s/\r//g<CR>", { desc = "Remove ^M" })
+keymap("n", "<leader>rm", ":%s/\r//g<CR>", { desc = "Remove ^M" })
 
 -- jjでノーマルモードに戻る
 keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
