@@ -33,3 +33,6 @@ vim.keymap.set("n", "<leader>a", ":ArgWrap<CR>", { desc = "Argwrap" })
 
 -- Markdown Preview
 vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>", { desc = "[M]arkdown [P]review" })
+
+-- Neotree
+vim.keymap.set("n", "<leader>ec", ":Neotree reveal<CR>", { desc = "Reveal current file in tree" })
