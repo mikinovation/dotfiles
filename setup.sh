@@ -44,6 +44,9 @@ link_zsh_config() {
 main() {
   echo "Start setup dotfiles..."
 
+  echo "Install npm packages..."
+  npm install -g typescript typescript-language-server vue-language-server tailwindcss-language-server eslint_d
+
   link_nvim_config
   echo "Linking neovim config done."
 

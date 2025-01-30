@@ -3,10 +3,10 @@ local copilotChat = {}
 function copilotChat.config()
 	return {
 		"CopilotC-Nvim/CopilotChat.nvim",
-		branch = "canary",
+		branch = "main",
 		dependencies = {
-			{ "github/copilot.vim" },
-			{ "nvim-lua/plenary.nvim" },
+			{ "github/copilot.vim", branch = "release" },
+			{ "nvim-lua/plenary.nvim", branch = "master" },
 		},
 		opts = {},
 	}
