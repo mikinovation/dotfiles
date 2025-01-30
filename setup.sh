@@ -43,9 +43,18 @@ link_zsh_config() {
 
 main() {
   echo "Start setup dotfiles..."
+  
+  if ! command -v npm >/dev/null 2>&1; then
+    echo "Error: npm is not installed or not in PATH"
+    exit 1
+  fi
 
   echo "Install npm packages..."
-  npm install -g typescript typescript-language-server vue-language-server tailwindcss-language-server eslint_d
+
+  if ! npm install -g typescript typescript-language-server vue-language-server tailwindcss-language-server eslint_d; then
+    echo "Error: Failed to install npm packages"
+    exit 1
+  fi
 
   link_nvim_config
   echo "Linking neovim config done."
