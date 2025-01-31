@@ -1,6 +1,6 @@
 local noneLs = {}
 
-local async_formatting = function(bufnr)
+--[[ local async_formatting = function(bufnr)
 	bufnr = bufnr or vim.api.nvim_get_current_buf()
 
 	vim.lsp.buf_request(
@@ -21,13 +21,13 @@ local async_formatting = function(bufnr)
 			if res then
 				local client = vim.lsp.get_client_by_id(ctx.client_id)
 				vim.lsp.util.apply_text_edits(res, bufnr, client and client.offset_encoding or "utf-16")
-				-- vim.api.nvim_buf_call(bufnr, function()
-				-- 	vim.cmd("silent noautocmd update")
-				-- end)
+				vim.api.nvim_buf_call(bufnr, function()
+					vim.cmd("silent noautocmd update")
+				end)
 			end
 		end
 	)
-end
+end ]]
 
 function noneLs.config()
 	return {
@@ -45,6 +45,13 @@ function noneLs.config()
 					-- rust
 					-- null_ls.builtins.diagnostics.ltrs,
 					-- null_ls.builtins.formatting.ltrs,
+					-- stylelint
+					null_ls.builtins.diagnostics.stylelint.with({
+						filetypes = { "css", "scss", "vue" },
+					}),
+					null_ls.builtins.formatting.stylelint.with({
+						filetypes = { "css", "scss", "vue" },
+					}),
 					-- javascript
 					require("none-ls.diagnostics.eslint_d"),
 					require("none-ls.formatting.eslint_d"),
@@ -57,7 +64,7 @@ function noneLs.config()
 							group = augroup,
 							buffer = bufnr,
 							callback = function()
-								async_formatting(bufnr)
+							--	async_formatting(bufnr)
 							end,
 						})
 					end

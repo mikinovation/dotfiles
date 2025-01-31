@@ -51,7 +51,7 @@ main() {
 
   echo "Install npm packages..."
 
-  if ! npm install -g typescript typescript-language-server vue-language-server tailwindcss-language-server eslint_d; then
+  if ! npm install -g typescript typescript-language-server vue-language-server tailwindcss-language-server eslint_d stylelint; then
     echo "Error: Failed to install npm packages"
     exit 1
   fi
