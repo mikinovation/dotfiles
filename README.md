@@ -84,3 +84,11 @@ Input Authentication Code on Browser. And enable Copilot
 ```bash
 :Copilot enable
 ```
+
+### Nix
+
+clean up nix store
+
+```bash
+nix store gc
+```
