@@ -29,6 +29,7 @@
         clippy
         curl
         deno
+        docker
         fnm
         fzf
         gh
@@ -38,7 +39,7 @@
         nano
         nodejs_22
         pnpm
-        reggrep
+        ripgrep
         unzip
         vue-language-server
         wget
