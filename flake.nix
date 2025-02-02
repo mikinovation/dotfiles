@@ -39,7 +39,7 @@
         nano
         nodejs_22
         pnpm
-        repgrep
+        ripgrep
         unzip
         wget
         yarn
