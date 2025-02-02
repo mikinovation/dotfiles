@@ -43,6 +43,9 @@ link_zsh_config() {
 
 main() {
   echo "Start setup dotfiles..."
+
+  nix build
+  echo "Building Nix done."
   
   if ! command -v npm >/dev/null 2>&1; then
     echo "Error: npm is not installed or not in PATH"
