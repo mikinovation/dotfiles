@@ -24,8 +24,24 @@
     packages.${system}.default = pkgs.buildEnv {
       name = "my-packages";
       paths = with pkgs; [
-        git
+        bun
+        cargo
+        clippy
         curl
+        deno
+        fnm
+        fzf
+        gh
+        git
+        go
+        jq
+        nano
+        nodejs_22
+        pnpm
+        reggrep
+        unzip
+        wget
+        yarn
 
         (vim.overrideAttrs (oldAttrs: {
           version = "latest";
@@ -57,7 +73,7 @@
         echo "Updating flake..."
         nix flake update
         echo "Updating profile..."
-        if ! profile upgrade my-packages; then
+        if ! nix profile upgrade my-packages; then
           echo "Failed to upgrade profile!"
           exit 1
         fi
