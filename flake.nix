@@ -57,7 +57,10 @@
         echo "Updating flake..."
         nix flake update
         echo "Updating profile..."
-        nix profile upgrade my-packages
+        if ! profile upgrade my-packages; then
+          echo "Failed to upgrade profile!"
+          exit 1
+        fi
         echo "Update complete!"
       '');
     };
