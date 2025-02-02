@@ -40,6 +40,7 @@
         pnpm
         reggrep
         unzip
+        vue-language-server
         wget
         yarn
 
