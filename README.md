@@ -91,4 +91,4 @@ clean up nix store
 
 ```bash
 nix store gc
-``
+```
