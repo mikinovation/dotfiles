@@ -4,7 +4,9 @@ function todoComments.config()
 	return { -- You can easily change to a different colorscheme.
 		"folke/todo-comments.nvim",
 		event = "VimEnter",
-		dependencies = { "nvim-lua/plenary.nvim" },
+		dependencies = {
+			require("plugins.plenary").config(),
+		},
 		opts = { signs = false },
 	}
 end

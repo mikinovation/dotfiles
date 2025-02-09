@@ -6,7 +6,7 @@ function copilotChat.config()
 		branch = "main",
 		dependencies = {
 			{ "github/copilot.vim", branch = "release" },
-			{ "nvim-lua/plenary.nvim", branch = "master" },
+			require("plugins.plenary").config(),
 		},
 		opts = {},
 	}
