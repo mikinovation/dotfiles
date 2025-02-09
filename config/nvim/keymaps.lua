@@ -38,3 +38,23 @@ vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>", { desc = "[M]arkdown [
 
 -- Neotree
 vim.keymap.set("n", "<leader>ec", ":Neotree reveal<CR>", { desc = "Reveal current file in tree" })
+
+vim.api.nvim_set_keymap("n", "<leader>st", ":lua SendToTerminal()<CR>", { noremap = true, silent = true })
+
+function SendToTerminal()
+	local cmd = vim.fn.getline(".")
+	local job_id = nil
+
+	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+		if vim.bo[buf].buftype == "terminal" then
+			job_id = vim.b[buf].terminal_job_id
+			break
+		end
+	end
+
+	if job_id then
+		vim.api.nvim_chan_send(job_id, cmd .. "\n")
+	else
+		print("No active terminal found!")
+	end
+end

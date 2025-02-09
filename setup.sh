@@ -63,6 +63,13 @@ main() {
     exit 1
   fi
 
+  echo "Install gem packages..."
+
+  if ! gem install --user-install solargraph rubocop; then
+    echo "Error: Failed to install gem packages"
+    exit 1
+  fi
+
   link_nvim_config
   echo "Linking neovim config done."
 

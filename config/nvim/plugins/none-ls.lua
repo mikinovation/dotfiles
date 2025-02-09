@@ -64,7 +64,7 @@ function noneLs.config()
 							group = augroup,
 							buffer = bufnr,
 							callback = function()
-							--	async_formatting(bufnr)
+								--	async_formatting(bufnr)
 							end,
 						})
 					end
