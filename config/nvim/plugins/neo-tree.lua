@@ -6,7 +6,7 @@ function neoTree.config()
 		branch = "v3.x",
 		dependencies = {
 			require("plugins.plenary").config(),
-			"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+			require("plugins.nvim-web-devicons").config(),
 			"MunifTanjim/nui.nvim",
 			-- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
 		},
