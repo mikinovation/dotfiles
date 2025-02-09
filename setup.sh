@@ -65,7 +65,7 @@ main() {
 
   echo "Install gem packages..."
 
-  if ! gem install --user-install solargraph rubocop; then
+  if ! gem install solargraph rubocop; then
     echo "Error: Failed to install gem packages"
     exit 1
   fi
