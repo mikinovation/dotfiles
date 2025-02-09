@@ -27,6 +27,7 @@ require("lazy").setup({
 	require("plugins.nvim-autopairs").config(),
 	require("plugins.nvim-bqf").config(),
 	require("plugins.nvim-cmp").config(),
+	require("plugins.nvim-context-vt").config(),
 	require("plugins.nvim-dap").config(),
 	require("plugins.nvim-lspconfig").config(),
 	require("plugins.nvim-notify").config(),
