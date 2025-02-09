@@ -70,6 +70,16 @@ function nvimLspconfig.config()
 
 			local lspconfig = require("lspconfig")
 
+			-- Rubyの設定
+			lspconfig.solargraph.setup({
+				cmd = { "solargraph", "stdio" },
+				filetypes = { "ruby" },
+				root_dir = lspconfig.util.root_pattern("Gemfile"),
+				settings = {
+					diagnostics = true,
+				},
+			})
+
 			-- Rustの設定
 			lspconfig.rust_analyzer.setup({
 				filetypes = { "rust" },
@@ -92,22 +102,22 @@ function nvimLspconfig.config()
 			lspconfig.volar.setup({})
 
 			-- TypeScriptの設定
-                        lspconfig.ts_ls.setup{
-                            init_options = {
-                                plugins = {
-                                    {
-                                        name = "@vue/typescript-plugin",
-	                                location = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server",
-                                        languages = {"javascript", "typescript", "vue"},
-                                    },
-                                },
-                            },
-			    filetypes = {
-                                "javascript",
-                                "typescript",
-                                "vue",
-                            },
-                        }
+			lspconfig.ts_ls.setup({
+				init_options = {
+					plugins = {
+						{
+							name = "@vue/typescript-plugin",
+							location = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server",
+							languages = { "javascript", "typescript", "vue" },
+						},
+					},
+				},
+				filetypes = {
+					"javascript",
+					"typescript",
+					"vue",
+				},
+			})
 
 			-- TailwindCSSの設定
 			lspconfig.tailwindcss.setup({
