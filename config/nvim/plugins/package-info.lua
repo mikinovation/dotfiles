@@ -4,7 +4,7 @@ function packageInfo.config()
 	return {
 		"vuki656/package-info.nvim",
 		dependencies = {
-			"MunifTanjim/nui.nvim",
+			require("plugins.nui").config(),
 		},
 		config = function()
 			require("package-info").setup()
