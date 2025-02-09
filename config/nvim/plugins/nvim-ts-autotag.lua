@@ -4,7 +4,7 @@ function nvimTsAutotag.config()
 	return {
 		"windwp/nvim-ts-autotag",
 		event = "InsertEnter",
-		config = true,
+		config = true
 	}
 end
 
