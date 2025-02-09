@@ -4,7 +4,7 @@ function neogit.config()
 	return {
 		"NeogitOrg/neogit",
 		dependencies = {
-			"nvim-lua/plenary.nvim",
+			require("plugins.plenary").config(),
 			"sindrets/diffview.nvim",
 			"nvim-telescope/telescope.nvim",
 		},

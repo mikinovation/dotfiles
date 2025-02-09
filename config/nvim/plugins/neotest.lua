@@ -5,7 +5,7 @@ function neotest.config()
 		"nvim-neotest/neotest",
 		dependencies = {
 			"nvim-neotest/nvim-nio",
-			"nvim-lua/plenary.nvim",
+			require("plugins.plenary").config(),
 			"antoinemadec/FixCursorHold.nvim",
 			"nvim-treesitter/nvim-treesitter",
 			"rouge8/neotest-rust",
