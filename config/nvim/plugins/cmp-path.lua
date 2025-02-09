@@ -2,7 +2,7 @@ local cmpPath = {}
 
 function cmpPath.config()
 	return {
-		"hrsh7th/nvim-cmp",
+		"hrsh7th/cmp-path",
 		config = function()
 			require("cmp").setup({
 				sources = {
