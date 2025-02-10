@@ -4,9 +4,6 @@ function nvimLspconfig.config()
 	return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
-			"williamboman/mason-lspconfig.nvim",
-			"WhoIsSethDaniel/mason-tool-installer.nvim",
 			{ "j-hui/fidget.nvim", opts = {} },
 			"hrsh7th/cmp-nvim-lsp",
 		},
@@ -49,23 +46,10 @@ function nvimLspconfig.config()
 				},
 			}
 
-			require("mason").setup()
-
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua",
 				"rust_analyzer",
-			})
-			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-			require("mason-lspconfig").setup({
-				handlers = {
-					function(server_name)
-						local server = servers[server_name] or {}
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
-					end,
-				},
 			})
 
 			local lspconfig = require("lspconfig")
