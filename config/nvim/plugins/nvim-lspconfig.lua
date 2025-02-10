@@ -83,22 +83,22 @@ function nvimLspconfig.config()
 			-- })
 
 			-- Vueの設定
-			lspconfig.volar.setup({})
+			lspconfig.volar.setup({
+				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+				init_options = {
+					vue = {
+						hybridMode = false,
+					},
+				}
+			})
 
 			-- TypeScriptの設定
 			lspconfig.ts_ls.setup({
-				init_options = {
-					plugins = {
-						{
-							name = "@vue/typescript-plugin",
-							location = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server",
-							languages = { "javascript", "typescript", "vue" },
-						},
-					},
-				},
 				filetypes = {
 					"javascript",
 					"typescript",
+					"javascriptreact",
+					"typescriptreact",
 					"vue",
 				},
 			})
