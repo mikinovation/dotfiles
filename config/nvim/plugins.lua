@@ -31,6 +31,7 @@ require("lazy").setup({
 	require("plugins.nvim-dap").config(),
 	require("plugins.nvim-lspconfig").config(),
 	require("plugins.nvim-notify").config(),
+	require("plugins.nvim-treesitter-context").config(),
 	require("plugins.nvim-treesitter").config(),
 	require("plugins.nvim-ts-autotag").config(),
 	require("plugins.nvim-ts-context-commentstring").config(),
