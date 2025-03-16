@@ -13,6 +13,7 @@ require("lazy").setup({
 	require('plugins.cmp-path').config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot-chat").config(),
+	require("plugins.dropbar").config(),
 	require("plugins.git-conflict").config(),
 	require("plugins.gitsigns").config(),
 	require("plugins.indent-blankline").config(),
