@@ -76,13 +76,7 @@ sh ./scripts/format.sh
 ### Setup Copilot
 
 ```bash
-:Copilot setup
-```
-
-Input Authentication Code on Browser. And enable Copilot
-
-```bash
-:Copilot enable
+:Copilot auth
 ```
 
 ### Nix
