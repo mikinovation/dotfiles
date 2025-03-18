@@ -8,7 +8,7 @@ function copilot.config()
 		config = function()
 			require("copilot").setup({
 				suggestion = { enabled = false },
-				panel = { enabled = false }
+				panel = { enabled = false },
 			})
 		end,
 	}

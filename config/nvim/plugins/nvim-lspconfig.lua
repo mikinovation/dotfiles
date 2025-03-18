@@ -89,7 +89,7 @@ function nvimLspconfig.config()
 					vue = {
 						hybridMode = false,
 					},
-				}
+				},
 			})
 
 			-- TypeScriptの設定
