@@ -7,6 +7,7 @@ function nvimCmp.config()
     dependencies = {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-buffer",
+      require("plugins.copilot-cmp").config(),
       require("plugins.cmp-path").config(),
       "hrsh7th/cmp-cmdline",
       "saadparwaiz1/cmp_luasnip",
@@ -82,12 +83,13 @@ function nvimCmp.config()
           end, { "i", "s" }),
         }),
         
-        sources = cmp.config.sources({
-          { name = "nvim_lsp", priority = 1000 },
-          { name = "luasnip", priority = 750 },
-          { name = "buffer", priority = 500 },
-          { name = "path", priority = 250 },
-        }),
+        sources = {
+          { name = "copilot", group_index = 2 },
+          { name = "nvim_lsp", group_index = 2 },
+          { name = "luasnip", group_index = 2 },
+          { name = "buffer", group_index = 2 },
+          { name = "path", group_index = 2 }
+        },
         
         formatting = {
           format = lspkind.cmp_format({
