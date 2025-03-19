@@ -1,3 +1,4 @@
+-- plugins/nvim-lspconfig.lua
 local nvimLspconfig = {}
 
 function nvimLspconfig.config()
@@ -6,17 +7,30 @@ function nvimLspconfig.config()
 		dependencies = {
 			{ "j-hui/fidget.nvim", opts = {} },
 			"hrsh7th/cmp-nvim-lsp",
+			"folke/neodev.nvim", -- Lua用の開発サポート
 		},
 		config = function()
+			-- neodevを先に設定（lua_lsの設定より前に）
+			require("neodev").setup({})
+
+			-- LSPアタッチ時のキーバインド設定
 			vim.api.nvim_create_autocmd("LspAttach", {
-				group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(event)
-					local map = function(keys, func, desc, mode)
-						mode = mode or "n"
-						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					local bufnr = event.buf
+
+					-- Enable completion triggered by <c-x><c-o>
+					vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
+
+					-- バッファローカルなキーマッピング
+					local map = function(keys, func, desc)
+						vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 					end
+
+					-- よく使う機能のキーマッピング
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
-					map("gr", require("telescope.builtin").lsp_references, "[G]oTo [R]eferences")
+					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
 					map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
 					map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
@@ -26,46 +40,98 @@ function nvimLspconfig.config()
 						"[W]orkspace [S]ymbols"
 					)
 					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
+					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+					map("K", vim.lsp.buf.hover, "Hover Documentation")
+					map("<C-k>", vim.lsp.buf.signature_help, "Signature Help")
+
+					-- Diagnostics
+					map("<leader>e", vim.diagnostic.open_float, "Open [E]rror")
+					map("[d", vim.diagnostic.goto_prev, "Previous [D]iagnostic")
+					map("]d", vim.diagnostic.goto_next, "Next [D]iagnostic")
+					map("<leader>q", vim.diagnostic.setloclist, "Diagnostics to [Q]uickfix List")
+
+					-- Format document
+					if client.supports_method("textDocument/formatting") then
+						map("<leader>f", function()
+							vim.lsp.buf.format({ async = true })
+						end, "[F]ormat document")
+					end
 				end,
 			})
 
-			local capabilities = vim.lsp.protocol.make_client_capabilities()
-			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
+			-- LSPの診断表示設定（サイン、floating windowなど）
+			vim.diagnostic.config({
+				virtual_text = {
+					prefix = "●", -- アイコンをカスタマイズ
+					severity = {
+						min = vim.diagnostic.severity.WARN,
+					},
+				},
+				signs = true,
+				underline = true,
+				update_in_insert = false,
+				severity_sort = true,
+				float = {
+					focusable = false,
+					style = "minimal",
+					border = "rounded",
+					source = "always",
+				},
+			})
 
-			local servers = {
-				lua_ls = {
-					settings = {
-						Lua = {
-							completion = {
-								callSnippet = "Replace",
-							},
+			-- diagnosticサインのカスタマイズ
+			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+			for type, icon in pairs(signs) do
+				local hl = "DiagnosticSign" .. type
+				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+			end
+
+			-- capabilities - nvim-cmpとの連携
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+			-- LSPサーバーの設定
+			local lspconfig = require("lspconfig")
+
+			-- Lua
+			lspconfig.lua_ls.setup({
+				capabilities = capabilities,
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim", "use" },
+						},
+						workspace = {
+							library = vim.api.nvim_get_runtime_file("", true),
+							checkThirdParty = false,
+						},
+						telemetry = {
+							enable = false,
+						},
+						completion = {
+							callSnippet = "Replace",
 						},
 					},
 				},
-			}
-
-			local ensure_installed = vim.tbl_keys(servers or {})
-			vim.list_extend(ensure_installed, {
-				"stylua",
-				"rust_analyzer",
 			})
 
-			local lspconfig = require("lspconfig")
-
-			-- Rubyの設定
+			-- Ruby
 			lspconfig.solargraph.setup({
+				capabilities = capabilities,
 				cmd = { "solargraph", "stdio" },
 				filetypes = { "ruby" },
-				root_dir = lspconfig.util.root_pattern("Gemfile"),
+				root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
 				settings = {
-					diagnostics = true,
+					solargraph = {
+						diagnostics = true,
+					},
 				},
 			})
 
-			-- Rustの設定
+			-- Rust
 			lspconfig.rust_analyzer.setup({
+				capabilities = capabilities,
 				filetypes = { "rust" },
 				root_dir = lspconfig.util.root_pattern("Cargo.toml"),
 				settings = {
@@ -77,13 +143,20 @@ function nvimLspconfig.config()
 				},
 			})
 
-			-- NOTE: JAVAの設定をしようとしたが、うまくいかなかったのでしばらくIDEを使用
-			-- lspconfig.jdtls.setup({
-			--	cmd = { "jdtls" },
-			-- })
+			-- TypeScript/JavaScript
+			lspconfig.ts_ls.setup({
+				capabilities = capabilities,
+				filetypes = {
+					"typescript",
+					"javascript",
+					"javascriptreact",
+					"typescriptreact",
+				},
+			})
 
-			-- Vueの設定
+			-- Vue
 			lspconfig.volar.setup({
+				capabilities = capabilities,
 				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
 				init_options = {
 					vue = {
@@ -92,19 +165,9 @@ function nvimLspconfig.config()
 				},
 			})
 
-			-- TypeScriptの設定
-			lspconfig.ts_ls.setup({
-				filetypes = {
-					"javascript",
-					"typescript",
-					"javascriptreact",
-					"typescriptreact",
-					"vue",
-				},
-			})
-
-			-- TailwindCSSの設定
+			-- TailwindCSS
 			lspconfig.tailwindcss.setup({
+				capabilities = capabilities,
 				filetypes = {
 					"html",
 					"css",
