@@ -16,6 +16,12 @@ Windowsの場合は以下のようにweztermの設定ファイルをホストOS�
 cp ~/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
+### 
+
+```bash
+suso apt install fdclone
+```
+
 ### Shelldon
 
 Install Shelldon

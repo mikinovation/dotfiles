@@ -7,12 +7,8 @@ function nvimLspconfig.config()
 		dependencies = {
 			{ "j-hui/fidget.nvim", opts = {} },
 			"hrsh7th/cmp-nvim-lsp",
-			"folke/neodev.nvim", -- Lua用の開発サポート
 		},
 		config = function()
-			-- neodevを先に設定（lua_lsの設定より前に）
-			require("neodev").setup({})
-
 			-- LSPアタッチ時のキーバインド設定
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
@@ -112,19 +108,6 @@ function nvimLspconfig.config()
 						completion = {
 							callSnippet = "Replace",
 						},
-					},
-				},
-			})
-
-			-- Ruby
-			lspconfig.solargraph.setup({
-				capabilities = capabilities,
-				cmd = { "solargraph", "stdio" },
-				filetypes = { "ruby" },
-				root_dir = lspconfig.util.root_pattern("Gemfile", ".git"),
-				settings = {
-					solargraph = {
-						diagnostics = true,
 					},
 				},
 			})
