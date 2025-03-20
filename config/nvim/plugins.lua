@@ -37,6 +37,7 @@ require("lazy").setup({
 	require("plugins.nvim-ts-context-commentstring").config(),
 	require("plugins.orgmode").config(),
 	require("plugins.package-info").config(),
+	require("plugins.pathtool").config(),
 	require("plugins.telescope").config(),
 	require("plugins.todo-comments").config(),
 	require("plugins.toggleterm").config(),
