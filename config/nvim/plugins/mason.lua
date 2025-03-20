@@ -23,7 +23,6 @@ function mason.config()
 					"lua_ls",
 					"rust_analyzer",
 					"ts_ls",
-					"solargraph",
 					"volar",
 					"tailwindcss",
 				},
