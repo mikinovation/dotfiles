@@ -50,7 +50,7 @@
   "nvim_context_vt": { "branch": "master", "commit": "10e13ec47a9bb341192d893e58cf91c61cde4935" },
   "orgmode": { "branch": "master", "commit": "2929054293953e486a25c9768095455987ba391b" },
   "package-info.nvim": { "branch": "master", "commit": "3e8914a77668c780fc5ef8b0fbcf3747dfcf6ec5" },
-  "pathtool.nvim": { "branch": "main", "commit": "94a4a97ffee7b105451c5925beb444847cdc468b" },
+  "pathtool.nvim": { "branch": "main", "commit": "dfed489d1e6a628ca73ceafbdfa30e5d55ca481b" },
   "plenary.nvim": { "branch": "master", "commit": "857c5ac632080dba10aae49dba902ce3abf91b35" },
   "sqlite.lua": { "branch": "master", "commit": "50092d60feb242602d7578398c6eb53b4a8ffe7b" },
   "telescope-file-browser.nvim": { "branch": "master", "commit": "626998e5c1b71c130d8bc6cf7abb6709b98287bb" },
