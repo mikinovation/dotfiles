@@ -3,7 +3,7 @@ local pathtool = {}
 function pathtool.config()
 	return {
 		"mikinovation/pathtool.nvim",
-		commit = "94a4a97ffee7b105451c5925beb444847cdc468b",
+		version = "v1.1.1",
 		config = function()
 			require("pathtool").setup()
 
