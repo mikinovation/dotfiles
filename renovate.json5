@@ -14,11 +14,14 @@
   "prConcurrentLimit": 10,
   "ignoreDeps": [],
   "ignorePaths": [],
-  "packageRules": [
+  "customManagers": [
     {
-      "matchPackagePatterns": ['^config/nvim/plugins/.*\\.lua$'],
+      "fileMatch": ['^config/nvim/plugins/.*\\.lua$'],
       "matchStrings": ['renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\n'],
       "extractVersion": '^\\s*commit\\s*=\\s*["\']?(?<version>[a-f0-9]+)["\']?\\s*,?\\n',
-    },
+      "datasourceTemplate": "github",
+      "versioningTemplate": "git",
+      "currentValueTemplate": "{{branchName}}"
+    }
   ],
 }
