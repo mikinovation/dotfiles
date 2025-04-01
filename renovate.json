@@ -21,8 +21,9 @@
       "matchStrings": [
         "\"(?<depName>.*?)\": \\{ \"branch\": \"(?<branchName>.*?)\", \"commit\": \"(?<currentDigest>.*?)\" \\}"
       ],
-      "datasourceTemplate": "neovim",
-      "versioningTemplate": "lazy"
+      "datasourceTemplate": "github",
+      "versioningTemplate": "git",
+      "currentValueTemplate": "{{branchName}}"
     }
   ]
 }
