@@ -17,8 +17,7 @@
   "customManagers": [
     {
       "fileMatch": ['^config/nvim/plugins/.*\\.lua$'],
-      "matchStrings": ['renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)\\n'],
-      "extractVersion": '^\\s*commit\\s*=\\s*["\']?(?<version>[a-f0-9]+)["\']?\\s*,?\\n',
+      "matchStrings": ['renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) commit=(?<currentDigest>.*?)\\n'],
       "datasourceTemplate": "github",
       "versioningTemplate": "git",
       "currentValueTemplate": "{{branchName}}"
