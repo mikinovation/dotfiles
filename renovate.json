@@ -12,41 +12,43 @@
   ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
-  "regexManagers": [
+  "customManagers": [
     {
+      "customType": "regex",
       "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
       "matchStrings": [
-        "\\s*version\\s*=\\s*[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
+        "(?<depName>[^/]+/[^/\"']+).*?branch\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']"
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
+      "matchStrings": [
+        "(?<depName>[^/]+/[^/\"']+).*?tag\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']"
+      ],
+      "datasourceTemplate": "github-tags",
+      "packageNameTemplate": "{{{depName}}}"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
+      "matchStrings": [
+        "(?<depName>[^/]+/[^/\"']+).*?commit\\s*=\\s*[\"'](?<currentDigest>[^\"']+)[\"']"
+      ],
+      "datasourceTemplate": "git-refs",
+      "packageNameTemplate": "https://github.com/{{{depName}}}",
+      "currentValueTemplate": "main"
+    },
+    {
+      "customType": "regex",
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"], 
+      "matchStrings": [
+        "(?<depName>[^/]+/[^/\"']+).*?version\\s*=\\s*[\"'](?<currentValue>[^\"']+)[\"']"
       ],
       "datasourceTemplate": "github-releases",
-      "depNameTemplate": "{{#if lookupName}}{{{lookupName}}}{{else}}{{{depName}}}{{/if}}",
-      "packageNameTemplate": "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}"
-    },
-    {
-      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
-      "matchStrings": [
-        "\\s*branch\\s*=\\s*[\"'](?<currentValue>[^\"'\\s]+)[\"']"
-      ],
-      "datasourceTemplate": "github-branches",
-      "depNameTemplate": "{{#if lookupName}}{{{lookupName}}}{{else}}{{{depName}}}{{/if}}",
-      "packageNameTemplate": "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}"
-    },
-    {
-      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
-      "matchStrings": [
-        "\\s*commit\\s*=\\s*[\"'](?<currentValue>[^\"'\\s]+)[\"']"
-      ],
-      "datasourceTemplate": "github-commits",
-      "depNameTemplate": "{{#if lookupName}}{{{lookupName}}}{{else}}{{{depName}}}{{/if}}",
-      "packageNameTemplate": "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}"
-    },
-    {
-      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
-      "matchStrings": [
-        "github\\s*=\\s*[\"'](?<depName>[^/\"']+/[^/\"']+)[\"']"
-      ],
-      "datasourceTemplate": "github-releases",
-      "extractVersionTemplate": "^v?(?<version>.*)$"
+      "packageNameTemplate": "{{{depName}}}"
     }
   ],
   "ignoreDeps": [],
