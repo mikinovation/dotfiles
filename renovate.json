@@ -13,5 +13,5 @@
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
   "ignoreDeps": [],
-  "ignorePaths": [],
+  "ignorePaths": []
 }
