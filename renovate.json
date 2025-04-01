@@ -12,21 +12,41 @@
   ],
   "prHourlyLimit": 5,
   "prConcurrentLimit": 10,
-  "rangeStrategy": "pin",
   "regexManagers": [
     {
-      "fileMatch": [".*\\.lua$"],
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
       "matchStrings": [
-        "\\s*['\\\"](?<depName>[^'\\\"]+)['\\\"],\\s*version\\s*=\\s*['\\\"](?<currentValue>[^'\\\"]+)['\\\"]"
+        "\\s*version\\s*=\\s*[\"']?(?<currentValue>[^\"'\\s]+)[\"']?"
       ],
-      "datasourceTemplate": "github-tags"
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "{{#if lookupName}}{{{lookupName}}}{{else}}{{{depName}}}{{/if}}",
+      "packageNameTemplate": "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}"
     },
     {
-      "fileMatch": [".*\\.lua$"],
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
       "matchStrings": [
-        "\\s*['\\\"](?<depName>[^'\\\"]+)['\\\"],\\s*commit\\s*=\\s*['\\\"](?<currentDigest>[^'\\\"]+)['\\\"]"
+        "\\s*branch\\s*=\\s*[\"'](?<currentValue>[^\"'\\s]+)[\"']"
       ],
-      "datasourceTemplate": "github-commits"
+      "datasourceTemplate": "github-branches",
+      "depNameTemplate": "{{#if lookupName}}{{{lookupName}}}{{else}}{{{depName}}}{{/if}}",
+      "packageNameTemplate": "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}"
+    },
+    {
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
+      "matchStrings": [
+        "\\s*commit\\s*=\\s*[\"'](?<currentValue>[^\"'\\s]+)[\"']"
+      ],
+      "datasourceTemplate": "github-commits",
+      "depNameTemplate": "{{#if lookupName}}{{{lookupName}}}{{else}}{{{depName}}}{{/if}}",
+      "packageNameTemplate": "{{#if packageName}}{{{packageName}}}{{else}}{{{depName}}}{{/if}}"
+    },
+    {
+      "fileMatch": ["^config/nvim/plugins/.+\\.lua$"],
+      "matchStrings": [
+        "github\\s*=\\s*[\"'](?<depName>[^/\"']+/[^/\"']+)[\"']"
+      ],
+      "datasourceTemplate": "github-releases",
+      "extractVersionTemplate": "^v?(?<version>.*)$"
     }
   ],
   "ignoreDeps": [],
