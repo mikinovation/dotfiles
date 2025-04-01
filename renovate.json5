@@ -14,13 +14,18 @@
   prConcurrentLimit: 10,
   ignoreDeps: [],
   ignorePaths: [],
-  "customManagers": [
+  customManagers: [
     {
-      "fileMatch": ['^config/nvim/plugins/.*\\.lua$'],
-      "matchStrings": ['renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) commit=(?<currentDigest>.*?)\\n'],
-      "datasourceTemplate": "github",
-      "versioningTemplate": "git",
-      "currentValueTemplate": "{{branchName}}"
-    }
-  ]
+      customType: 'regex',
+      fileMatch: [
+        '^config/nvim/plugins/.*\\.lua$',
+      ],
+      matchStrings: [
+        'renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) commit=(?<currentDigest>.*?)\\n',
+      ],
+      datasourceTemplate: 'github',
+      versioningTemplate: 'git',
+      currentValueTemplate: '{{branchName}}',
+    },
+  ],
 }
