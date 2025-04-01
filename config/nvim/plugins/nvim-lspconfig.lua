@@ -128,23 +128,21 @@ function nvimLspconfig.config()
 
 			-- TypeScript/JavaScript
 			lspconfig.ts_ls.setup({
-				capabilities = capabilities,
+				init_options = {
+					plugins = {
+						{
+							name = "@vue/typescript-plugin",
+							location = "/home/mikinovation/.local/share/fnm/node-versions/v22.13.0/installation/lib/node_modules/@vue/typescript-plugin",
+							languages = { "javascript", "typescript", "vue" },
+						},
+					},
+				},
 				filetypes = {
-					"typescript",
 					"javascript",
+					"typescript",
 					"javascriptreact",
 					"typescriptreact",
-				},
-			})
-
-			-- Vue
-			lspconfig.volar.setup({
-				capabilities = capabilities,
-				filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-				init_options = {
-					vue = {
-						hybridMode = false,
-					},
+					"vue",
 				},
 			})
 
