@@ -84,11 +84,3 @@ sh ./scripts/format.sh
 ```bash
 :Copilot auth
 ```
-
-### Nix
-
-clean up nix store
-
-```bash
-nix store gc
-```
