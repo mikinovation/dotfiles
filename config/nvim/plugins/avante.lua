@@ -5,6 +5,17 @@ function avante.config()
 		"yetone/avante.nvim",
 		event = "VeryLazy",
 		version = false,
+		opts = {
+			provider = "openrouter",
+			vendors = {
+				openrouter = {
+					__inherited_from = "openai",
+					endpoint = "https://openrouter.ai/api/v1",
+					api_key_name = "OPENROUTER_API_KEY",
+					model = "deepseek/deepseek-chat-v3-0324:free",
+				},
+			},
+		},
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			"stevearc/dressing.nvim",
