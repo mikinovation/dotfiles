@@ -44,13 +44,6 @@ link_zsh_config() {
 main() {
   echo "Start setup dotfiles..."
 
-  echo "Update nix environment..."
-  if ! nix run .#update; then
-    echo "Error: Failed to update nix environment"
-    exit 1
-  fi
-  echo "Nix environment update complete."
-
   if ! command -v npm >/dev/null 2>&1; then
     echo "Error: npm is not installed or not in PATH"
     exit 1

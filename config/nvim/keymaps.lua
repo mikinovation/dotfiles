@@ -31,7 +31,7 @@ vim.keymap.set("n", "<leader>ccd", ":CopilotChatDoc<CR>", { desc = "[C]opilot [C
 vim.keymap.set("n", "<leader>cct", ":CopilotChatTest<CR>", { desc = "[C]opilot [C]hat [T]est" })
 
 -- Vim-Argwrap
-vim.keymap.set("n", "<leader>a", ":ArgWrap<CR>", { desc = "Argwrap" })
+vim.keymap.set("n", "<leader>aw", ":ArgWrap<CR>", { desc = "Argwrap" })
 
 -- Markdown Preview
 vim.keymap.set("n", "<leader>mp", ":MarkdownPreview<CR>", { desc = "[M]arkdown [P]review" })

@@ -10,6 +10,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
+	require("plugins.avante").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
 	require("plugins.copilot-chat").config(),
