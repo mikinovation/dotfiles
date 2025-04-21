@@ -8,12 +8,26 @@ function avante.config()
 		opts = {
 			provider = "openrouter",
 			vendors = {
-				openrouter = {
+				deepseek = {
 					__inherited_from = "openai",
 					disable_tools = true,
 					endpoint = "https://openrouter.ai/api/v1",
 					api_key_name = "OPENROUTER_API_KEY",
 					model = "deepseek/deepseek-chat-v3-0324:free",
+				},
+				claude = {
+					__inherited_from = "openai",
+					disable_tools = true,
+					endpoint = "https://openrouter.ai/api/v1",
+					api_key_name = "OPENROUTER_API_KEY",
+					model = "anthropic/claude-3.7-sonnet",
+				},
+				claude_thinking = {
+					__inherited_from = "openai",
+					disable_tools = true,
+					endpoint = "https://openrouter.ai/api/v1",
+					api_key_name = "OPENROUTER_API_KEY",
+					model = "anthropic/claude-3.7-sonnet:thinking",
 				},
 			},
 			behaviour = {
