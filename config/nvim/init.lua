@@ -10,6 +10,3 @@ vim.g.have_nerd_font = false
 require("options")
 require("plugins")
 require("keymaps")
-
--- Vimを起動したときにNeotreeを開く
-vim.cmd([[autocmd VimEnter * Neotree]])

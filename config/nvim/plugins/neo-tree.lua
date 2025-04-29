@@ -15,6 +15,9 @@ function neoTree.config()
 				filtered_items = { visible = true, hide_dotfiles = false },
 			},
 		},
+		config = function()
+			vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle file explorer" })
+		end,
 	}
 end
 
