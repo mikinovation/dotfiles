@@ -18,10 +18,15 @@ function orgmode.config()
 					CANCELLED = ":foreground gray :weight bold",
 				},
 				org_capture_templates = {
+					r = {
+						description = "Refile",
+						template = "* TODO %?\n  %U",
+						target = "~/projects/mikinovation/org/refile.org",
+					},
 					j = {
 						description = "Personal Journal",
-						template = "\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?",
-						target = "~/projects/mikinovation/org/personal/jounal/%<%Y>.org",
+						template = "\n*** %<%y-%m-%d> %<%a>\n**** %u\n\n%?",
+						target = "~/projects/mikinovation/org/personal/jounal/%<%y>.org",
 					},
 					w = {
 						description = "Work Journal",
@@ -31,7 +36,7 @@ function orgmode.config()
 					t = {
 						description = "Personal Task",
 						template = "* TODO %?\n  %U",
-						target = "~/projects/mikinovation/personal/tasks.org",
+						target = "~/projects/mikinovation/org/personal/tasks.org",
 					},
 					T = {
 						description = "Work Task",
