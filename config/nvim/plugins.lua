@@ -36,6 +36,7 @@ require("lazy").setup({
 	require("plugins.nvim-treesitter").config(),
 	require("plugins.nvim-ts-autotag").config(),
 	require("plugins.nvim-ts-context-commentstring").config(),
+	require("plugins.octo").config(),
 	require("plugins.orgmode").config(),
 	require("plugins.package-info").config(),
 	require("plugins.pathtool").config(),
