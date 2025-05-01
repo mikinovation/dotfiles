@@ -12,7 +12,11 @@ function neoTree.config()
 		},
 		opts = {
 			filesystem = {
-				filtered_items = { visible = true, hide_dotfiles = false },
+				filtered_items = { 
+					visible = true, 
+					hide_dotfiles = false,
+					show_hidden = true 
+				},
 			},
 		},
 		config = function()
