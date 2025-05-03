@@ -3,7 +3,6 @@ local neoTree = {}
 function neoTree.config()
 	return {
 		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v3.x",
 		dependencies = {
 			require("plugins.plenary").config(),
 			require("plugins.nvim-web-devicons").config(),
