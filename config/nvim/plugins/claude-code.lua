@@ -127,6 +127,12 @@ function claudeCode.config()
 					table.insert(instruction_parts, "- With ticket reference: " .. state.ticket)
 				end
 
+				-- Check for PR template
+				table.insert(
+					instruction_parts,
+					"- Please check if .github/PULL_REQUEST_TEMPLATE.md exists and follow that template format if found"
+				)
+
 				table.insert(instruction_parts, "Please create a pull request with the above settings")
 
 				-- Combine the instructions into a single string
