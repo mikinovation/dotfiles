@@ -117,7 +117,7 @@ function claudeCode.config()
 
 				-- Create PR instruction
 				local instruction_parts = {
-					"I'll now use Claude Code to",
+					"I'm going to create a pull request. Please follow these instructions:",
 					"- Create a PR in " .. state.language .. " language",
 					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
 				}
@@ -132,8 +132,6 @@ function claudeCode.config()
 					instruction_parts,
 					"- Please check if .github/PULL_REQUEST_TEMPLATE.md exists and follow that template format if found"
 				)
-
-				table.insert(instruction_parts, "Please create a pull request with the above settings")
 
 				-- Combine the instructions into a single string
 				local instruction_text = table.concat(instruction_parts, "\n")
