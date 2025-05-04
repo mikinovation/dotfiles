@@ -8,6 +8,11 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 export ZSH="$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:/opt/nvim/"
+export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+
+eval "$(sheldon source)"
 
 # fnm
 FNM_PATH="$HOME/.local/share/fnm"
@@ -16,8 +21,6 @@ if [ -d "$FNM_PATH" ]; then
   eval "`fnm env`"
 fi
 eval "$(fnm env --use-on-cd --shell zsh)"
-
-eval "$(sheldon source)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
