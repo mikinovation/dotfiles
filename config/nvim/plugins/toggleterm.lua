@@ -10,6 +10,8 @@ function toggleterm.config()
 				size = 80,
 				start_in_insert = true,
 			})
+
+			vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
 		end,
 	}
 end
