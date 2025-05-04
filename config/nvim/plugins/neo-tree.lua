@@ -16,6 +16,7 @@ function neoTree.config()
 		},
 		config = function()
 			vim.keymap.set("n", "<leader>e", ":Neotree toggle<CR>", { desc = "Toggle file explorer" })
+			vim.keymap.set("n", "<leader>ec", ":Neotree reveal<CR>", { desc = "Reveal current file in tree" })
 		end,
 	}
 end
