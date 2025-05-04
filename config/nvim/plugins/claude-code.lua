@@ -53,14 +53,14 @@ function claudeCode.config()
 				},
 			})
 
-			-- PR作成のためのカスタム設定
+			-- Custom configuration for PR creation
 			local pr_config = {
 				languages = { "ja", "en" },
 				draft_options = { "draft", "open" },
 				ticket_required = false,
 			}
 
-			-- PR作成のカスタムコマンド
+			-- Custom command for PR creation
 			vim.api.nvim_create_user_command("ClaudeCodeCreatePR", function()
 				local state = {
 					language = nil,
@@ -68,9 +68,9 @@ function claudeCode.config()
 					ticket = nil,
 				}
 
-				-- 言語選択
+				-- Language selection
 				vim.ui.select(pr_config.languages, {
-					prompt = "PRの言語を選択してください:",
+					prompt = "Select PR language:",
 					format_item = function(item)
 						return item
 					end,
@@ -80,9 +80,9 @@ function claudeCode.config()
 					end
 					state.language = language
 
-					-- ドラフト/オープン選択
+					-- Draft/Open selection
 					vim.ui.select(pr_config.draft_options, {
-						prompt = "PRの状態を選択してください:",
+						prompt = "Select PR status:",
 						format_item = function(item)
 							return item
 						end,
@@ -92,17 +92,17 @@ function claudeCode.config()
 						end
 						state.draft_mode = draft_mode
 
-						-- チケットリンク入力（任意）
+						-- Ticket link input (optional)
 						if pr_config.ticket_required then
 							vim.ui.input({
-								prompt = "チケットリンクを入力してください:",
+								prompt = "Enter ticket link:",
 							}, function(ticket)
 								state.ticket = ticket or ""
 								create_pr_with_claude(state)
 							end)
 						else
 							vim.ui.input({
-								prompt = "チケットリンクを入力してください（任意）:",
+								prompt = "Enter ticket link (optional):",
 							}, function(ticket)
 								state.ticket = ticket or ""
 								create_pr_with_claude(state)
@@ -115,44 +115,41 @@ function claudeCode.config()
 			function create_pr_with_claude(state)
 				local cmd = "claude"
 
-				-- PRの命令文を作成
+				-- Create PR instruction
 				local instruction_parts = {
-					"これからclaude codeで",
-					"- " .. state.language .. "語でプルリクを出す",
-					"- " .. (state.draft_mode == "draft" and "下書き" or "オープン") .. "にする",
+					"I'll now use Claude Code to",
+					"- Create a PR in " .. state.language .. " language",
+					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
 				}
 
-				-- チケット情報があれば追加
+				-- Add ticket information if available
 				if state.ticket and state.ticket ~= "" then
-					table.insert(instruction_parts, "- チケット: " .. state.ticket)
+					table.insert(instruction_parts, "- With ticket reference: " .. state.ticket)
 				end
 
-				table.insert(
-					instruction_parts,
-					"を入力してからclaude codeにプルリクを作成するよう指示します"
-				)
+				table.insert(instruction_parts, "Please create a pull request with the above settings")
 
-				-- 命令文を一つの文字列に結合
+				-- Combine the instructions into a single string
 				local instruction_text = table.concat(instruction_parts, "\n")
 
-				-- Claude Codeを起動
+				-- Launch Claude Code
 				vim.cmd("ClaudeCode")
 
-				-- 少し遅延を入れてから命令を送信（ウィンドウがロードされるのを待つ）
+				-- Add delay before sending instructions (wait for window to load)
 				vim.defer_fn(function()
-					-- ターミナルバッファのジョブIDを取得
+					-- Get terminal buffer job ID
 					local bufnr = require("claude-code").claude_code.bufnr
 					if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
 						local chan_id = vim.api.nvim_buf_get_var(bufnr, "terminal_job_id")
 						if chan_id then
-							-- ターミナルにテキストを送信
+							-- Send text to terminal
 							vim.api.nvim_chan_send(chan_id, instruction_text)
 						end
 					end
-				end, 2000) -- 遅延時間を1秒に短縮
+				end, 2000) -- Reduced delay to 1 second
 			end
 
-			-- キーマップを追加
+			-- Add keymap
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
 		end,
 	}
