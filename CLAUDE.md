@@ -21,3 +21,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Comments:** Include meaningful comments for complex configurations
 - **Options:** Use the opts parameter for plugin configuration when available
 - **Keymaps:** Set using vim.keymap.set() with descriptive comments
+
+## Git Commit Guidelines
+
+- **Commit Messages:** Follow conventional commits format (e.g., `feat:`, `fix:`, `chore:`)
+- **Authorship:** Keep commit messages clean without any AI attribution
+- **Pull Requests:** Maintain PR descriptions without AI generation notes or attribution lines
