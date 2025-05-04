@@ -52,6 +52,7 @@ require("lazy").setup({
 	require("plugins.vim-sleuth").config(),
 	require("plugins.which-key").config(),
 	require("plugins.yanky").config(),
+	require("plugins.claude-code").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
