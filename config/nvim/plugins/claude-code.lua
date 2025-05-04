@@ -113,11 +113,9 @@ function claudeCode.config()
 			end, { desc = "Create a PR using Claude Code" })
 
 			function create_pr_with_claude(state)
-				local cmd = "claude"
-
 				-- Create PR instruction
 				local instruction_parts = {
-					"I'm going to create a pull request. Please follow these instructions:",
+					"I'm going to create a pull request. I will use gh command. Please follow these instructions:",
 					"- Create a PR in " .. state.language .. " language",
 					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
 				}
