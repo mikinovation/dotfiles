@@ -13,7 +13,6 @@ require("lazy").setup({
 	require("plugins.avante").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
-	require("plugins.copilot-chat").config(),
 	require("plugins.dropbar").config(),
 	require("plugins.git-conflict").config(),
 	require("plugins.gitsigns").config(),
