@@ -21,7 +21,7 @@ require("lazy").setup({
 	require("plugins.lualine").config(),
 	require("plugins.markdown-preview").config(),
 	require("plugins.mason").config(),
-	require("plugins.neo-tree").config(),
+	require("plugins.nvim-tree").config(),
 	require("plugins.neogit").config(),
 	require("plugins.neotest").config(),
 	require("plugins.none-ls").config(),
