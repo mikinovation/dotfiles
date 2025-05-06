@@ -6,9 +6,13 @@ function toggleterm.config()
 		version = "*",
 		config = function()
 			require("toggleterm").setup({
-				direction = "vertical",
+				direction = "float",
 				size = 80,
 				start_in_insert = true,
+				float_opts = {
+					border = "curved",
+					winblend = 0,
+				},
 			})
 
 			vim.keymap.set("n", "<leader>tt", ":ToggleTerm<CR>", { desc = "Toggle terminal" })
