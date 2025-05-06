@@ -17,7 +17,7 @@ function nvimTree.config()
 						local height = math.min(lines - 4, 30)
 						local left = math.floor((columns - width) / 2)
 						local top = math.floor((lines - height) / 2 - 1)
-						
+
 						return {
 							relative = "editor",
 							border = "rounded",
@@ -65,10 +65,15 @@ function nvimTree.config()
 		},
 		config = function(_, opts)
 			require("nvim-tree").setup(opts)
-			
+
 			-- Use nvim-tree for tree view and floating window
 			vim.keymap.set("n", "<leader>e", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
-			vim.keymap.set("n", "<leader>ef", "<cmd>lua require('nvim-tree.api').tree.toggle({path=nil, current_window=false, find_file=false, update_root=false, focus=true})<CR>", { desc = "Toggle floating file explorer" })
+			vim.keymap.set(
+				"n",
+				"<leader>ef",
+				"<cmd>lua require('nvim-tree.api').tree.toggle({path=nil, current_window=false, find_file=false, update_root=false, focus=true})<CR>",
+				{ desc = "Toggle floating file explorer" }
+			)
 			vim.keymap.set("n", "<leader>ec", "<cmd>NvimTreeFindFile<CR>", { desc = "Reveal current file in tree" })
 		end,
 	}
