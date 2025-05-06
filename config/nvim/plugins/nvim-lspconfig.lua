@@ -9,7 +9,7 @@ function nvimLspconfig.config()
 			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
-			-- LSPアタッチ時のキーバインド設定
+			-- Keybinding settings for LSP attach
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 				callback = function(event)
@@ -19,12 +19,12 @@ function nvimLspconfig.config()
 					-- Enable completion triggered by <c-x><c-o>
 					vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 
-					-- バッファローカルなキーマッピング
+					-- Buffer-local keymappings
 					local map = function(keys, func, desc)
 						vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 					end
 
-					-- よく使う機能のキーマッピング
+					-- Keymappings for commonly used features
 					map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
 					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
@@ -56,10 +56,10 @@ function nvimLspconfig.config()
 				end,
 			})
 
-			-- LSPの診断表示設定（サイン、floating windowなど）
+			-- LSP diagnostic display settings (signs, floating windows, etc.)
 			vim.diagnostic.config({
 				virtual_text = {
-					prefix = "●", -- アイコンをカスタマイズ
+					prefix = "●", -- Customize icon
 					severity = {
 						min = vim.diagnostic.severity.WARN,
 					},
@@ -76,18 +76,18 @@ function nvimLspconfig.config()
 				},
 			})
 
-			-- diagnosticサインのカスタマイズ
+			-- Customizing diagnostic signs
 			local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 			for type, icon in pairs(signs) do
 				local hl = "DiagnosticSign" .. type
 				vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 			end
 
-			-- capabilities - nvim-cmpとの連携
+			-- capabilities - integration with nvim-cmp
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
-			-- LSPサーバーの設定
+			-- LSP server configuration
 			local lspconfig = require("lspconfig")
 
 			-- Lua

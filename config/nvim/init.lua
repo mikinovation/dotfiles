@@ -1,6 +1,6 @@
 -- luacheck: globals vim
 
--- デフォルトだと相対パスになってしまうので、絶対パスに変更
+-- Change to absolute path instead of the default relative path
 package.path = package.path .. ";" .. vim.fn.expand("~/.config/nvim") .. "/?.lua"
 
 vim.g.mapleader = " "

@@ -132,7 +132,7 @@ function telescope.config()
 				},
 			})
 
-			-- カラースキームとの調和のためのハイライト設定
+			-- Highlight settings for harmonizing with colorscheme
 			vim.api.nvim_create_autocmd("ColorScheme", {
 				pattern = "*",
 				callback = function()
@@ -146,12 +146,12 @@ function telescope.config()
 				end,
 			})
 
-			-- 拡張機能の読み込み
+			-- Load extensions
 			for _, ext in ipairs(telescope_extensions) do
 				pcall(require("telescope").load_extension, ext)
 			end
 
-			-- プロジェクト内を検索するカスタム関数（.gitignoreを尊重）
+			-- Custom function to search within project (respects .gitignore)
 			local function project_files()
 				local opts = {}
 				local ok = pcall(require("telescope.builtin").git_files, opts)
@@ -160,13 +160,13 @@ function telescope.config()
 				end
 			end
 
-			-- カーソルの下の単語でGrep検索
+			-- Grep search for word under cursor
 			local function grep_current_word()
 				local word = vim.fn.expand("<cword>")
 				require("telescope.builtin").grep_string({ search = word })
 			end
 
-			-- ビジュアルモードで選択したテキストを検索
+			-- Search for text selected in visual mode
 			local function grep_visual_selection()
 				local function get_visual_selection()
 					local s_start = vim.fn.getpos("'<")
@@ -186,7 +186,7 @@ function telescope.config()
 				require("telescope.builtin").grep_string({ search = text })
 			end
 
-			-- ファイルの内容を検索して置換
+			-- Search and replace in files
 			local function search_and_replace()
 				local word = vim.fn.expand("<cword>")
 				local search_term = vim.fn.input("Search term: ", word)
@@ -199,13 +199,13 @@ function telescope.config()
 					return
 				end
 
-				-- Telescopeを使用して一致する箇所を表示
+				-- Display matching locations using Telescope
 				require("telescope.builtin").grep_string({
 					search = search_term,
 					prompt_title = "Search: " .. search_term .. " → Replace: " .. replace_term,
 					attach_mappings = function(_, map)
 						map("i", "<CR>", function(prompt_bufnr)
-							local confirmation = vim.fn.input("実行しますか? (y/n): ")
+							local confirmation = vim.fn.input("Execute? (y/n): ")
 							if confirmation:lower() == "y" then
 								vim.cmd("%s/" .. search_term .. "/" .. replace_term .. "/g")
 								require("telescope.actions").close(prompt_bufnr)
@@ -216,7 +216,7 @@ function telescope.config()
 				})
 			end
 
-			-- 基本的なTelescopeキーマッピング
+			-- Basic Telescope keymappings
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
 			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
@@ -230,7 +230,7 @@ function telescope.config()
 			vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
 			vim.keymap.set("n", "<leader>fy", ":Telescope yank_history<CR>", { desc = "[F]ind [Y]ank History" })
 
-			-- 追加のTelescopeキーマッピング
+			-- Additional Telescope keymappings
 			vim.keymap.set("n", "<leader>f/", function()
 				builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown({
 					winblend = 10,
@@ -249,10 +249,10 @@ function telescope.config()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "[F]ind [N]eovim Files" })
 
-			-- 拡張機能のキーマッピング
+			-- Extension keymappings
 			vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>", { desc = "[F]ile [B]rowser" })
 
-			-- 現在開いているファイルのディレクトリをfile_browserで開く
+			-- Open current file's directory in file_browser
 			vim.keymap.set("n", "<leader>fo", function()
 				require("telescope").extensions.file_browser.file_browser({
 					path = "%:p:h",
@@ -266,7 +266,7 @@ function telescope.config()
 				})
 			end, { desc = "[F]ile Browser - [O]pen Current Directory" })
 
-			-- ホームディレクトリをfile_browserで開く
+			-- Open home directory in file_browser
 			vim.keymap.set("n", "<leader>fH", function()
 				require("telescope").extensions.file_browser.file_browser({
 					path = "~",
@@ -286,12 +286,12 @@ function telescope.config()
 			vim.keymap.set("n", "<leader>fm", ":Telescope media_files<CR>", { desc = "[F]ind [M]edia Files" })
 			vim.keymap.set("n", "<leader>sf", ":Telescope frecency<CR>", { desc = "[S]earch [F]requent Files" })
 
-			-- Gitとの統合
+			-- Git integration
 			vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "[G]it [S]tatus" })
 			vim.keymap.set("n", "<leader>gc", builtin.git_commits, { desc = "[G]it [C]ommits" })
 			vim.keymap.set("n", "<leader>gb", builtin.git_branches, { desc = "[G]it [B]ranches" })
 
-			-- カスタム関数のキーマッピング
+			-- Custom function keymappings
 			vim.keymap.set("n", "<leader>pf", project_files, { desc = "[P]roject [F]iles" })
 			vim.keymap.set("n", "<leader>sw", grep_current_word, { desc = "[S]earch Current [W]ord" })
 			vim.keymap.set("v", "<leader>sw", grep_visual_selection, { desc = "[S]earch Selected [W]ord" })
