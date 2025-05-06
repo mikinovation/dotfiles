@@ -1,2 +1,6 @@
 result
 .env
+
+# Claude directory - ignore everything except commands
+/claude/*
+!/claude/commands/
