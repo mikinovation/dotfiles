@@ -7,6 +7,8 @@ function orgmode.config()
 		ft = { "org" },
 		config = function()
 			require("orgmode").setup({
+				win_split_mode = "float",
+				win_border = "rounded",
 				org_agenda_files = {
 					"~/projects/mikinovation/org/personal/**/*",
 					"~/projects/mikinovation/org/work/**/*",
