@@ -77,10 +77,18 @@ function claudeCode.config()
 						local result = table.concat(j:result(), "")
 						local branches = {}
 
-						-- Extract branch names from JSON response
-						-- Simple pattern matching to extract names
-						for name in result:gmatch('"name":"([^"]+)"') do
-							table.insert(branches, name)
+						-- Parse JSON response properly using vim.fn.json_decode
+						local ok, decoded = pcall(vim.fn.json_decode, result)
+						if ok and decoded then
+							for _, branch in ipairs(decoded) do
+								if branch.name then
+									table.insert(branches, branch.name)
+								end
+							end
+						else
+							vim.notify("Failed to parse branches JSON", vim.log.levels.WARN)
+							callback({ "main" }) -- Fallback to main branch only
+							return
 						end
 
 						-- Make sure main branch is at the top
