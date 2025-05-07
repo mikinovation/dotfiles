@@ -85,12 +85,25 @@ function claudeCode.config()
 
 						-- Make sure main branch is at the top
 						table.sort(branches, function(a, b)
+							-- If both are priority branches, maintain alphabetical order between them
+							if (a == "main" or a == "develop") and (b == "main" or b == "develop") then
+								return a < b
+							end
+							-- Main branch comes first
 							if a == "main" then
 								return true
 							end
 							if b == "main" then
 								return false
 							end
+							-- Develop branch comes second
+							if a == "develop" then
+								return true
+							end
+							if b == "develop" then
+								return false
+							end
+							-- Other branches in alphabetical order
 							return a < b
 						end)
 
@@ -207,7 +220,6 @@ function claudeCode.config()
 					end)
 				end)
 			end, { desc = "Create a PR using Claude Code" })
-
 
 			-- Add keymap
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
