@@ -132,7 +132,8 @@ function nvimLspconfig.config()
 					plugins = {
 						{
 							name = "@vue/typescript-plugin",
-							location = "/home/mikinovation/.local/share/fnm/node-versions/v22.13.0/installation/lib/node_modules/@vue/typescript-plugin",
+							location = "/home/mikinovation/.local/share/fnm/node-versions/v22.13.0/installation/lib/"
+								.. "node_modules/@vue/typescript-plugin",
 							languages = { "javascript", "typescript", "vue" },
 						},
 					},

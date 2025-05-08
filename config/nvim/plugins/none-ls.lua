@@ -31,8 +31,8 @@ function noneLs.config()
 							callback = function()
 								vim.lsp.buf.format({
 									bufnr = bufnr,
-									filter = function(client)
-										return client.name == "null-ls"
+									filter = function(lsp_client)
+										return lsp_client.name == "null-ls"
 									end,
 								})
 							end,
@@ -41,8 +41,8 @@ function noneLs.config()
 						vim.keymap.set("n", "<leader>nf", function()
 							vim.lsp.buf.format({
 								bufnr = bufnr,
-								filter = function(client)
-									return client.name == "null-ls"
+								filter = function(lsp_client)
+									return lsp_client.name == "null-ls"
 								end,
 							})
 						end, { buffer = bufnr, desc = "Format current buffer with none-ls" })
