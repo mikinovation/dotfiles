@@ -5,8 +5,8 @@ function noneLs.config()
 	return {
 		"nvimtools/none-ls.nvim",
 		dependencies = {
-			"nvimtools/none-ls-extras.nvim",
-			"nvim-lua/plenary.nvim",
+			require("plugins.none-ls-extras").config(),
+			require("plugins.plenary").config(),
 		},
 		config = function()
 			local null_ls = require("null-ls")

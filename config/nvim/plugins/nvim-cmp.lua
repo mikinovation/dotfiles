@@ -5,21 +5,14 @@ function nvimCmp.config()
 		"hrsh7th/nvim-cmp",
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
-			"hrsh7th/cmp-nvim-lsp",
-			"hrsh7th/cmp-buffer",
+			require("plugins.cmp-nvim-lsp").config(),
+			require("plugins.cmp-buffer").config(),
 			require("plugins.copilot-cmp").config(),
 			require("plugins.cmp-path").config(),
-			"hrsh7th/cmp-cmdline",
-			"saadparwaiz1/cmp_luasnip",
-			"onsails/lspkind.nvim",
-			{
-				"L3MON4D3/LuaSnip",
-				version = "v2.*",
-				build = "make install_jsregexp",
-				dependencies = {
-					"rafamadriz/friendly-snippets",
-				},
-			},
+			require("plugins.cmp-cmdline").config(),
+			require("plugins.cmp-luasnip").config(),
+			require("plugins.lspkind").config(),
+			require("plugins.luasnip").config(),
 		},
 		config = function()
 			local cmp = require("cmp")

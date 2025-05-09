@@ -7,19 +7,13 @@ function telescope.config()
 		branch = "0.1.x",
 		dependencies = {
 			require("plugins.plenary").config(),
-			{ -- If encountering errors, see telescope-fzf-native README for installation instructions
-				"nvim-telescope/telescope-fzf-native.nvim",
-				build = "make",
-				cond = function()
-					return vim.fn.executable("make") == 1
-				end,
-			},
-			{ "nvim-telescope/telescope-ui-select.nvim" },
-			{ "nvim-telescope/telescope-file-browser.nvim" },
-			{ "nvim-telescope/telescope-project.nvim" },
-			{ "cljoly/telescope-repo.nvim" },
-			{ "nvim-telescope/telescope-frecency.nvim", dependencies = { "kkharji/sqlite.lua" } },
-			{ "nvim-telescope/telescope-media-files.nvim" },
+			require("plugins.telescope-fzf-native").config(),
+			require("plugins.telescope-ui-select").config(),
+			require("plugins.telescope-file-browser").config(),
+			require("plugins.telescope-project").config(),
+			require("plugins.telescope-repo").config(),
+			require("plugins.telescope-frecency").config(),
+			require("plugins.telescope-media-files").config(),
 			require("plugins.nvim-web-devicons").config(),
 		},
 		config = function()

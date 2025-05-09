@@ -4,9 +4,9 @@ function octo.config()
 	return {
 		"pwntester/octo.nvim",
 		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-			"nvim-tree/nvim-web-devicons",
+			require("plugins.plenary").config(),
+			require("plugins.telescope").config(),
+			require("plugins.nvim-web-devicons").config(),
 		},
 		config = function()
 			require("octo").setup({})

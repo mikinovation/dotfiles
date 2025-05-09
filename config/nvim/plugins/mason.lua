@@ -4,8 +4,8 @@ function mason.config()
 	return {
 		"williamboman/mason.nvim",
 		dependencies = {
-			require("plugins/mason-lspconfig").config(),
-			require("plugins/nvim-lspconfig").config(),
+			require("plugins.mason-lspconfig").config(),
+			require("plugins.nvim-lspconfig").config(),
 		},
 		config = function()
 			require("mason").setup({
