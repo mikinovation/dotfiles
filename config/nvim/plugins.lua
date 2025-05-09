@@ -13,7 +13,6 @@ vim.opt.rtp:prepend(lazypath)
 require("plugins.clipboard").config()
 
 require("lazy").setup({
-	require("plugins.avante").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
 	require("plugins.dropbar").config(),
