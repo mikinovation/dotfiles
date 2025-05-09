@@ -61,74 +61,13 @@ function claudeCode.config()
 				ticket_required = false,
 			}
 
-			-- Function to get GitHub branches
-			local function github_branches(callback)
-				local job = require("plenary.job")
-
-				job:new({
-					command = "gh",
-					args = { "api", "repos/{owner}/{repo}/branches" },
-					on_exit = function(j, return_val)
-						if return_val ~= 0 then
-							vim.notify("Failed to get branches", vim.log.levels.ERROR)
-							callback({ "main" }) -- Fallback to main branch only
-							return
-						end
-
-						local result = table.concat(j:result(), "")
-						local branches = {}
-
-						-- Parse JSON response properly using vim.fn.json_decode
-						local ok, decoded = pcall(vim.fn.json_decode, result)
-						if ok and decoded then
-							for _, branch in ipairs(decoded) do
-								if branch.name then
-									table.insert(branches, branch.name)
-								end
-							end
-						else
-							vim.notify("Failed to parse branches JSON", vim.log.levels.WARN)
-							callback({ "main" }) -- Fallback to main branch only
-							return
-						end
-
-						-- Make sure main branch is at the top
-						table.sort(branches, function(a, b)
-							-- If both are priority branches, maintain alphabetical order between them
-							if (a == "main" or a == "develop") and (b == "main" or b == "develop") then
-								return a < b
-							end
-							-- Main branch comes first
-							if a == "main" then
-								return true
-							end
-							if b == "main" then
-								return false
-							end
-							-- Develop branch comes second
-							if a == "develop" then
-								return true
-							end
-							if b == "develop" then
-								return false
-							end
-							-- Other branches in alphabetical order
-							return a < b
-						end)
-
-						callback(branches)
-					end,
-				}):start()
-			end
-
-			-- Helper function for creating PR with Claude
-			local function create_pr_with_claude(state)
+			-- PR creation helper function (defined before it's used)
+			local create_pr_with_claude = function(state)
 				-- Create PR instruction
 				local instruction_parts = {
 					"I'm going to create a pull request. I will use gh command. Please follow these instructions:",
 					"- Create a PR in " .. state.language .. " language",
 					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
-					"- Target branch should be " .. state.target_branch,
 				}
 
 				-- Add ticket information if available
@@ -168,7 +107,6 @@ function claudeCode.config()
 					language = nil,
 					draft_mode = nil,
 					ticket = nil,
-					target_branch = nil,
 				}
 
 				-- Language selection
@@ -195,37 +133,22 @@ function claudeCode.config()
 						end
 						state.draft_mode = draft_mode
 
-						-- Target branch selection
-						github_branches(function(branches)
-							vim.ui.select(branches, {
-								prompt = "Select target branch:",
-								format_item = function(item)
-									return item
-								end,
-							}, function(target_branch)
-								if not target_branch then
-									return
-								end
-								state.target_branch = target_branch
-
-								-- Ticket link input (optional)
-								if pr_config.ticket_required then
-									vim.ui.input({
-										prompt = "Enter ticket link:",
-									}, function(ticket)
-										state.ticket = ticket or ""
-										create_pr_with_claude(state)
-									end)
-								else
-									vim.ui.input({
-										prompt = "Enter ticket link (optional):",
-									}, function(ticket)
-										state.ticket = ticket or ""
-										create_pr_with_claude(state)
-									end)
-								end
+						-- Ticket link input (optional)
+						if pr_config.ticket_required then
+							vim.ui.input({
+								prompt = "Enter ticket link:",
+							}, function(ticket)
+								state.ticket = ticket or ""
+								create_pr_with_claude(state)
 							end)
-						end)
+						else
+							vim.ui.input({
+								prompt = "Enter ticket link (optional):",
+							}, function(ticket)
+								state.ticket = ticket or ""
+								create_pr_with_claude(state)
+							end)
+						end
 					end)
 				end)
 			end, { desc = "Create a PR using Claude Code" })
