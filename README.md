@@ -54,6 +54,32 @@ sudo luarocks install luacheck
 npm install -g typescript typescript-language-server @tailwindcss/language-server 
 ```
 
+### win32yank (for WSL)
+
+For clipboard integration between WSL and Windows, install win32yank:
+
+```bash
+# Create bin directory if it doesn't exist
+mkdir -p ~/.local/bin
+
+# Download win32yank
+curl -sLo /tmp/win32yank.zip https://github.com/equalsraf/win32yank/releases/download/v0.0.4/win32yank-x64.zip
+
+# Extract executable
+unzip -p /tmp/win32yank.zip win32yank.exe > ~/.local/bin/win32yank.exe
+
+# Make executable
+chmod +x ~/.local/bin/win32yank.exe
+
+# Add to PATH if not already included
+echo 'export PATH=$PATH:~/.local/bin' >> ~/.zshrc
+
+# Clean up
+rm /tmp/win32yank.zip
+```
+
+Make sure `~/.local/bin` is in your PATH to use clipboard features in Neovim and ZSH.
+
 ### luaformatter
 
 formatter for lua
