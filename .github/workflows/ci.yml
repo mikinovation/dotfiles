@@ -24,8 +24,6 @@ jobs:
       - name: Install StyLua
         uses: JohnnyMorganz/stylua-action@v3
         with:
-          version: latest
+          version: v2.1.0
           token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Run StyLua Check
-        run: stylua --check .
+          args: --check .
