@@ -50,6 +50,7 @@ require("lazy").setup({
 	require("plugins.vim-argwrap").config(),
 	require("plugins.vim-bundler").config(),
 	require("plugins.vim-fugitive").config(),
+	require("plugins.vim-illuminate").config(),
 	require("plugins.vim-matchup").config(),
 	require("plugins.vim-rails").config(),
 	require("plugins.vim-sleuth").config(),
