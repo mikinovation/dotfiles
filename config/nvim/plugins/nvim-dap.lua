@@ -4,13 +4,10 @@ function nvimDap.config()
 	return {
 		"mfussenegger/nvim-dap",
 		dependencies = {
-			"theHamsta/nvim-dap-virtual-text",
-			"rcarriga/nvim-dap-ui",
-			"mxsdev/nvim-dap-vscode-js",
-			{
-				"microsoft/vscode-js-debug",
-				build = "npm isntall --legacy-peer-deps && npm run compile",
-			},
+			require("plugins.nvim-dap-virtual-text").config(),
+			require("plugins.nvim-dap-ui").config(),
+			require("plugins.nvim-dap-vscode-js").config(),
+			require("plugins.vscode-js-debug").config(),
 		},
 		lazy = true,
 		config = function()

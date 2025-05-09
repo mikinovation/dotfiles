@@ -5,8 +5,8 @@ function nvimLspconfig.config()
 	return {
 		"neovim/nvim-lspconfig",
 		dependencies = {
-			{ "j-hui/fidget.nvim", opts = {} },
-			"hrsh7th/cmp-nvim-lsp",
+			require("plugins.fidget").config(),
+			require("plugins.cmp-nvim-lsp").config(),
 		},
 		config = function()
 			-- Keybinding settings for LSP attach

@@ -5,8 +5,8 @@ function neogit.config()
 		"NeogitOrg/neogit",
 		dependencies = {
 			require("plugins.plenary").config(),
-			"sindrets/diffview.nvim",
-			"nvim-telescope/telescope.nvim",
+			require("plugins.diffview").config(),
+			require("plugins.telescope").config(),
 		},
 		config = true,
 	}

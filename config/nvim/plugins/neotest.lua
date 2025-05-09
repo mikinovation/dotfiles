@@ -4,12 +4,12 @@ function neotest.config()
 	return {
 		"nvim-neotest/neotest",
 		dependencies = {
-			"nvim-neotest/nvim-nio",
+			require("plugins.nvim-nio").config(),
 			require("plugins.plenary").config(),
-			"antoinemadec/FixCursorHold.nvim",
-			"nvim-treesitter/nvim-treesitter",
-			"rouge8/neotest-rust",
-			"marilari88/neotest-vitest",
+			require("plugins.fixcursorhold").config(),
+			require("plugins.nvim-treesitter").config(),
+			require("plugins.neotest-rust").config(),
+			require("plugins.neotest-vitest").config(),
 		},
 		config = function()
 			require("neotest").setup({
