@@ -22,5 +22,8 @@ if [ -d "$FNM_PATH" ]; then
 fi
 eval "$(fnm env --use-on-cd --shell zsh)"
 
+# Load WSL specific configurations if on WSL
+[[ -f ~/dotfiles/config/zsh/plugins/wsl.zsh ]] && source ~/dotfiles/config/zsh/plugins/wsl.zsh
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

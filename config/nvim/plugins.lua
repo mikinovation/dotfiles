@@ -9,6 +9,9 @@ end ---@diagnostic disable-next-line: undefined-field
 
 vim.opt.rtp:prepend(lazypath)
 
+-- Load clipboard configuration early
+require("plugins.clipboard").config()
+
 require("lazy").setup({
 	require("plugins.avante").config(),
 	require("plugins.comment").config(),
