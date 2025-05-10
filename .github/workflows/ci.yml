@@ -22,7 +22,7 @@ jobs:
         run: luacheck .
 
       - name: Install StyLua
-        uses: JohnnyMorganz/stylua-action@v3
+        uses: JohnnyMorganz/stylua-action@v4
         with:
           version: v2.1.0
           token: ${{ secrets.GITHUB_TOKEN }}
