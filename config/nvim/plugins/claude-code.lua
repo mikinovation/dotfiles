@@ -75,11 +75,39 @@ function claudeCode.config()
 					table.insert(instruction_parts, "- With ticket reference: " .. state.ticket)
 				end
 
-				-- Check for PR template
-				table.insert(
-					instruction_parts,
-					"- Please check if .github/PULL_REQUEST_TEMPLATE.md exists and follow that template format if found"
-				)
+				-- Check for PR template existence
+				local function check_template_exists()
+					local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+					if not handle then
+						return false
+					end
+					local git_root = handle:read("*a"):gsub("%s+$", "")
+					handle:close()
+					if git_root == "" then
+						return false
+					end
+
+					local template_path = git_root .. "/.github/PULL_REQUEST_TEMPLATE.md"
+					local file = io.open(template_path, "r")
+					if file then
+						file:close()
+						return true
+					end
+					return false
+				end
+
+				local template_exists = check_template_exists()
+				if template_exists then
+					table.insert(
+						instruction_parts,
+						"- Please follow the template format in .github/PULL_REQUEST_TEMPLATE.md"
+					)
+				else
+					table.insert(
+						instruction_parts,
+						"- Please check if .github/PULL_REQUEST_TEMPLATE.md exists and follow that template format if found"
+					)
+				end
 
 				-- Combine the instructions into a single string
 				local instruction_text = table.concat(instruction_parts, "\n")
@@ -98,7 +126,7 @@ function claudeCode.config()
 							vim.api.nvim_chan_send(chan_id, instruction_text)
 						end
 					end
-				end, 2000) -- Reduced delay to 1 second
+				end, 1000) -- Reduced delay to 1 second
 			end
 
 			-- Custom command for PR creation
