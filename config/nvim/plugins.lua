@@ -33,6 +33,7 @@ require("lazy").setup({
 	require("plugins.nvim-colorizer").config(),
 	require("plugins.nvim-context-vt").config(),
 	require("plugins.nvim-dap").config(),
+	require("plugins.nvim-dbee").config(),
 	require("plugins.nvim-notify").config(),
 	require("plugins.nvim-treesitter-context").config(),
 	require("plugins.nvim-treesitter").config(),
