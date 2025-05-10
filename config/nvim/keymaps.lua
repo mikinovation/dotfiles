@@ -12,3 +12,8 @@ keymap("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 keymap("n", "<leader>rm", ":%s/\r//g<CR>", { desc = "Remove ^M" })
 
 keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
+
+-- Lazydocker integration
+keymap("n", "<leader>ld", function()
+	require("tools.lazydocker").toggle_lazydocker()
+end, { desc = "Toggle lazydocker" })
