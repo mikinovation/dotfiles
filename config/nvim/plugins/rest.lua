@@ -11,9 +11,7 @@ function rest.config()
 			end,
 		},
 		config = function()
-			vim.keymap.set("n", "<leader>rr", "<Plug>RestNvim", { desc = "Run HTTP request under cursor" })
-			vim.keymap.set("n", "<leader>rp", "<Plug>RestNvimPreview", { desc = "Preview HTTP request under cursor" })
-			vim.keymap.set("n", "<leader>rl", "<Plug>RestNvimLast", { desc = "Re-run last HTTP request" })
+			vim.keymap.set("n", "<leader>rr", "<cmd>Rest run<CR>", { desc = "Select REST environment file" })
 		end,
 	}
 end
