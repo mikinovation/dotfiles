@@ -17,6 +17,7 @@ require("lazy").setup({
 	require("plugins.copilot").config(),
 	require("plugins.dropbar").config(),
 	require("plugins.git-conflict").config(),
+	require("plugins.gitlinker").config(),
 	require("plugins.gitsigns").config(),
 	require("plugins.indent-blankline").config(),
 	require("plugins.lazydev").config(),
