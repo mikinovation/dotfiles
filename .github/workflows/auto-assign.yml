@@ -1,30 +1,22 @@
-name: Auto Assign
+name: Auto assign
 
 on:
-  issues:
-    types: [opened]
   pull_request:
-    types: [opened]
+    types: ["opened"]
+
+permissions:
+  pull-requests: write
+  repository-projects: read
 
 jobs:
-  auto-assign:
+  assign:
+    if: ${{ github.event.pull_request.user.login != 'dependabot[bot]' || toJSON(github.event.pull_request.assignees) == '[]' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 1
     steps:
-      - name: Auto-assign to creator
-        run: |
-          ISSUE_NUMBER=$(jq --raw-output .issue.number "$GITHUB_EVENT_PATH" 2>/dev/null || jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
-          REPO_OWNER=$(jq --raw-output .repository.owner.login "$GITHUB_EVENT_PATH")
-          REPO_NAME=$(jq --raw-output .repository.name "$GITHUB_EVENT_PATH")
-          CREATOR=$(jq --raw-output .issue.user.login "$GITHUB_EVENT_PATH" 2>/dev/null || jq --raw-output .pull_request.user.login "$GITHUB_EVENT_PATH")
-          
-          if [ "$CREATOR" = "mikinovation" ]; then
-            curl -s -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-              -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/$REPO_OWNER/$REPO_NAME/issues/$ISSUE_NUMBER/assignees" \
-              -d '{"assignees":["mikinovation"]}'
-            
-            echo "Successfully assigned mikinovation to #$ISSUE_NUMBER"
-          else
-            echo "Creator is not mikinovation, skipping auto-assignment"
-          fi
+      - run: gh pr edit "$PULL_NUMBER" --repo "$REPOSITORY" --add-assignee "$CREATOR"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PULL_NUMBER: ${{ github.event.pull_request.number }}
+          CREATOR: ${{ github.event.pull_request.user.login }}
