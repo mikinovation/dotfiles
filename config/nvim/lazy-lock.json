@@ -51,6 +51,7 @@
   "nvim-ts-context-commentstring": { "branch": "main", "commit": "1b212c2eee76d787bbea6aa5e92a2b534e7b4f8f" },
   "nvim_context_vt": { "branch": "master", "commit": "10e13ec47a9bb341192d893e58cf91c61cde4935" },
   "octo.nvim": { "branch": "master", "commit": "974d2247b64535bedbbdbb7bec29dfa4e2395037" },
+  "open-browser.vim": { "branch": "master", "commit": "7d4c1d8198e889d513a030b5a83faa07606bac27" },
   "orgmode": { "branch": "master", "commit": "15d66ead1285d99f8a21c4ef4874ac62e9320fe6" },
   "package-info.nvim": { "branch": "master", "commit": "4f1b8287dde221153ec9f2acd46e8237d2d0881e" },
   "pathtool.nvim": { "branch": "main", "commit": "dfed489d1e6a628ca73ceafbdfa30e5d55ca481b" },
