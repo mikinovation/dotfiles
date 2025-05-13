@@ -42,13 +42,13 @@ link_zsh_config() {
   ln -snfv "$DOTFILES_DIR"/config/zsh/.p10k.zsh "$HOME/.p10k.zsh"
 }
 
-link_claude_config() {
+copy_claude_config() {
   if [ ! -d "$CLAUDE_DIR/commands" ]; then
     mkdir -p "$CLAUDE_DIR/commands"
   fi
 
   for file in "$DOTFILES_DIR"/claude/commands/*; do
-    ln -snfv "$file" "$CLAUDE_DIR/commands/$(basename "$file")"
+    cp -fv "$file" "$CLAUDE_DIR/commands/$(basename "$file")"
   done
 }
 
@@ -72,8 +72,8 @@ main() {
   link_zsh_config
   echo "Linking zsh config done."
 
-  link_claude_config
-  echo "Linking claude commands done."
+  copy_claude_config
+  echo "Copying claude commands done."
 
   echo "Setup dotfiles done."
 }
