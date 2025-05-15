@@ -109,27 +109,31 @@ function claudeCode.config()
 					)
 				end
 
-				-- Combine the instructions into a single string
 				local instruction_text = table.concat(instruction_parts, "\n")
+				local claude_code_module = require("claude-code")
+				local bufnr = claude_code_module.claude_code.bufnr
+				local window_exists = false
 
-				-- Launch Claude Code
-				vim.cmd("ClaudeCode")
+				if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+					local win_ids = vim.fn.win_findbuf(bufnr)
+					window_exists = #win_ids > 0
+				end
 
-				-- Add delay before sending instructions (wait for window to load)
+				if not window_exists then
+					vim.cmd("ClaudeCode")
+				end
+
 				vim.defer_fn(function()
-					-- Get terminal buffer job ID
-					local bufnr = require("claude-code").claude_code.bufnr
-					if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
-						local chan_id = vim.api.nvim_buf_get_var(bufnr, "terminal_job_id")
+					local updated_bufnr = claude_code_module.claude_code.bufnr
+					if updated_bufnr and vim.api.nvim_buf_is_valid(updated_bufnr) then
+						local chan_id = vim.api.nvim_buf_get_var(updated_bufnr, "terminal_job_id")
 						if chan_id then
-							-- Send text to terminal
 							vim.api.nvim_chan_send(chan_id, instruction_text)
 						end
 					end
-				end, 1000) -- Reduced delay to 1 second
+				end, window_exists and 100 or 1000) -- Shorter delay if window already exists
 			end
 
-			-- Custom command for PR creation
 			vim.api.nvim_create_user_command("ClaudeCodeCreatePR", function()
 				local state = {
 					language = nil,
@@ -181,7 +185,6 @@ function claudeCode.config()
 				end)
 			end, { desc = "Create a PR using Claude Code" })
 
-			-- Add keymap
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
 		end,
 	}
