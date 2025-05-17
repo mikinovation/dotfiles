@@ -61,12 +61,8 @@ function claudeCode.config()
 					return false
 				end
 
-				local file = io.open(git_root .. template_path, "r")
-				if file then
-					file:close()
-					return true
-				end
-				return false
+				local stat = vim.loop.fs_stat(git_root .. template_path)
+				return stat ~= nil
 			end
 
 			local function send_to_claude(instruction_text)
