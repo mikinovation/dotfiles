@@ -54,7 +54,7 @@ function claudeCode.config()
 				},
 			})
 
-			-- Custom configuration for PR creation and commit
+			-- Custom configuration for PR creation, commit, and issue
 			local claude_config = {
 				languages = { "ja", "en" },
 				draft_options = { "draft", "open" },
@@ -65,10 +65,77 @@ function claudeCode.config()
 			local commit_with_claude = function(state)
 				-- Create commit instruction
 				local instruction_parts = {
-					"I'm going to create a commit message. Please follow these instructions:",
-					"- Create a commit message in " .. state.language .. " language",
+					"I'm going to create a git commit. Please follow these instructions:",
+					"- Create a commit in " .. state.language .. " language",
 					"- Follow conventional commits format (e.g., `feat:`, `fix:`, `chore:`)",
+					"- Use git status to see what files have changed",
+					"- Use git diff to understand the changes",
+					"- Create the commit using git commit -m with an appropriate message",
+					"- Do NOT add any AI attribution lines to the commit message",
 				}
+
+				local instruction_text = table.concat(instruction_parts, "\n")
+				local claude_code_module = require("claude-code")
+				local bufnr = claude_code_module.claude_code.bufnr
+				local window_exists = false
+
+				if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
+					local win_ids = vim.fn.win_findbuf(bufnr)
+					window_exists = #win_ids > 0
+				end
+
+				if not window_exists then
+					vim.cmd("ClaudeCode")
+				end
+
+				vim.defer_fn(function()
+					local updated_bufnr = claude_code_module.claude_code.bufnr
+					if updated_bufnr and vim.api.nvim_buf_is_valid(updated_bufnr) then
+						local chan_id = vim.api.nvim_buf_get_var(updated_bufnr, "terminal_job_id")
+						if chan_id then
+							vim.api.nvim_chan_send(chan_id, instruction_text)
+						end
+					end
+				end, window_exists and 100 or 1000) -- Shorter delay if window already exists
+			end
+
+			-- Issue creation helper function
+			local create_issue_with_claude = function(state)
+				-- Create Issue instruction
+				local instruction_parts = {
+					"I'm going to create a GitHub issue. I will use gh command. Please follow these instructions:",
+					"- Create an issue in " .. state.language .. " language",
+					"- Use gh issue create command to create the issue",
+				}
+
+				-- Check for issue template existence
+				local function check_template_exists()
+					local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+					if not handle then
+						return false
+					end
+					local git_root = handle:read("*a"):gsub("%s+$", "")
+					handle:close()
+					if git_root == "" then
+						return false
+					end
+
+					local template_path = git_root .. "/.github/ISSUE_TEMPLATE"
+					local file = io.open(template_path, "r")
+					if file then
+						file:close()
+						return true
+					end
+					return false
+				end
+
+				local template_exists = check_template_exists()
+				if template_exists then
+					table.insert(
+						instruction_parts,
+						"- Please check if there are templates in .github/ISSUE_TEMPLATE and use the appropriate template"
+					)
+				end
 
 				local instruction_text = table.concat(instruction_parts, "\n")
 				local claude_code_module = require("claude-code")
@@ -238,14 +305,36 @@ function claudeCode.config()
 					state.language = language
 					commit_with_claude(state)
 				end)
-			end, { desc = "Create a commit message using Claude Code" })
+			end, { desc = "Create a commit using Claude Code" })
+
+			-- Create :ClaudeCodeIssue command
+			vim.api.nvim_create_user_command("ClaudeCodeIssue", function()
+				local state = {
+					language = nil,
+				}
+
+				-- Language selection
+				vim.ui.select(claude_config.languages, {
+					prompt = "Select issue language:",
+					format_item = function(item)
+						return item
+					end,
+				}, function(language)
+					if not language then
+						return
+					end
+					state.language = language
+					create_issue_with_claude(state)
+				end)
+			end, { desc = "Create a GitHub issue using Claude Code" })
 
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
+			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
 			vim.keymap.set(
 				"n",
-				"<leader>cM",
-				":ClaudeCodeCommit<CR>",
-				{ desc = "Create a commit message using Claude Code" }
+				"<leader>cI",
+				":ClaudeCodeIssue<CR>",
+				{ desc = "Create a GitHub issue using Claude Code" }
 			)
 		end,
 	}
