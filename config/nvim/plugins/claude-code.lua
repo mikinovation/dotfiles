@@ -65,6 +65,25 @@ function claudeCode.config()
 				return stat ~= nil
 			end
 
+			local function get_remote_branches()
+				local handle = io.popen("git branch -r 2>/dev/null | grep -v '\\->' | sed 's/^[[:space:]]*//'")
+				if not handle then
+					return {}
+				end
+
+				local branches = {}
+				for line in handle:lines() do
+					table.insert(branches, line)
+				end
+				handle:close()
+
+				if #branches == 0 then
+					table.insert(branches, "origin/main")
+				end
+
+				return branches
+			end
+
 			local function send_to_claude(instruction_text)
 				local claude_code_module = require("claude-code")
 				local bufnr = claude_code_module.claude_code.bufnr
@@ -127,6 +146,10 @@ function claudeCode.config()
 					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
 				}
 
+				if state.base_branch and state.base_branch ~= "" then
+					table.insert(parts, "- Use '" .. state.base_branch .. "' as the base branch for the PR")
+				end
+
 				if state.ticket and state.ticket ~= "" then
 					table.insert(parts, "- With ticket reference: " .. state.ticket)
 				end
@@ -169,6 +192,23 @@ function claudeCode.config()
 				end)
 			end
 
+			local function select_base_branch(state, callback)
+				local branches = get_remote_branches()
+				vim.ui.select(branches, {
+					prompt = "Select base branch for PR:",
+					format_item = function(item)
+						return item
+					end,
+				}, function(base_branch)
+					if not base_branch then
+						callback(state)
+						return
+					end
+					state.base_branch = base_branch
+					callback(state)
+				end)
+			end
+
 			vim.api.nvim_create_user_command("ClaudeCodeCreatePR", function()
 				select_language(function(state)
 					vim.ui.select(config.draft_options, {
@@ -182,11 +222,14 @@ function claudeCode.config()
 						end
 						state.draft_mode = draft_mode
 
-						vim.ui.input({
-							prompt = config.ticket_required and "Enter ticket link:" or "Enter ticket link (optional):",
-						}, function(ticket)
-							state.ticket = ticket or ""
-							run_pr_with_claude(state)
+						select_base_branch(state, function(updated_state)
+							vim.ui.input({
+								prompt = config.ticket_required and "Enter ticket link:"
+									or "Enter ticket link (optional):",
+							}, function(ticket)
+								updated_state.ticket = ticket or ""
+								run_pr_with_claude(updated_state)
+							end)
 						end)
 					end)
 				end)
