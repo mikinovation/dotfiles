@@ -144,6 +144,7 @@ function claudeCode.config()
 					"I'm going to create a pull request. I will use gh command. Please follow these instructions:",
 					"- Create a PR in " .. state.language .. " language",
 					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
+					"- Assign myself to the PR",
 				}
 
 				if state.base_branch and state.base_branch ~= "" then
