@@ -75,22 +75,45 @@ function claudeCode.config()
 				current_branch_handle:close()
 
 				-- Get local branches
-				local handle = io.popen("git branch 2>/dev/null | sed 's/^[[:space:]]*//' | sed 's/^\\* //'")
+				local handle = io.popen(
+				"git branch 2>/dev/null | sed 's/^[[:space:]]*//' | sed 's/^\\* //'")
 				if not handle then
 					return {}
 				end
 
 				local branches = {}
+				local priority_branches = {
+					main = false,
+					master = false,
+					develop = false
+				}
+
 				for line in handle:lines() do
 					-- Exclude current branch from list
 					if line ~= current_branch then
-						table.insert(branches, line)
+						-- Check if it's a priority branch
+						if line == "main" or line == "master" or line == "develop" then
+							priority_branches[line] = true
+						else
+							table.insert(branches, line)
+						end
 					end
 				end
 				handle:close()
 
+				if priority_branches["develop"] then
+					table.insert(branches, 1, "develop")
+				end
+				if priority_branches["master"] then
+					table.insert(branches, 1, "master")
+				end
+				if priority_branches["main"] then
+					table.insert(branches, 1, "main")
+				end
+
 				if #branches == 0 then
-					vim.notify("Error: No branches found. Please create another branch.", vim.log.levels.ERROR)
+					vim.notify("Error: No branches found. Please create another branch.",
+						vim.log.levels.ERROR)
 					return {}
 				end
 
@@ -161,7 +184,8 @@ function claudeCode.config()
 				}
 
 				if state.base_branch and state.base_branch ~= "" then
-					table.insert(parts, "- Use '" .. state.base_branch .. "' as the base branch for the PR")
+					table.insert(parts,
+						"- Use '" .. state.base_branch .. "' as the base branch for the PR")
 				end
 
 				if state.ticket and state.ticket ~= "" then
@@ -169,7 +193,8 @@ function claudeCode.config()
 				end
 
 				if check_template_exists("/.github/PULL_REQUEST_TEMPLATE.md") then
-					table.insert(parts, "- Please follow the template format in .github/PULL_REQUEST_TEMPLATE.md")
+					table.insert(parts,
+						"- Please follow the template format in .github/PULL_REQUEST_TEMPLATE.md")
 				else
 					table.insert(
 						parts,
@@ -239,7 +264,7 @@ function claudeCode.config()
 						select_base_branch(state, function(updated_state)
 							vim.ui.input({
 								prompt = config.ticket_required and "Enter ticket link:"
-									or "Enter ticket link (optional):",
+								    or "Enter ticket link (optional):",
 							}, function(ticket)
 								updated_state.ticket = ticket or ""
 								run_pr_with_claude(updated_state)
@@ -258,8 +283,10 @@ function claudeCode.config()
 			end, { desc = "Create a GitHub issue using Claude Code" })
 
 			-- Keymap
-			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
-			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
+			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>",
+				{ desc = "Create a PR using Claude Code" })
+			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>",
+				{ desc = "Create a commit using Claude Code" })
 			vim.keymap.set(
 				"n",
 				"<leader>cI",
