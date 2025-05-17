@@ -65,20 +65,33 @@ function claudeCode.config()
 				return stat ~= nil
 			end
 
-			local function get_remote_branches()
-				local handle = io.popen("git branch -r 2>/dev/null | grep -v '\\->' | sed 's/^[[:space:]]*//'")
+			local function get_local_branches()
+				-- Get current branch name
+				local current_branch_handle = io.popen("git rev-parse --abbrev-ref HEAD 2>/dev/null")
+				if not current_branch_handle then
+					return {}
+				end
+				local current_branch = current_branch_handle:read("*l")
+				current_branch_handle:close()
+
+				-- Get local branches
+				local handle = io.popen("git branch 2>/dev/null | sed 's/^[[:space:]]*//' | sed 's/^\\* //'")
 				if not handle then
 					return {}
 				end
 
 				local branches = {}
 				for line in handle:lines() do
-					table.insert(branches, line)
+					-- Exclude current branch from list
+					if line ~= current_branch then
+						table.insert(branches, line)
+					end
 				end
 				handle:close()
 
 				if #branches == 0 then
-					table.insert(branches, "origin/main")
+					vim.notify("Error: No branches found. Please create another branch.", vim.log.levels.ERROR)
+					return {}
 				end
 
 				return branches
@@ -194,7 +207,7 @@ function claudeCode.config()
 			end
 
 			local function select_base_branch(state, callback)
-				local branches = get_remote_branches()
+				local branches = get_local_branches()
 				vim.ui.select(branches, {
 					prompt = "Select base branch for PR:",
 					format_item = function(item)
