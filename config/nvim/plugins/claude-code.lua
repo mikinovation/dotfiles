@@ -328,10 +328,8 @@ function claudeCode.config()
 				end)
 			end, { desc = "Create a GitHub issue using Claude Code" })
 
-			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>",
-				{ desc = "Create a PR using Claude Code" })
-			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>",
-				{ desc = "Create a commit using Claude Code" })
+			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
+			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
 			vim.keymap.set(
 				"n",
 				"<leader>cI",
