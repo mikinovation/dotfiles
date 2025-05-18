@@ -65,59 +65,6 @@ function claudeCode.config()
 				return stat ~= nil
 			end
 
-			local function get_local_branches()
-				-- Get current branch name
-				local current_branch_handle = io.popen("git rev-parse --abbrev-ref HEAD 2>/dev/null")
-				if not current_branch_handle then
-					return {}
-				end
-				local current_branch = current_branch_handle:read("*l")
-				current_branch_handle:close()
-
-				-- Get local branches
-				local handle = io.popen("git branch 2>/dev/null | sed 's/^[[:space:]]*//' | sed 's/^\\* //'")
-				if not handle then
-					return {}
-				end
-
-				local branches = {}
-				local priority_branches = {
-					main = false,
-					master = false,
-					develop = false,
-				}
-
-				for line in handle:lines() do
-					-- Exclude current branch from list
-					if line ~= current_branch then
-						-- Check if it's a priority branch
-						if line == "main" or line == "master" or line == "develop" then
-							priority_branches[line] = true
-						else
-							table.insert(branches, line)
-						end
-					end
-				end
-				handle:close()
-
-				if priority_branches["develop"] then
-					table.insert(branches, 1, "develop")
-				end
-				if priority_branches["master"] then
-					table.insert(branches, 1, "master")
-				end
-				if priority_branches["main"] then
-					table.insert(branches, 1, "main")
-				end
-
-				if #branches == 0 then
-					vim.notify("Error: No branches found. Please create another branch.", vim.log.levels.ERROR)
-					return {}
-				end
-
-				return branches
-			end
-
 			local function send_to_claude(instruction_text)
 				local claude_code_module = require("claude-code")
 				local bufnr = claude_code_module.claude_code.bufnr
@@ -227,8 +174,31 @@ function claudeCode.config()
 				end)
 			end
 
+			local function get_remote_branches()
+				-- Get remote branches from origin
+				local handle = io.popen(
+					"git branch -r 2>/dev/null | grep -v 'HEAD' | sed 's/^[[:space:]]*//' | sed 's|^origin/||'"
+				)
+				if not handle then
+					return {}
+				end
+
+				local branches = {}
+				for line in handle:lines() do
+					table.insert(branches, line)
+				end
+				handle:close()
+
+				if #branches == 0 then
+					vim.notify("Error: No remote branches found.", vim.log.levels.ERROR)
+					return {}
+				end
+
+				return branches
+			end
+
 			local function select_base_branch(state, callback)
-				local branches = get_local_branches()
+				local branches = get_remote_branches()
 				vim.ui.select(branches, {
 					prompt = "Select base branch for PR:",
 					format_item = function(item)
