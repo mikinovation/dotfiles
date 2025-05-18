@@ -130,6 +130,7 @@ function claudeCode.config()
 
 				if state.base_branch and state.base_branch ~= "" then
 					table.insert(parts, "- Use '" .. state.base_branch .. "' as the base branch for the PR")
+					table.insert(parts, "- Before pushing, rebase from origin/" .. state.base_branch)
 				end
 
 				if state.ticket and state.ticket ~= "" then
