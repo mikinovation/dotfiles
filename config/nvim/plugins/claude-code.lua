@@ -164,19 +164,27 @@ function claudeCode.config()
 			local function build_push_instruction(state)
 				local parts = {
 					"I'm going to push changes. Please follow these instructions:",
-					"- First, check if a pull request already exists for the current branch",
+					"- First, check if a pull request already exists for the current branch with Github CLI",
 				}
-				
+
 				if state.base_branch and state.base_branch ~= "" then
-					table.insert(parts, "- If a PR exists, use git merge to update from origin/" .. state.base_branch .. " before pushing")
-					table.insert(parts, "- If no PR exists, use git rebase from origin/" .. state.base_branch .. " before pushing")
+					table.insert(
+						parts,
+						"- If a PR exists, use git merge to update from origin/"
+							.. state.base_branch
+							.. " before pushing"
+					)
+					table.insert(
+						parts,
+						"- If no PR exists, use git rebase from origin/" .. state.base_branch .. " before pushing"
+					)
 				else
 					table.insert(parts, "- If a PR exists, use git merge to update from the base branch before pushing")
-					table.insert(parts, "- If no PR exists, use git rebase from the default branch (usually main or master) before pushing")
+					table.insert(parts, "- If no PR exists, use git rebase from the base branch before pushing")
 				end
-				
+
 				table.insert(parts, "- After the merge/rebase is successful, push the changes to origin")
-				
+
 				return table.concat(parts, "\n")
 			end
 
@@ -199,6 +207,12 @@ function claudeCode.config()
 			end
 
 			local function get_remote_branches()
+				local fetch_handle = io.popen("git fetch 2>&1")
+				if fetch_handle then
+					fetch_handle:read("*a")
+					fetch_handle:close()
+				end
+
 				-- Get remote branches from origin
 				local handle = io.popen(
 					"git branch -r 2>/dev/null | grep -v 'HEAD' | sed 's/^[[:space:]]*//' | sed 's|^origin/||'"
