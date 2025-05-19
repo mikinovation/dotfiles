@@ -164,12 +164,19 @@ function claudeCode.config()
 			local function build_push_instruction(state)
 				local parts = {
 					"I'm going to push changes. Please follow these instructions:",
-					"- Create a push in " .. state.language .. " language",
 					"- First, check if a pull request already exists for the current branch",
-					"- If a PR exists, use git merge to update from the base branch before pushing",
-					"- If no PR exists, use git rebase from the default branch (usually main or master) before pushing",
-					"- After the merge/rebase is successful, push the changes to origin",
 				}
+				
+				if state.base_branch and state.base_branch ~= "" then
+					table.insert(parts, "- If a PR exists, use git merge to update from origin/" .. state.base_branch .. " before pushing")
+					table.insert(parts, "- If no PR exists, use git rebase from origin/" .. state.base_branch .. " before pushing")
+				else
+					table.insert(parts, "- If a PR exists, use git merge to update from the base branch before pushing")
+					table.insert(parts, "- If no PR exists, use git rebase from the default branch (usually main or master) before pushing")
+				end
+				
+				table.insert(parts, "- After the merge/rebase is successful, push the changes to origin")
+				
 				return table.concat(parts, "\n")
 			end
 
@@ -266,7 +273,7 @@ function claudeCode.config()
 			end, { desc = "Create a GitHub issue using Claude Code" })
 
 			vim.api.nvim_create_user_command("ClaudeCodePush", function()
-				select_language(run_push_with_claude)
+				select_base_branch({}, run_push_with_claude)
 			end, { desc = "Push changes using Claude Code" })
 
 			-- Keymap
@@ -278,7 +285,7 @@ function claudeCode.config()
 				":ClaudeCodeIssue<CR>",
 				{ desc = "Create a GitHub issue using Claude Code" }
 			)
-			vim.keymap.set("n", "<leader>cZ", ":ClaudeCodePush<CR>", { desc = "Push changes using Claude Code" })
+			vim.keymap.set("n", "<leader>cS", ":ClaudeCodePush<CR>", { desc = "Push changes using Claude Code" })
 		end,
 	}
 end
