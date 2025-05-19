@@ -130,6 +130,7 @@ function claudeCode.config()
 
 				if state.base_branch and state.base_branch ~= "" then
 					table.insert(parts, "- Use '" .. state.base_branch .. "' as the base branch for the PR")
+					table.insert(parts, "- Before pushing, rebase from origin/" .. state.base_branch)
 				end
 
 				if state.ticket and state.ticket ~= "" then
@@ -160,6 +161,37 @@ function claudeCode.config()
 				send_to_claude(build_pr_instruction(state))
 			end
 
+			local function build_push_instruction(state)
+				local parts = {
+					"I'm going to push changes. Please follow these instructions:",
+					"- First, check if a pull request already exists for the current branch with Github CLI",
+				}
+
+				if state.base_branch and state.base_branch ~= "" then
+					table.insert(
+						parts,
+						"- If a PR exists, use git merge to update from origin/"
+							.. state.base_branch
+							.. " before pushing"
+					)
+					table.insert(
+						parts,
+						"- If no PR exists, use git rebase from origin/" .. state.base_branch .. " before pushing"
+					)
+				else
+					table.insert(parts, "- If a PR exists, use git merge to update from the base branch before pushing")
+					table.insert(parts, "- If no PR exists, use git rebase from the base branch before pushing")
+				end
+
+				table.insert(parts, "- After the merge/rebase is successful, push the changes to origin")
+
+				return table.concat(parts, "\n")
+			end
+
+			local function run_push_with_claude(state)
+				send_to_claude(build_push_instruction(state))
+			end
+
 			local function select_language(callback)
 				vim.ui.select(config.languages, {
 					prompt = "Select language:",
@@ -175,6 +207,12 @@ function claudeCode.config()
 			end
 
 			local function get_remote_branches()
+				local fetch_handle = io.popen("git fetch 2>&1")
+				if fetch_handle then
+					fetch_handle:read("*a")
+					fetch_handle:close()
+				end
+
 				-- Get remote branches from origin
 				local handle = io.popen(
 					"git branch -r 2>/dev/null | grep -v 'HEAD' | sed 's/^[[:space:]]*//' | sed 's|^origin/||'"
@@ -248,6 +286,10 @@ function claudeCode.config()
 				select_language(run_issue_with_claude)
 			end, { desc = "Create a GitHub issue using Claude Code" })
 
+			vim.api.nvim_create_user_command("ClaudeCodePush", function()
+				select_base_branch({}, run_push_with_claude)
+			end, { desc = "Push changes using Claude Code" })
+
 			-- Keymap
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
 			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
@@ -257,6 +299,7 @@ function claudeCode.config()
 				":ClaudeCodeIssue<CR>",
 				{ desc = "Create a GitHub issue using Claude Code" }
 			)
+			vim.keymap.set("n", "<leader>cS", ":ClaudeCodePush<CR>", { desc = "Push changes using Claude Code" })
 		end,
 	}
 end

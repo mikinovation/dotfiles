@@ -6,6 +6,7 @@ WEZTERM_CONFIG_DIR="$HOME"
 SHELDON_CONFIG_DIR="$HOME/.config/sheldon"
 ZSH_CONFIG_DIR="$HOME"
 CLAUDE_DIR="$HOME/.claude"
+GIT_CONFIG_DIR="$HOME/.config/git"
 
 link_nvim_config() {
   if [ ! -d "$NVIM_CONFIG_DIR" ]; then
@@ -42,6 +43,14 @@ link_zsh_config() {
   ln -snfv "$DOTFILES_DIR"/config/zsh/.p10k.zsh "$HOME/.p10k.zsh"
 }
 
+link_git_config() {
+  if [ ! -d "$GIT_CONFIG_DIR" ]; then
+    mkdir -p "$GIT_CONFIG_DIR"
+  fi
+ 
+  ln -snfv "$DOTFILES_DIR"/config/git/config "$GIT_CONFIG_DIR/config"
+}
+
 copy_claude_config() {
   if [ ! -d "$CLAUDE_DIR/commands" ]; then
     mkdir -p "$CLAUDE_DIR/commands"
@@ -71,6 +80,9 @@ main() {
 
   link_zsh_config
   echo "Linking zsh config done."
+
+  link_git_config
+  echo "Linking git config done."
 
   copy_claude_config
   echo "Copying claude commands done."
