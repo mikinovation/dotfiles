@@ -44,6 +44,7 @@ require("lazy").setup({
 	require("plugins.orgmode").config(),
 	require("plugins.package-info").config(),
 	require("plugins.pathtool").config(),
+	require("plugins.pomo").config(),
 	require("plugins.rest").config(),
 	require("plugins.telescope").config(),
 	require("plugins.todo-comments").config(),
