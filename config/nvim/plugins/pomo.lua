@@ -95,7 +95,7 @@ function pomo.config()
 
 								-- Show completion message
 								local completion_buf = vim.api.nvim_create_buf(false, true)
-								local completion_lines = {}
+								local completion_lines
 
 								if timer.name == "Work" then
 									completion_lines = {
