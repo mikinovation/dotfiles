@@ -4,6 +4,7 @@ local noneLs = {}
 function noneLs.config()
 	return {
 		"nvimtools/none-ls.nvim",
+		commit = "a49f5a79cdb76e0dc1a98899c8598f4db014c5e7",
 		dependencies = {
 			require("plugins.none-ls-extras").config(),
 			require("plugins.plenary").config(),

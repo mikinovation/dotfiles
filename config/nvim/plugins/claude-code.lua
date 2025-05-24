@@ -3,6 +3,7 @@ local claudeCode = {}
 function claudeCode.config()
 	return {
 		"greggh/claude-code.nvim",
+		commit = "91b38f289c9b1f08007a0443020ed97bb7539ebe",
 		dependencies = {
 			require("plugins.plenary").config(),
 		},

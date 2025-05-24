@@ -3,6 +3,7 @@ local quickScope = {}
 function quickScope.config()
 	return {
 		"unblevable/quick-scope",
+		commit = "f2b6043e04d9ef05205c8953e389304a4c1946f2",
 		config = function()
 			-- Set highlight colors that match with tokyonight theme
 			vim.cmd([[

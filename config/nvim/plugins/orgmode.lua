@@ -3,6 +3,7 @@ local orgmode = {}
 function orgmode.config()
 	return {
 		"nvim-orgmode/orgmode",
+		commit = "15d66ead1285d99f8a21c4ef4874ac62e9320fe6",
 		event = "VeryLazy",
 		ft = { "org" },
 		config = function()

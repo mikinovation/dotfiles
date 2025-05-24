@@ -3,6 +3,7 @@ local nvimDbee = {}
 function nvimDbee.config()
 	return {
 		"kndndrj/nvim-dbee",
+		commit = "ece254aaa322962659321f10329f408775b4beff",
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},
