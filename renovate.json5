@@ -13,9 +13,11 @@
   customManagers: [
     {
       customType: 'regex',
-      "fileMatch": ["config/nvim/plugins/.*\\.lua$"], 
-      "matchStrings": [  
-        "\"(?<depName>[^/]+/[^\"]+)\",\\s*commit\\s*=\\s*\"(?<currentValue>[a-f0-9]{40})\""  
+      managerFilePatterns: [
+        '/config/nvim/plugins/.*\\.lua$/',
+      ],
+      matchStrings: [
+        '"(?<depName>[^/]+/[^"]+)",\\s*commit\\s*=\\s*"(?<currentValue>[a-f0-9]{40})"',
       ],
       datasourceTemplate: 'github-tags',
       extractVersionTemplate: '^(?<version>.*)$',
