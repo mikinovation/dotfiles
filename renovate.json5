@@ -7,25 +7,20 @@
   labels: [
     'dependencies',
   ],
-  schedule: [
-    'every weekend',
+  "schedule": [
+    "before 5am"
   ],
-  prHourlyLimit: 5,
-  prConcurrentLimit: 10,
-  ignoreDeps: [],
-  ignorePaths: [],
   customManagers: [
     {
-      customType: 'regex',
+      "customType": "regex",
       fileMatch: [
         '^config/nvim/plugins/.*\\.lua$',
       ],
-      matchStrings: [
-        'renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?) commit=(?<currentDigest>.*?)\\n',
+      "matchStrings": [
+        "\"(?<depName>[^/]+/[^\"]+)\",\\s*commit\\s*=\\s*\"(?<currentValue>[a-f0-9]{40})\""
       ],
-      datasourceTemplate: 'github',
-      versioningTemplate: 'git',
-      currentValueTemplate: '{{branchName}}',
-    },
-  ],
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^(?<version>.*)$"
+    }
+  ]
 }

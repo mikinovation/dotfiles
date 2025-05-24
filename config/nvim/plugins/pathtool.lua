@@ -5,7 +5,7 @@ function pathtool.config()
 		"mikinovation/pathtool.nvim",
 		-- renovate: datasource=github-releases depName=mikinovation/pathtool.nvim
 		-- commit=a4a97ffee7b105451c5925beb444847cdc468b
-		commit = "94a4a97ffee7b105451c5925beb444847cdc468b",
+		commit = "dfed489d1e6a628ca73ceafbdfa30e5d55ca481b",
 		config = function()
 			require("pathtool").setup()
 

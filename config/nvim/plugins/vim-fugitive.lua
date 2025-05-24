@@ -3,6 +3,7 @@ local vimFugitive = {}
 function vimFugitive.config()
 	return {
 		"tpope/vim-fugitive",
+		commit = "4a745ea72fa93bb15dd077109afbb3d1809383f2",
 		config = function()
 			-- Basic Git operations
 			vim.keymap.set("n", "<leader>gs", ":Git<CR>", { desc = "Git [S]tatus" })

@@ -3,6 +3,7 @@ local mason = {}
 function mason.config()
 	return {
 		"williamboman/mason.nvim",
+		commit = "fc98833b6da5de5a9c5b1446ac541577059555be",
 		dependencies = {
 			require("plugins.mason-lspconfig").config(),
 			require("plugins.nvim-lspconfig").config(),

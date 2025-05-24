@@ -4,6 +4,7 @@ local nvimLspconfig = {}
 function nvimLspconfig.config()
 	return {
 		"neovim/nvim-lspconfig",
+		commit = "46434074f188e6bfccf9d9153dd8be6b1381498b",
 		dependencies = {
 			require("plugins.fidget").config(),
 			require("plugins.cmp-nvim-lsp").config(),

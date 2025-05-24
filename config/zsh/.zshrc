@@ -34,3 +34,10 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# fnm
+FNM_PATH="/home/mikinovation/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="/home/mikinovation/.local/share/fnm:$PATH"
+  eval "`fnm env`"
+fi
