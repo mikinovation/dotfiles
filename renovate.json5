@@ -16,15 +16,15 @@
   ignorePaths: [],
   customManagers: [
     {
-      customType: 'regex',
+      "customType": "regex",
       fileMatch: [
         '^config/nvim/plugins/.*\\.lua$',
       ],
-      matchStrings: [
-        '"(?<depName>[^"]+/[^"]+)",\\s*commit\\s*=\\s*"(?<currentDigest>[a-f0-9]+)"',
+      "matchStrings": [
+        "\"(?<depName>[^/]+/[^\"]+)\",\\s*commit\\s*=\\s*\"(?<currentValue>[a-f0-9]{40})\""
       ],
-      datasourceTemplate: 'github',
-      versioningTemplate: 'git',
-    },
-  ],
+      "datasourceTemplate": "github-tags",
+      "extractVersionTemplate": "^(?<version>.*)$"
+    }
+  ]
 }
