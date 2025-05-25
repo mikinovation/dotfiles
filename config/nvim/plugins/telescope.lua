@@ -3,9 +3,8 @@ local telescope = {}
 function telescope.config()
 	return { -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
-		commit = "a0bbec21143c7bc5f8bb02e0005fa0b982edc026",
+		commit = "b4da76be54691e854d3e0e02c36b0245f945c2c7",
 		event = "VimEnter",
-		branch = "0.1.x",
 		dependencies = {
 			require("plugins.plenary").config(),
 			require("plugins.telescope-fzf-native").config(),
