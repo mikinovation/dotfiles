@@ -291,6 +291,33 @@ function claudeCode.config()
 				select_base_branch({}, run_push_with_claude)
 			end, { desc = "Push changes using Claude Code" })
 
+			local function build_create_branch_instruction(state)
+				local parts = {
+					"I'm going to create a new git branch. Please follow these instructions:",
+					"- Ticket title: " .. state.title,
+					"- Generate an appropriate branch name based on the ticket title",
+					"- Use conventional branch naming (e.g., feature/, fix/, chore/)",
+				}
+				return table.concat(parts, "\n")
+			end
+
+			local function run_create_branch_with_claude(state)
+				send_to_claude(build_create_branch_instruction(state))
+			end
+
+			vim.api.nvim_create_user_command("ClaudeCodeCreateBranch", function()
+				vim.ui.input({
+					prompt = "Enter ticket title:",
+				}, function(title)
+					if not title or title == "" then
+						vim.notify("Branch creation cancelled", vim.log.levels.INFO)
+						return
+					end
+
+					run_create_branch_with_claude({ title = title })
+				end)
+			end, { desc = "Create a git branch using Claude Code" })
+
 			-- Keymap
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
 			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
@@ -301,6 +328,12 @@ function claudeCode.config()
 				{ desc = "Create a GitHub issue using Claude Code" }
 			)
 			vim.keymap.set("n", "<leader>cS", ":ClaudeCodePush<CR>", { desc = "Push changes using Claude Code" })
+			vim.keymap.set(
+				"n",
+				"<leader>cB",
+				":ClaudeCodeCreateBranch<CR>",
+				{ desc = "Create a git branch using Claude Code" }
+			)
 		end,
 	}
 end
