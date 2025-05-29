@@ -12,15 +12,12 @@
   ],
   customManagers: [
     {
-      customType: 'regex',
-      managerFilePatterns: [
-        '/config/nvim/plugins/.*\\.lua$/',
-      ],
-      matchStrings: [
-        '"(?<depName>[^/]+/[^"]+)",\\s*commit\\s*=\\s*"(?<currentValue>[a-f0-9]{40})"',
-      ],
-      datasourceTemplate: 'github-tags',
-      extractVersionTemplate: '^(?<version>.*)$',
-    },
+      "customType": "jsonata",
+      "fileFormat": "json",
+      "fileMatch": ["lazy-lock.json$"],
+      "matchStrings": [
+        "$each($, function($v, $k) { {'depName': $k, 'currentValue': $v.commit, 'datasource': 'git-refs', 'packageName': 'https://github.com/' & $k & '.git'} })"
+      ]
+    }
   ],
 }
