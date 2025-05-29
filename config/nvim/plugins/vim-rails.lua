@@ -3,8 +3,8 @@ local vimRails = {}
 function vimRails.config()
 	return {
 		"tpope/vim-rails",
-		-- renovate: datasource=git-refs depName=https://github.com/tpope/vim-rails
-		commit = "d3954dfe3946c9330dc91b4fbf79ccacb2c626c0",
+		-- renovate: datasource=github-releases depName=tpope/vim-rails
+		version = "5.3",
 	}
 end
 
