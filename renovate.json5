@@ -11,13 +11,12 @@
     'before 5am',
   ],
   customManagers: [
-    {
-      "customType": "jsonata",
-      "fileFormat": "json",
-      "fileMatch": ["lazy-lock.json$"],
-      "matchStrings": [
-        "$each($, function($v, $k) { {'depName': $k, 'currentValue': $v.commit, 'datasource': 'git-refs', 'packageName': 'https://github.com/' & $k & '.git'} })"
-      ]
+    {  
+      "customType": "regex",  
+      "fileMatch": ["config/nvim/plugins/.*\\.lua$"],
+      "matchStrings": [  
+        "-- renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+) currentValue=(?<currentValue>[a-f0-9]{40})\\s+.*commit = \"\\k<currentValue>\""  
+      ]  
     }
   ],
 }
