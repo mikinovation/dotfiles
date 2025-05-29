@@ -12,12 +12,14 @@
   ],
   customManagers: [
     {
-      "customType": "jsonata",
-      "fileFormat": "json",
-      "fileMatch": ["lazy-lock.json$"],
-      "matchStrings": [
-        "$each($, function($v, $k) { {'depName': $k, 'currentValue': $v.commit, 'datasource': 'git-refs', 'packageName': 'https://github.com/' & $k & '.git'} })"
-      ]
-    }
+      customType: 'jsonata',
+      fileFormat: 'json',
+      managerFilePatterns: [
+        '/lazy-lock.json$/',
+      ],
+      matchStrings: [
+        "$each($, function($v, $k) { {'depName': $k, 'currentValue': $v.commit, 'datasource': 'git-refs', 'packageName': 'https://github.com/' & $k & '.git'} })",
+      ],
+    },
   ],
 }
