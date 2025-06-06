@@ -66,6 +66,32 @@ function claudeCode.config()
 				return stat ~= nil
 			end
 
+			local function find_pr_template()
+				local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+				if not handle then
+					return nil
+				end
+				local git_root = handle:read("*a"):gsub("%s+$", "")
+				handle:close()
+				if git_root == "" then
+					return nil
+				end
+
+				local possible_paths = {
+					"/.github/pull_request_template.md",
+					"/.github/PULL_REQUEST_TEMPLATE.md",
+				}
+
+				for _, path in ipairs(possible_paths) do
+					local stat = vim.loop.fs_stat(git_root .. path)
+					if stat ~= nil then
+						return path
+					end
+				end
+
+				return nil
+			end
+
 			local function send_to_claude(instruction_text)
 				local claude_code_module = require("claude-code")
 				local bufnr = claude_code_module.claude_code.bufnr
@@ -138,12 +164,13 @@ function claudeCode.config()
 					table.insert(parts, "- With ticket reference: " .. state.ticket)
 				end
 
-				if check_template_exists("/.github/PULL_REQUEST_TEMPLATE.md") then
-					table.insert(parts, "- Please follow the template format in .github/PULL_REQUEST_TEMPLATE.md")
-				else
+				local pr_template_path = find_pr_template()
+				if pr_template_path then
 					table.insert(
 						parts,
-						"- Please check if .github/PULL_REQUEST_TEMPLATE.md exists and follow that template format if found"
+						"- Please follow the template format in "
+							.. pr_template_path:sub(2)
+							.. ". Do NOT translate the title/headings from the PR template."
 					)
 				end
 
