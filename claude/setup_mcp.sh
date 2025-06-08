@@ -8,12 +8,25 @@ setup_claude_mcp() {
     exit 1
   fi
   
+  # Setup deepwiki
+  echo "Adding deepwiki MCP server..."
   claude mcp add -t sse -s user deepwiki https://mcp.deepwiki.com/sse
   
   if [ $? -eq 0 ]; then
-    echo "Claude MCP configuration added successfully."
+    echo "Deepwiki MCP server added successfully."
   else
-    echo "Error: Failed to add Claude MCP configuration."
+    echo "Error: Failed to add deepwiki MCP server."
+    exit 1
+  fi
+  
+  # Setup playwright
+  echo "Adding playwright MCP server..."
+  claude mcp add -t stdio -s user playwright "npx" "@playwright/mcp@latest"
+  
+  if [ $? -eq 0 ]; then
+    echo "Playwright MCP server added successfully."
+  else
+    echo "Error: Failed to add playwright MCP server."
     exit 1
   fi
 }
