@@ -4,3 +4,4 @@ result
 # Claude directory - ignore everything except commands
 /claude/*
 !/claude/commands/
+!/claude/setup_mcp.sh
