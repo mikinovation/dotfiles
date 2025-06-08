@@ -61,6 +61,12 @@ copy_claude_config() {
   done
 }
 
+setup_claude_mcp() {
+  if [ -f "$DOTFILES_DIR/claude/setup_mcp.sh" ]; then
+    bash "$DOTFILES_DIR/claude/setup_mcp.sh"
+  fi
+}
+
 main() {
   echo "Start setup dotfiles..."
 
@@ -86,6 +92,9 @@ main() {
 
   copy_claude_config
   echo "Copying claude commands done."
+
+  setup_claude_mcp
+  echo "Claude MCP setup done."
 
   echo "Setup dotfiles done."
 }
