@@ -361,6 +361,128 @@ function claudeCode.config()
 				":ClaudeCodeCreateBranch<CR>",
 				{ desc = "Create a git branch using Claude Code" }
 			)
+			-- File path integration functions
+			local function send_file_paths_to_claude(file_paths)
+				if not file_paths or #file_paths == 0 then
+					vim.notify("No files selected", vim.log.levels.WARN)
+					return
+				end
+
+				local file_paths_text = table.concat(file_paths, " ")
+				send_to_claude(file_paths_text)
+			end
+
+			local function get_current_file_path()
+				local current_file = vim.api.nvim_buf_get_name(0)
+				if current_file == "" then
+					vim.notify("Current buffer has no file", vim.log.levels.WARN)
+					return nil
+				end
+
+				-- Get git root directory
+				local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
+				if not handle then
+					return current_file
+				end
+				local git_root = handle:read("*a"):gsub("%s+$", "")
+				handle:close()
+
+				if git_root == "" then
+					return current_file
+				end
+
+				-- Convert to relative path from git root
+				local relative_path = current_file:gsub("^" .. vim.pesc(git_root) .. "/", "")
+				return relative_path
+			end
+
+			-- Send current buffer file path to claude-code
+			vim.api.nvim_create_user_command("ClaudeCodeSendCurrentFile", function()
+				local current_file = get_current_file_path()
+				if current_file then
+					send_file_paths_to_claude({ current_file })
+				end
+			end, { desc = "Send current file path to Claude Code" })
+
+			-- Telescope integration for sending selected files
+			local function telescope_send_files()
+				local telescope_ok, _ = pcall(require, "telescope")
+				if not telescope_ok then
+					vim.notify("Telescope not available", vim.log.levels.ERROR)
+					return
+				end
+
+				local pickers = require("telescope.pickers")
+				local finders = require("telescope.finders")
+				local conf = require("telescope.config").values
+				local actions = require("telescope.actions")
+				local action_state = require("telescope.actions.state")
+
+				local function send_selected_files(prompt_bufnr)
+					local picker = action_state.get_current_picker(prompt_bufnr)
+					local selections = picker:get_multi_selection()
+
+					-- If no multi-selection, use the current selection
+					if #selections == 0 then
+						local selection = action_state.get_selected_entry()
+						if selection then
+							selections = { selection }
+						end
+					end
+
+					actions.close(prompt_bufnr)
+
+					local file_paths = {}
+					for _, selection in ipairs(selections) do
+						local file_path = selection.path or selection.value
+						if file_path then
+							table.insert(file_paths, file_path)
+						end
+					end
+
+					send_file_paths_to_claude(file_paths)
+				end
+
+				pickers
+					.new({}, {
+						prompt_title = "Send Files to Claude Code",
+						finder = finders.new_oneshot_job({ "find", ".", "-type", "f" }, {
+							entry_maker = function(entry)
+								return {
+									value = entry,
+									path = entry,
+									display = entry,
+									ordinal = entry,
+								}
+							end,
+						}),
+						sorter = conf.generic_sorter({}),
+						attach_mappings = function(_, map)
+							actions.select_default:replace(send_selected_files)
+							map("i", "<C-CR>", send_selected_files)
+							map("n", "<C-CR>", send_selected_files)
+							return true
+						end,
+					})
+					:find()
+			end
+
+			vim.api.nvim_create_user_command("ClaudeCodeSendFiles", telescope_send_files, {
+				desc = "Send selected files to Claude Code via Telescope",
+			})
+
+			vim.keymap.set(
+				"n",
+				"<leader>cf",
+				":ClaudeCodeSendCurrentFile<CR>",
+				{ desc = "Send current file to Claude Code" }
+			)
+			vim.keymap.set(
+				"n",
+				"<leader>cF",
+				":ClaudeCodeSendFiles<CR>",
+				{ desc = "Send files to Claude Code via Telescope" }
+			)
 		end,
 	}
 end
