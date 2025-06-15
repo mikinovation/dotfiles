@@ -156,8 +156,7 @@ function claudeCode.config()
 				}
 
 				if state.base_branch and state.base_branch ~= "" then
-					table.insert(parts,
-						"- Use '" .. state.base_branch .. "' as the base branch for the PR")
+					table.insert(parts, "- Use '" .. state.base_branch .. "' as the base branch for the PR")
 					table.insert(parts, "- Before pushing, rebase from origin/" .. state.base_branch)
 				end
 
@@ -170,8 +169,8 @@ function claudeCode.config()
 					table.insert(
 						parts,
 						"- Please follow the template format in "
-						.. pr_template_path:sub(2)
-						.. ". Do NOT translate the title/headings from the PR template."
+							.. pr_template_path:sub(2)
+							.. ". Do NOT translate the title/headings from the PR template."
 					)
 				end
 
@@ -200,19 +199,16 @@ function claudeCode.config()
 					table.insert(
 						parts,
 						"- If a PR exists, use git merge to update from origin/"
-						.. state.base_branch
-						.. " before pushing"
+							.. state.base_branch
+							.. " before pushing"
 					)
 					table.insert(
 						parts,
-						"- If no PR exists, use git rebase from origin/" ..
-						state.base_branch .. " before pushing"
+						"- If no PR exists, use git rebase from origin/" .. state.base_branch .. " before pushing"
 					)
 				else
-					table.insert(parts,
-						"- If a PR exists, use git merge to update from the base branch before pushing")
-					table.insert(parts,
-						"- If no PR exists, use git rebase from the base branch before pushing")
+					table.insert(parts, "- If a PR exists, use git merge to update from the base branch before pushing")
+					table.insert(parts, "- If no PR exists, use git rebase from the base branch before pushing")
 				end
 
 				table.insert(parts, "- After the merge/rebase is successful, push the changes to origin")
@@ -300,7 +296,7 @@ function claudeCode.config()
 						select_base_branch(state, function(updated_state)
 							vim.ui.input({
 								prompt = config.ticket_required and "Enter ticket link:"
-								    or "Enter ticket link (optional):",
+									or "Enter ticket link (optional):",
 							}, function(ticket)
 								updated_state.ticket = ticket or ""
 								run_pr_with_claude(updated_state)
@@ -350,18 +346,15 @@ function claudeCode.config()
 			end, { desc = "Create a git branch using Claude Code" })
 
 			-- Keymap
-			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>",
-				{ desc = "Create a PR using Claude Code" })
-			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>",
-				{ desc = "Create a commit using Claude Code" })
+			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
+			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
 			vim.keymap.set(
 				"n",
 				"<leader>cI",
 				":ClaudeCodeIssue<CR>",
 				{ desc = "Create a GitHub issue using Claude Code" }
 			)
-			vim.keymap.set("n", "<leader>cS", ":ClaudeCodePush<CR>",
-				{ desc = "Push changes using Claude Code" })
+			vim.keymap.set("n", "<leader>cS", ":ClaudeCodePush<CR>", { desc = "Push changes using Claude Code" })
 			vim.keymap.set(
 				"n",
 				"<leader>cB",
@@ -451,27 +444,27 @@ function claudeCode.config()
 				end
 
 				pickers
-				    .new({}, {
-					    prompt_title = "Send Files to Claude Code",
-					    finder = finders.new_oneshot_job({ "find", ".", "-type", "f" }, {
-						    entry_maker = function(entry)
-							    return {
-								    value = entry,
-								    path = entry,
-								    display = entry,
-								    ordinal = entry,
-							    }
-						    end,
-					    }),
-					    sorter = conf.generic_sorter({}),
-					    attach_mappings = function(_, map)
-						    actions.select_default:replace(send_selected_files)
-						    map("i", "<C-CR>", send_selected_files)
-						    map("n", "<C-CR>", send_selected_files)
-						    return true
-					    end,
-				    })
-				    :find()
+					.new({}, {
+						prompt_title = "Send Files to Claude Code",
+						finder = finders.new_oneshot_job({ "find", ".", "-type", "f" }, {
+							entry_maker = function(entry)
+								return {
+									value = entry,
+									path = entry,
+									display = entry,
+									ordinal = entry,
+								}
+							end,
+						}),
+						sorter = conf.generic_sorter({}),
+						attach_mappings = function(_, map)
+							actions.select_default:replace(send_selected_files)
+							map("i", "<C-CR>", send_selected_files)
+							map("n", "<C-CR>", send_selected_files)
+							return true
+						end,
+					})
+					:find()
 			end
 
 			vim.api.nvim_create_user_command("ClaudeCodeSendFiles", telescope_send_files, {
@@ -500,9 +493,8 @@ function claudeCode.config()
 
 				local content_parts = {}
 				if file_info then
-					local line_info = file_info.line_start == file_info.line_end and
-					    file_info.line_start
-					    or file_info.line_start .. "-" .. file_info.line_end
+					local line_info = file_info.line_start == file_info.line_end and file_info.line_start
+						or file_info.line_start .. "-" .. file_info.line_end
 					table.insert(content_parts, file_info.path .. ":" .. line_info)
 					table.insert(content_parts, "")
 				end
