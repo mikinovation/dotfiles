@@ -88,6 +88,14 @@ formatter for lua
 brew install stylua
 ```
 
+### busted
+
+Testing framework for Lua
+
+```
+luarocks install --local busted
+```
+
 ## install
 
 Run this:
@@ -98,11 +106,26 @@ cd ~/.dotfiles
 ./setup.sh
 ```
 
-## lint and fomat
+## lint and format
 
 ```bash
 sh ./scripts/lint.sh
 sh ./scripts/format.sh
+```
+
+## testing
+
+Run Lua tests using busted:
+
+```bash
+# Run all tests
+busted .
+
+# Run specific test file
+busted config/nvim/plugins/claude-code_spec.lua
+
+# Run tests with verbose output
+busted -v
 ```
 
 ### Setup Copilot
