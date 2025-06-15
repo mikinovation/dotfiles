@@ -8,9 +8,9 @@ describe("claudeCode plugin", function()
 				config = function()
 					return {
 						"nvim-lua/plenary.nvim",
-						commit = "857c5ac632080dba10aae49dba902ce3abf91b35"
+						commit = "857c5ac632080dba10aae49dba902ce3abf91b35",
 					}
-				end
+				end,
 			}
 		end
 
@@ -19,8 +19,8 @@ describe("claudeCode plugin", function()
 			return {
 				setup = function() end,
 				claude_code = {
-					bufnr = 1
-				}
+					bufnr = 1,
+				},
 			}
 		end
 
@@ -67,47 +67,81 @@ describe("claudeCode plugin", function()
 
 			-- Mock vim globals for configuration
 			_G.vim = {
-				loop = { fs_stat = function() return nil end },
+				loop = {
+					fs_stat = function()
+						return nil
+					end,
+				},
 				api = {
 					nvim_create_user_command = function() end,
-					nvim_buf_get_name = function() return "test.lua" end,
-					nvim_buf_is_valid = function() return true end,
-					nvim_buf_get_var = function() return 1 end,
+					nvim_buf_get_name = function()
+						return "test.lua"
+					end,
+					nvim_buf_is_valid = function()
+						return true
+					end,
+					nvim_buf_get_var = function()
+						return 1
+					end,
 					nvim_chan_send = function() end,
-					nvim_win_get_cursor = function() return { 1, 0 } end,
-					nvim_buf_get_lines = function() return { "test line" } end
+					nvim_win_get_cursor = function()
+						return { 1, 0 }
+					end,
+					nvim_buf_get_lines = function()
+						return { "test line" }
+					end,
 				},
 				ui = {
-					select = function(items, _opts, callback) callback(items[1]) end,
-					input = function(_opts, callback) callback("test") end
+					select = function(items, _opts, callback)
+						callback(items[1])
+					end,
+					input = function(_opts, callback)
+						callback("test")
+					end,
 				},
 				keymap = { set = function() end },
 				cmd = function() end,
-				defer_fn = function(fn) fn() end,
+				defer_fn = function(fn)
+					fn()
+				end,
 				fn = {
-					getpos = function() return { 0, 1, 0, 0 } end,
-					win_findbuf = function() return { 1 } end
+					getpos = function()
+						return { 0, 1, 0, 0 }
+					end,
+					win_findbuf = function()
+						return { 1 }
+					end,
 				},
 				log = { levels = { WARN = 1, ERROR = 2, INFO = 3 } },
 				notify = function() end,
-				pesc = function(str) return str end,
+				pesc = function(str)
+					return str
+				end,
 				tbl_contains = function(t, v)
 					for _, item in ipairs(t) do
-						if item == v then return true end
+						if item == v then
+							return true
+						end
 					end
 					return false
-				end
+				end,
 			}
 
 			_G.io = {
 				popen = function()
 					return {
-						read = function() return "/fake/git/root" end,
+						read = function()
+							return "/fake/git/root"
+						end,
 						close = function() end,
-						lines = function() return function() end end
+						lines = function()
+							return function() end
+						end,
 					}
 				end,
-				open = function() return nil end
+				open = function()
+					return nil
+				end,
 			}
 		end)
 
