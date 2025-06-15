@@ -27,3 +27,6 @@ jobs:
           version: v2.1.0
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --check .
+
+      - name: Run Busted Tests
+        uses: lunarmodules/busted@v2.2.0
