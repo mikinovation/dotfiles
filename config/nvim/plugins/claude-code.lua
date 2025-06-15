@@ -483,6 +483,86 @@ function claudeCode.config()
 				":ClaudeCodeSendFiles<CR>",
 				{ desc = "Send files to Claude Code via Telescope" }
 			)
+
+			-- Line and range selection functions
+			local function send_lines_to_claude(lines, file_info)
+				if not lines or #lines == 0 then
+					vim.notify("No lines to send", vim.log.levels.WARN)
+					return
+				end
+
+				local content_parts = {}
+				if file_info then
+					local line_info = file_info.line_start == file_info.line_end and file_info.line_start
+						or file_info.line_start .. "-" .. file_info.line_end
+					table.insert(content_parts, file_info.path .. ":" .. line_info)
+					table.insert(content_parts, "")
+				end
+
+				local content = table.concat(content_parts, "\n")
+				send_to_claude(content)
+			end
+
+			local function get_current_line_content()
+				local current_line = vim.api.nvim_win_get_cursor(0)[1]
+				local line_content = vim.api.nvim_buf_get_lines(0, current_line - 1, current_line, false)
+
+				local file_path = get_current_file_path()
+				local file_info = nil
+				if file_path then
+					file_info = {
+						path = file_path,
+						line_start = current_line,
+						line_end = current_line,
+					}
+				end
+
+				return line_content, file_info
+			end
+
+			local function get_visual_selection_content()
+				local start_pos = vim.fn.getpos("'<")
+				local end_pos = vim.fn.getpos("'>")
+				local start_line = start_pos[2]
+				local end_line = end_pos[2]
+
+				local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+
+				local file_path = get_current_file_path()
+				local file_info = nil
+				if file_path then
+					file_info = {
+						path = file_path,
+						line_start = start_line,
+						line_end = end_line,
+					}
+				end
+
+				return lines, file_info
+			end
+
+			vim.api.nvim_create_user_command("ClaudeCodeSendCurrentLine", function()
+				local lines, file_info = get_current_line_content()
+				send_lines_to_claude(lines, file_info)
+			end, { desc = "Send current line to Claude Code" })
+
+			vim.api.nvim_create_user_command("ClaudeCodeSendSelection", function()
+				local lines, file_info = get_visual_selection_content()
+				send_lines_to_claude(lines, file_info)
+			end, { range = true, desc = "Send visual selection to Claude Code" })
+
+			vim.keymap.set(
+				"n",
+				"<leader>cL",
+				":ClaudeCodeSendCurrentLine<CR>",
+				{ desc = "Send current line to Claude Code" }
+			)
+			vim.keymap.set(
+				"v",
+				"<leader>cL",
+				":ClaudeCodeSendSelection<CR>",
+				{ desc = "Send selection to Claude Code" }
+			)
 		end,
 	}
 end
