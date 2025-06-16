@@ -12,11 +12,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Luacheck
+      - uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "5.1.5"
+
+      - uses: leafo/gh-actions-luarocks@v5
+        with:
+          luarocksVersion: "3.12.0"
+
+      - name: build
         run: |
-          sudo apt-get update
-          sudo apt-get install -y luarocks
-          sudo luarocks install luacheck
+          luarocks install luacheck
+          luarocks install busted
 
       - name: Run Luacheck
         run: luacheck .
@@ -27,3 +34,6 @@ jobs:
           version: v2.1.0
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --check .
+
+      - name: Run Busted Tests
+        run: busted .
