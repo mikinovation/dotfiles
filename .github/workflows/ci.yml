@@ -24,7 +24,6 @@ jobs:
         run: |
           luarocks install luacheck
           luarocks install busted
-          luarocks make
 
       - name: Run Luacheck
         run: luacheck .
