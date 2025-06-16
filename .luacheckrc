@@ -4,6 +4,7 @@ globals = {
 
 exclude_files = {
 	"./sandbox/**",
+	"./.luarocks/**",
 }
 
 files["**/*_spec.lua"] = {
