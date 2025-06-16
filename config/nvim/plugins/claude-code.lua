@@ -8,6 +8,8 @@ function claudeCode.config()
 			require("plugins.plenary").config(),
 		},
 		config = function()
+			local claude_client = require("config.nvim.plugins.claude_client")
+
 			require("claude-code").setup({
 				window = {
 					split_ratio = 0.5,
@@ -51,173 +53,24 @@ function claudeCode.config()
 				ticket_required = false,
 			}
 
-			local function check_template_exists(template_path)
-				local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
-				if not handle then
-					return false
-				end
-				local git_root = handle:read("*a"):gsub("%s+$", "")
-				handle:close()
-				if git_root == "" then
-					return false
-				end
-
-				local stat = vim.loop.fs_stat(git_root .. template_path)
-				return stat ~= nil
-			end
-
-			local function find_pr_template()
-				local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
-				if not handle then
-					return nil
-				end
-				local git_root = handle:read("*a"):gsub("%s+$", "")
-				handle:close()
-				if git_root == "" then
-					return nil
-				end
-
-				local possible_paths = {
-					"/.github/pull_request_template.md",
-					"/.github/PULL_REQUEST_TEMPLATE.md",
-				}
-
-				for _, path in ipairs(possible_paths) do
-					local stat = vim.loop.fs_stat(git_root .. path)
-					if stat ~= nil then
-						return path
-					end
-				end
-
-				return nil
-			end
-
-			local function send_to_claude(instruction_text)
-				local claude_code_module = require("claude-code")
-				local bufnr = claude_code_module.claude_code.bufnr
-				local window_exists = false
-
-				if bufnr and vim.api.nvim_buf_is_valid(bufnr) then
-					local win_ids = vim.fn.win_findbuf(bufnr)
-					window_exists = #win_ids > 0
-				end
-
-				if not window_exists then
-					vim.cmd("ClaudeCode")
-				end
-
-				vim.defer_fn(function()
-					local updated_bufnr = claude_code_module.claude_code.bufnr
-					if updated_bufnr and vim.api.nvim_buf_is_valid(updated_bufnr) then
-						local chan_id = vim.api.nvim_buf_get_var(updated_bufnr, "terminal_job_id")
-						if chan_id then
-							vim.api.nvim_chan_send(chan_id, instruction_text)
-						end
-					end
-				end, window_exists and 100 or 1000)
-			end
-
-			local function build_commit_instruction(state)
-				local parts = {
-					"I'm going to create a git commit. Please follow these instructions:",
-					"- Create a commit in " .. state.language .. " language",
-					"- Follow conventional commits format (e.g., `feat:`, `fix:`, `chore:`)",
-					"- Use git status to see what files have changed",
-					"- Use git diff to understand the changes",
-					"- Create the commit using git commit -m with an appropriate message",
-					"- Do NOT add any AI attribution lines to the commit message",
-				}
-				return table.concat(parts, "\n")
-			end
-
-			local function build_issue_instruction(state)
-				local parts = {
-					"I'm going to create a GitHub issue. I will use gh command. Please follow these instructions:",
-					"- Create an issue in " .. state.language .. " language",
-					"- Use gh issue create command to create the issue",
-				}
-
-				if check_template_exists("/.github/ISSUE_TEMPLATE") then
-					table.insert(
-						parts,
-						"- Please check if there are templates in .github/ISSUE_TEMPLATE and use the appropriate template"
-					)
-				end
-
-				return table.concat(parts, "\n")
-			end
-
-			local function build_pr_instruction(state)
-				local parts = {
-					"I'm going to create a pull request. I will use gh command. Please follow these instructions:",
-					"- Create a PR in " .. state.language .. " language",
-					"- Set PR status to " .. (state.draft_mode == "draft" and "draft" or "open"),
-					"- Assign myself to the PR",
-				}
-
-				if state.base_branch and state.base_branch ~= "" then
-					table.insert(parts, "- Use '" .. state.base_branch .. "' as the base branch for the PR")
-					table.insert(parts, "- Before pushing, rebase from origin/" .. state.base_branch)
-				end
-
-				if state.ticket and state.ticket ~= "" then
-					table.insert(parts, "- With ticket reference: " .. state.ticket)
-				end
-
-				local pr_template_path = find_pr_template()
-				if pr_template_path then
-					table.insert(
-						parts,
-						"- Please follow the template format in "
-							.. pr_template_path:sub(2)
-							.. ". Do NOT translate the title/headings from the PR template."
-					)
-				end
-
-				return table.concat(parts, "\n")
-			end
-
 			local function run_commit_with_claude(state)
-				send_to_claude(build_commit_instruction(state))
+				local instruction_builders = require("config.nvim.plugins.instruction_builders")
+				claude_client.send_to_claude(instruction_builders.build_commit_instruction(state))
 			end
 
 			local function run_issue_with_claude(state)
-				send_to_claude(build_issue_instruction(state))
+				local instruction_builders = require("config.nvim.plugins.instruction_builders")
+				claude_client.send_to_claude(instruction_builders.build_issue_instruction(state))
 			end
 
 			local function run_pr_with_claude(state)
-				send_to_claude(build_pr_instruction(state))
-			end
-
-			local function build_push_instruction(state)
-				local parts = {
-					"I'm going to push changes. Please follow these instructions:",
-					"- First, check if a pull request already exists for the current branch with Github CLI",
-				}
-
-				if state.base_branch and state.base_branch ~= "" then
-					table.insert(
-						parts,
-						"- If a PR exists, use git merge to update from origin/"
-							.. state.base_branch
-							.. " before pushing"
-					)
-					table.insert(
-						parts,
-						"- If no PR exists, use git rebase from origin/" .. state.base_branch .. " before pushing"
-					)
-				else
-					table.insert(parts, "- If a PR exists, use git merge to update from the base branch before pushing")
-					table.insert(parts, "- If no PR exists, use git rebase from the base branch before pushing")
-				end
-
-				table.insert(parts, "- After the merge/rebase is successful, push the changes to origin")
-
-				return table.concat(parts, "\n")
+				local instruction_builders = require("config.nvim.plugins.instruction_builders")
+				claude_client.send_to_claude(instruction_builders.build_pr_instruction(state))
 			end
 
 			local function run_push_with_claude(state)
-				send_to_claude(build_push_instruction(state))
+				local instruction_builders = require("config.nvim.plugins.instruction_builders")
+				claude_client.send_to_claude(instruction_builders.build_push_instruction(state))
 			end
 
 			local function select_language(callback)
@@ -235,31 +88,12 @@ function claudeCode.config()
 			end
 
 			local function get_remote_branches()
-				local fetch_handle = io.popen("git fetch 2>&1")
-				if fetch_handle then
-					fetch_handle:read("*a")
-					fetch_handle:close()
-				end
-
-				-- Get remote branches from origin
-				local handle = io.popen(
-					"git branch -r 2>/dev/null | grep -v 'HEAD' | sed 's/^[[:space:]]*//' | sed 's|^origin/||'"
-				)
-				if not handle then
-					return {}
-				end
-
-				local branches = {}
-				for line in handle:lines() do
-					table.insert(branches, line)
-				end
-				handle:close()
-
+				local git_operations = require("config.nvim.plugins.git_operations")
+				local branches = git_operations.get_remote_branches()
 				if #branches == 0 then
 					vim.notify("Error: No remote branches found.", vim.log.levels.ERROR)
 					return {}
 				end
-
 				return branches
 			end
 
@@ -318,18 +152,9 @@ function claudeCode.config()
 				select_base_branch({}, run_push_with_claude)
 			end, { desc = "Push changes using Claude Code" })
 
-			local function build_create_branch_instruction(state)
-				local parts = {
-					"I'm going to create a new git branch. Please follow these instructions:",
-					"- Ticket title: " .. state.title,
-					"- Generate an appropriate branch name based on the ticket title",
-					"- Use conventional branch naming (e.g., feature/, fix/, chore/)",
-				}
-				return table.concat(parts, "\n")
-			end
-
 			local function run_create_branch_with_claude(state)
-				send_to_claude(build_create_branch_instruction(state))
+				local instruction_builders = require("config.nvim.plugins.instruction_builders")
+				claude_client.send_to_claude(instruction_builders.build_create_branch_instruction(state))
 			end
 
 			vim.api.nvim_create_user_command("ClaudeCodeCreateBranch", function()
@@ -362,15 +187,6 @@ function claudeCode.config()
 				{ desc = "Create a git branch using Claude Code" }
 			)
 			-- File path integration functions
-			local function send_file_paths_to_claude(file_paths)
-				if not file_paths or #file_paths == 0 then
-					vim.notify("No files selected", vim.log.levels.WARN)
-					return
-				end
-
-				local file_paths_text = table.concat(file_paths, " ")
-				send_to_claude(file_paths_text)
-			end
 
 			local function get_current_file_path()
 				local current_file = vim.api.nvim_buf_get_name(0)
@@ -379,28 +195,16 @@ function claudeCode.config()
 					return nil
 				end
 
-				-- Get git root directory
-				local handle = io.popen("git rev-parse --show-toplevel 2>/dev/null")
-				if not handle then
-					return current_file
-				end
-				local git_root = handle:read("*a"):gsub("%s+$", "")
-				handle:close()
-
-				if git_root == "" then
-					return current_file
-				end
-
-				-- Convert to relative path from git root
-				local relative_path = current_file:gsub("^" .. vim.pesc(git_root) .. "/", "")
-				return relative_path
+				local git_operations = require("config.nvim.plugins.git_operations")
+				return git_operations.get_relative_path(current_file)
 			end
 
 			-- Send current buffer file path to claude-code
 			vim.api.nvim_create_user_command("ClaudeCodeSendCurrentFile", function()
 				local current_file = get_current_file_path()
 				if current_file then
-					send_file_paths_to_claude({ current_file })
+					local file_content = require("config.nvim.plugins.file_content")
+					file_content.send_file_paths_to_claude({ current_file })
 				end
 			end, { desc = "Send current file path to Claude Code" })
 
@@ -440,7 +244,8 @@ function claudeCode.config()
 						end
 					end
 
-					send_file_paths_to_claude(file_paths)
+					local file_content = require("config.nvim.plugins.file_content")
+					file_content.send_file_paths_to_claude(file_paths)
 				end
 
 				pickers
@@ -485,23 +290,6 @@ function claudeCode.config()
 			)
 
 			-- Line and range selection functions
-			local function send_lines_to_claude(lines, file_info)
-				if not lines or #lines == 0 then
-					vim.notify("No lines to send", vim.log.levels.WARN)
-					return
-				end
-
-				local content_parts = {}
-				if file_info then
-					local line_info = file_info.line_start == file_info.line_end and file_info.line_start
-						or file_info.line_start .. "-" .. file_info.line_end
-					table.insert(content_parts, file_info.path .. ":" .. line_info)
-					table.insert(content_parts, "")
-				end
-
-				local content = table.concat(content_parts, "\n")
-				send_to_claude(content)
-			end
 
 			local function get_current_line_content()
 				local current_line = vim.api.nvim_win_get_cursor(0)[1]
@@ -543,12 +331,14 @@ function claudeCode.config()
 
 			vim.api.nvim_create_user_command("ClaudeCodeSendCurrentLine", function()
 				local lines, file_info = get_current_line_content()
-				send_lines_to_claude(lines, file_info)
+				local file_content = require("config.nvim.plugins.file_content")
+				file_content.send_lines_to_claude(lines, file_info)
 			end, { desc = "Send current line to Claude Code" })
 
 			vim.api.nvim_create_user_command("ClaudeCodeSendSelection", function()
 				local lines, file_info = get_visual_selection_content()
-				send_lines_to_claude(lines, file_info)
+				local file_content = require("config.nvim.plugins.file_content")
+				file_content.send_lines_to_claude(lines, file_info)
 			end, { range = true, desc = "Send visual selection to Claude Code" })
 
 			vim.keymap.set(
