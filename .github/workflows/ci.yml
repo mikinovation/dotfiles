@@ -12,11 +12,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Luacheck
+      - uses: leafo/gh-actions-lua@v11
+        with:
+          luaVersion: "5.1.5"
+
+      - name: build
         run: |
-          sudo apt-get update
-          sudo apt-get install -y luarocks
-          sudo luarocks install luacheck
+          luarocks install luacheck
+          luarocks install busted
+          luarocks make
 
       - name: Run Luacheck
         run: luacheck .
@@ -29,4 +33,4 @@ jobs:
           args: --check .
 
       - name: Run Busted Tests
-        uses: lunarmodules/busted@v2.2.0
+        run: busted .
