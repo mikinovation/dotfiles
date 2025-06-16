@@ -42,13 +42,13 @@ describe("claude_client", function()
 			}
 		end
 
-		claude_client = require("config.nvim.plugins.claude_client")
+		claude_client = require("config.nvim.plugins.claude_code.claude_client")
 	end)
 
 	after_each(function()
 		_G.vim = original_vim
 		package.preload["claude-code"] = nil
-		package.loaded["config.nvim.plugins.claude_client"] = nil
+		package.loaded["config.nvim.plugins.claude_code.claude_client"] = nil
 	end)
 
 	describe("send_to_claude", function()

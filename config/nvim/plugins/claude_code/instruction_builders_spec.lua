@@ -1,10 +1,24 @@
 describe("instruction_builders", function()
 	local instruction_builders
 	local git_operations
+	local original_vim
 
 	before_each(function()
+		-- Mock vim global
+		original_vim = _G.vim
+		_G.vim = {
+			loop = {
+				fs_stat = function()
+					return nil
+				end,
+			},
+			pesc = function(str)
+				return str:gsub("([%-%.%+%[%]%(%)%$%^%%%?%*])", "%%%1")
+			end,
+		}
+
 		-- Mock git_operations
-		package.preload["config.nvim.plugins.git_operations"] = function()
+		package.preload["config.nvim.plugins.claude_code.git_operations"] = function()
 			return {
 				check_template_exists = function()
 					return false
@@ -15,14 +29,15 @@ describe("instruction_builders", function()
 			}
 		end
 
-		instruction_builders = require("config.nvim.plugins.instruction_builders")
-		git_operations = require("config.nvim.plugins.git_operations")
+		instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+		git_operations = require("config.nvim.plugins.claude_code.git_operations")
 	end)
 
 	after_each(function()
-		package.preload["config.nvim.plugins.git_operations"] = nil
-		package.loaded["config.nvim.plugins.instruction_builders"] = nil
-		package.loaded["config.nvim.plugins.git_operations"] = nil
+		_G.vim = original_vim
+		package.preload["config.nvim.plugins.claude_code.git_operations"] = nil
+		package.loaded["config.nvim.plugins.claude_code.instruction_builders"] = nil
+		package.loaded["config.nvim.plugins.claude_code.git_operations"] = nil
 	end)
 
 	describe("build_commit_instruction", function()
