@@ -42,7 +42,7 @@ describe("claude_client", function()
 			}
 		end
 
-		claude_client = require("config.nvim.plugins.claude_code.claude_client")
+		claude_client = require("plugins.claude_code.claude_client")
 	end)
 
 	after_each(function()

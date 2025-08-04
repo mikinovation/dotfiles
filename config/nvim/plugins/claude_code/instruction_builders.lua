@@ -1,4 +1,4 @@
-local git_operations = require("config.nvim.plugins.claude_code.git_operations")
+local git_operations = require("plugins.claude_code.git_operations")
 
 local instruction_builders = {}
 

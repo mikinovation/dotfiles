@@ -24,7 +24,7 @@ describe("claudeCode plugin", function()
 			}
 		end
 
-		claudeCode = require("config.nvim.plugins.claude-code")
+		claudeCode = require("plugins.claude-code")
 	end)
 
 	after_each(function()
