@@ -8,7 +8,7 @@ function claudeCode.config()
 			require("plugins.plenary").config(),
 		},
 		config = function()
-			local claude_client = require("config.nvim.plugins.claude_code.claude_client")
+			local claude_client = require("plugins.claude_code.claude_client")
 
 			require("claude-code").setup({
 				window = {
@@ -54,22 +54,22 @@ function claudeCode.config()
 			}
 
 			local function run_commit_with_claude(state)
-				local instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_commit_instruction(state))
 			end
 
 			local function run_issue_with_claude(state)
-				local instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_issue_instruction(state))
 			end
 
 			local function run_pr_with_claude(state)
-				local instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_pr_instruction(state))
 			end
 
 			local function run_push_with_claude(state)
-				local instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_push_instruction(state))
 			end
 
@@ -88,7 +88,7 @@ function claudeCode.config()
 			end
 
 			local function get_remote_branches()
-				local git_operations = require("config.nvim.plugins.claude_code.git_operations")
+				local git_operations = require("plugins.claude_code.git_operations")
 				local branches = git_operations.get_remote_branches()
 				if #branches == 0 then
 					vim.notify("Error: No remote branches found.", vim.log.levels.ERROR)
@@ -153,7 +153,7 @@ function claudeCode.config()
 			end, { desc = "Push changes using Claude Code" })
 
 			local function run_create_branch_with_claude(state)
-				local instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_create_branch_instruction(state))
 			end
 
@@ -195,7 +195,7 @@ function claudeCode.config()
 					return nil
 				end
 
-				local git_operations = require("config.nvim.plugins.claude_code.git_operations")
+				local git_operations = require("plugins.claude_code.git_operations")
 				return git_operations.get_relative_path(current_file)
 			end
 

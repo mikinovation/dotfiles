@@ -18,7 +18,7 @@ describe("instruction_builders", function()
 		}
 
 		-- Mock git_operations
-		package.preload["config.nvim.plugins.claude_code.git_operations"] = function()
+		package.preload["plugins.claude_code.git_operations"] = function()
 			return {
 				check_template_exists = function()
 					return false
@@ -30,12 +30,12 @@ describe("instruction_builders", function()
 		end
 
 		instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
-		git_operations = require("config.nvim.plugins.claude_code.git_operations")
+		git_operations = require("plugins.claude_code.git_operations")
 	end)
 
 	after_each(function()
 		_G.vim = original_vim
-		package.preload["config.nvim.plugins.claude_code.git_operations"] = nil
+		package.preload["config.nvim..claude_code.git_operations"] = nil
 		package.loaded["config.nvim.plugins.claude_code.instruction_builders"] = nil
 		package.loaded["config.nvim.plugins.claude_code.git_operations"] = nil
 	end)

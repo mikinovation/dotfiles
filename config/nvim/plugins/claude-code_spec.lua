@@ -24,12 +24,55 @@ describe("claudeCode plugin", function()
 			}
 		end
 
+		-- Mock the claude_code submodules
+		package.preload["plugins.claude_code.claude_client"] = function()
+			return {
+				send_to_claude = function() end,
+				send_file_paths_to_claude = function() end,
+				send_lines_to_claude = function() end,
+			}
+		end
+
+		package.preload["plugins.claude_code.instruction_builders"] = function()
+			return {
+				build_commit_instruction = function()
+					return "commit instruction"
+				end,
+				build_issue_instruction = function()
+					return "issue instruction"
+				end,
+				build_pr_instruction = function()
+					return "pr instruction"
+				end,
+				build_push_instruction = function()
+					return "push instruction"
+				end,
+				build_create_branch_instruction = function()
+					return "branch instruction"
+				end,
+			}
+		end
+
+		package.preload["plugins.claude_code.git_operations"] = function()
+			return {
+				get_remote_branches = function()
+					return { "main", "develop" }
+				end,
+				get_relative_path = function(path)
+					return path
+				end,
+			}
+		end
+
 		claudeCode = require("config.nvim.plugins.claude-code")
 	end)
 
 	after_each(function()
 		package.preload["plugins.plenary"] = nil
 		package.preload["claude-code"] = nil
+		package.preload["plugins.claude_code.claude_client"] = nil
+		package.preload["plugins.claude_code.instruction_builders"] = nil
+		package.preload["plugins.claude_code.git_operations"] = nil
 		package.loaded["config.nvim.plugins.claude-code"] = nil
 	end)
 
@@ -63,6 +106,46 @@ describe("claudeCode plugin", function()
 			config_spy = spy.new(function() end)
 			package.preload["claude-code"] = function()
 				return { setup = config_spy }
+			end
+
+			-- Mock the claude_code submodules
+			package.preload["plugins.claude_code.claude_client"] = function()
+				return {
+					send_to_claude = function() end,
+					send_file_paths_to_claude = function() end,
+					send_lines_to_claude = function() end,
+				}
+			end
+
+			package.preload["plugins.claude_code.instruction_builders"] = function()
+				return {
+					build_commit_instruction = function()
+						return "commit instruction"
+					end,
+					build_issue_instruction = function()
+						return "issue instruction"
+					end,
+					build_pr_instruction = function()
+						return "pr instruction"
+					end,
+					build_push_instruction = function()
+						return "push instruction"
+					end,
+					build_create_branch_instruction = function()
+						return "branch instruction"
+					end,
+				}
+			end
+
+			package.preload["plugins.claude_code.git_operations"] = function()
+				return {
+					get_remote_branches = function()
+						return { "main", "develop" }
+					end,
+					get_relative_path = function(path)
+						return path
+					end,
+				}
 			end
 
 			-- Mock vim globals for configuration
@@ -149,6 +232,9 @@ describe("claudeCode plugin", function()
 			_G.vim = nil
 			_G.io = nil
 			package.preload["claude-code"] = nil
+			package.preload["plugins.claude_code.claude_client"] = nil
+			package.preload["plugins.claude_code.instruction_builders"] = nil
+			package.preload["plugins.claude_code.git_operations"] = nil
 		end)
 
 		it("should call setup with correct configuration", function()
