@@ -29,8 +29,8 @@ describe("instruction_builders", function()
 			}
 		end
 
-		instruction_builders = require("plugins.claude_code.instruction_builders")
-		git_operations = require("plugins.claude_code.git_operations")
+		instruction_builders = require("config.nvim.plugins.claude_code.instruction_builders")
+		git_operations = require("config.nvim.plugins.claude_code.git_operations")
 	end)
 
 	after_each(function()

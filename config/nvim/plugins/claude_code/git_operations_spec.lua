@@ -2,11 +2,11 @@ describe("git_operations", function()
 	local git_operations
 
 	before_each(function()
-		git_operations = require("plugins.claude_code.git_operations")
+		git_operations = require("config.nvim.plugins.claude_code.git_operations")
 	end)
 
 	after_each(function()
-		package.loaded["plugins.claude_code.git_operations"] = nil
+		package.loaded["config.nvim.plugins.claude_code.git_operations"] = nil
 	end)
 
 	describe("get_git_root", function()
