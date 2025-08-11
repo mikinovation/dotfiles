@@ -4,7 +4,6 @@ function rest.config()
 	return {
 		"rest-nvim/rest.nvim",
 		-- renovate: datasource=git-refs depName=https://github.com/rest-nvim/rest.nvim
-		commit = "2ded89dbda1fd3c1430685ffadf2df8beb28336d",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
 			opts = function(_, opts)

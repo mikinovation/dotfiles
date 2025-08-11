@@ -3,7 +3,6 @@ local nvimDap = {}
 function nvimDap.config()
 	return {
 		"mfussenegger/nvim-dap",
-		commit = "8df427aeba0a06c6577dc3ab82de3076964e3b8d",
 		dependencies = {
 			require("plugins.nvim-dap-virtual-text").config(),
 			require("plugins.nvim-dap-ui").config(),

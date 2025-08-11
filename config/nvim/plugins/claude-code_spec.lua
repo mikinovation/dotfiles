@@ -8,7 +8,6 @@ describe("claudeCode plugin", function()
 				config = function()
 					return {
 						"nvim-lua/plenary.nvim",
-						commit = "857c5ac632080dba10aae49dba902ce3abf91b35",
 					}
 				end,
 			}
@@ -82,14 +81,8 @@ describe("claudeCode plugin", function()
 
 			assert.is_table(config)
 			assert.is_equal("greggh/claude-code.nvim", config[1])
-			assert.is_string(config.commit)
 			assert.is_table(config.dependencies)
 			assert.is_function(config.config)
-		end)
-
-		it("should have the correct commit hash", function()
-			local config = claudeCode.config()
-			assert.is_equal("91b38f289c9b1f08007a0443020ed97bb7539ebe", config.commit)
 		end)
 
 		it("should include plenary dependency", function()

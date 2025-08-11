@@ -3,7 +3,6 @@ local nvimTree = {}
 function nvimTree.config()
 	return {
 		"nvim-tree/nvim-tree.lua",
-		commit = "582ae48c9e43d2bcd55dfcc8e2e7a1f29065d924",
 		dependencies = {
 			require("plugins.nvim-web-devicons").config(),
 		},

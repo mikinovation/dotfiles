@@ -3,7 +3,6 @@ local packageInfo = {}
 function packageInfo.config()
 	return {
 		"vuki656/package-info.nvim",
-		commit = "4f1b8287dde221153ec9f2acd46e8237d2d0881e",
 		dependencies = {
 			require("plugins.nui").config(),
 		},

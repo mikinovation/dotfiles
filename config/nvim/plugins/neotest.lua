@@ -3,7 +3,6 @@ local neotest = {}
 function neotest.config()
 	return {
 		"nvim-neotest/neotest",
-		commit = "6267dcd577aa519c828d2526b05844770d3a2c6a",
 		dependencies = {
 			require("plugins.nvim-nio").config(),
 			require("plugins.plenary").config(),
