@@ -3,7 +3,6 @@ local toggleterm = {}
 function toggleterm.config()
 	return {
 		"akinsho/toggleterm.nvim",
-		commit = "50ea089fc548917cc3cc16b46a8211833b9e3c7c",
 		version = "*",
 		config = function()
 			require("toggleterm").setup({

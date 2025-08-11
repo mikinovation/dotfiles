@@ -3,7 +3,6 @@ local gitConflict = {}
 function gitConflict.config()
 	return {
 		"akinsho/git-conflict.nvim",
-		commit = "bfd9fe6fba9a161fc199771d85996236a0d0faad",
 		version = "2.0.0",
 		config = function()
 			require("git-conflict").setup({
