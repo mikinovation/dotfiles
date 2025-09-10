@@ -54,6 +54,9 @@ function noneLs.config()
 					null_ls.builtins.diagnostics.stylelint.with({
 						filetypes = { "css", "scss", "vue" },
 					}),
+					null_ls.builtins.formatting.stylelint.with({
+						filetypes = { "css", "scss", "vue" },
+					}),
 				},
 				debug = false,
 				on_attach = function(client, bufnr)
