@@ -42,11 +42,16 @@ function claude_client.send_lines_to_claude(lines, file_info)
 	end
 
 	local content_parts = {}
-	if file_info then
+	if file_info and file_info.path then
 		local line_info = file_info.line_start == file_info.line_end and file_info.line_start
 			or file_info.line_start .. "-" .. file_info.line_end
 		table.insert(content_parts, file_info.path .. ":" .. line_info)
 		table.insert(content_parts, "")
+	end
+
+	-- Add the actual line content
+	for _, line in ipairs(lines) do
+		table.insert(content_parts, line)
 	end
 
 	local content = table.concat(content_parts, "\n")

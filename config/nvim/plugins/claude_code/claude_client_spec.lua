@@ -120,7 +120,7 @@ describe("claude_client", function()
 
 			claude_client.send_lines_to_claude(lines, file_info)
 
-			assert.spy(send_to_claude_spy).was_called_with("test.lua:1-2\n")
+			assert.spy(send_to_claude_spy).was_called_with("test.lua:1-2\n\nline1\nline2")
 		end)
 
 		it("should handle single line", function()
@@ -135,7 +135,7 @@ describe("claude_client", function()
 
 			claude_client.send_lines_to_claude(lines, file_info)
 
-			assert.spy(send_to_claude_spy).was_called_with("test.lua:5\n")
+			assert.spy(send_to_claude_spy).was_called_with("test.lua:5\n\nsingle line")
 		end)
 
 		it("should send lines without file info", function()
@@ -144,7 +144,7 @@ describe("claude_client", function()
 			local lines = { "line1", "line2" }
 			claude_client.send_lines_to_claude(lines, nil)
 
-			assert.spy(send_to_claude_spy).was_called_with("")
+			assert.spy(send_to_claude_spy).was_called_with("line1\nline2")
 		end)
 
 		it("should notify when no lines provided", function()
