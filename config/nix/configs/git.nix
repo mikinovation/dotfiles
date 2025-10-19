@@ -4,6 +4,10 @@
   programs.git = {
     enable = true;
 
+    ignores = [
+      ".serena/"
+    ];
+
     extraConfig = {
       fetch = {
         prune = true;
