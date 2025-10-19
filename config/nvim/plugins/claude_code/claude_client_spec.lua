@@ -108,55 +108,49 @@ describe("claude_client", function()
 	end)
 
 	describe("send_lines_to_claude", function()
-		it("should send lines with file info", function()
+		it("should send only file path and line range", function()
 			local send_to_claude_spy = spy.on(claude_client, "send_to_claude")
 
-			local lines = { "line1", "line2" }
 			local file_info = {
 				path = "test.lua",
 				line_start = 1,
 				line_end = 2,
 			}
 
-			claude_client.send_lines_to_claude(lines, file_info)
+			claude_client.send_lines_to_claude(file_info)
 
-			assert.spy(send_to_claude_spy).was_called_with("test.lua:1-2\n\nline1\nline2")
+			assert.spy(send_to_claude_spy).was_called_with("test.lua:1-2")
 		end)
 
-		it("should handle single line", function()
+		it("should handle single line without range", function()
 			local send_to_claude_spy = spy.on(claude_client, "send_to_claude")
 
-			local lines = { "single line" }
 			local file_info = {
 				path = "test.lua",
 				line_start = 5,
 				line_end = 5,
 			}
 
-			claude_client.send_lines_to_claude(lines, file_info)
+			claude_client.send_lines_to_claude(file_info)
 
-			assert.spy(send_to_claude_spy).was_called_with("test.lua:5\n\nsingle line")
+			assert.spy(send_to_claude_spy).was_called_with("test.lua:5")
 		end)
 
-		it("should send lines without file info", function()
-			local send_to_claude_spy = spy.on(claude_client, "send_to_claude")
+		it("should notify when file info is not provided", function()
+			claude_client.send_lines_to_claude(nil)
 
-			local lines = { "line1", "line2" }
-			claude_client.send_lines_to_claude(lines, nil)
-
-			assert.spy(send_to_claude_spy).was_called_with("line1\nline2")
+			assert.spy(_G.vim.notify).was_called_with("No file info available", 1)
 		end)
 
-		it("should notify when no lines provided", function()
-			claude_client.send_lines_to_claude({}, nil)
+		it("should notify when file path is missing", function()
+			local file_info = {
+				line_start = 1,
+				line_end = 2,
+			}
 
-			assert.spy(_G.vim.notify).was_called_with("No lines to send", 1)
-		end)
+			claude_client.send_lines_to_claude(file_info)
 
-		it("should notify when lines is nil", function()
-			claude_client.send_lines_to_claude(nil, nil)
-
-			assert.spy(_G.vim.notify).was_called_with("No lines to send", 1)
+			assert.spy(_G.vim.notify).was_called_with("No file info available", 1)
 		end)
 	end)
 end)
