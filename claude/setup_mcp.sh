@@ -22,11 +22,23 @@ setup_claude_mcp() {
   # Setup playwright
   echo "Adding playwright MCP server..."
   claude mcp add -t stdio -s user playwright "npx" "@playwright/mcp@latest"
-  
+
   if [ $? -eq 0 ]; then
     echo "Playwright MCP server added successfully."
   else
     echo "Error: Failed to add playwright MCP server."
+    exit 1
+  fi
+
+  # Setup serena
+  echo "Adding serena MCP server..."
+  nix run github:oraios/serena -- start-mcp-server --transport stdio
+  claude mcp add serena -- nix run github:oraios/serena -- start-mcp-server --transport stdio --context ide-assistant --project "$(pwd)"
+
+  if [ $? -eq 0 ]; then
+    echo "Serena MCP server added successfully."
+  else
+    echo "Error: Failed to add serena MCP server."
     exit 1
   fi
 }
