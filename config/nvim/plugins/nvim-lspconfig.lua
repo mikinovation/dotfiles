@@ -161,6 +161,23 @@ function nvimLspconfig.config()
 					"vue",
 				},
 			})
+
+			-- Ruby (Solargraph)
+			lspconfig.solargraph.setup({
+				capabilities = capabilities,
+				settings = {
+					solargraph = {
+						diagnostics = true,
+						completion = true,
+						hover = true,
+						formatting = true,
+						symbols = true,
+						definitions = true,
+						rename = true,
+						references = true,
+					},
+				},
+			})
 		end,
 	}
 end
