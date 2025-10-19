@@ -30,6 +30,7 @@
   imports = [
     ./configs/git.nix
     ./configs/zsh.nix
+    ./configs/nodejs.nix
   ];
 
   # Home Manager can also manage your environment variables through
