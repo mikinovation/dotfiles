@@ -53,8 +53,13 @@
 
   # Manage dotfiles using home.file
   home.file = {
-    # Neovim configuration
-    ".config/nvim".source = ../nvim;
+    # Neovim configuration (exclude lazy-lock.json as it will be managed in data directory)
+    ".config/nvim".source = pkgs.lib.cleanSourceWith {
+      src = ../nvim;
+      filter = path: type:
+        let baseName = baseNameOf path;
+        in baseName != "lazy-lock.json";
+    };
 
     # Wezterm configuration
     ".wezterm.lua".source = ../wezterm/.wezterm.lua;
@@ -68,6 +73,8 @@
     # WSL-specific configuration
     "dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
   };
+
+  xdg.configFile."nix/nix.conf".force = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

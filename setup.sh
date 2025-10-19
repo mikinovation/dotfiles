@@ -15,19 +15,6 @@ setup_nix_config() {
   ln -snfv "$DOTFILES_DIR/config/nix/nix.conf" "$NIX_CONFIG_DIR/nix.conf"
 }
 
-# Deploy dotfiles using Home Manager
-deploy_with_home_manager() {
-  echo "Deploying dotfiles with Home Manager..."
-
-  # Check if home-manager is available
-  if ! command -v home-manager >/dev/null 2>&1; then
-    echo "Home Manager is not installed. Installing via Nix..."
-    nix run home-manager/master -- switch --flake "$DOTFILES_DIR/config/nix#mikinovation"
-  else
-    home-manager switch --flake "$DOTFILES_DIR/config/nix#mikinovation"
-  fi
-}
-
 copy_claude_config() {
   if [ ! -d "$CLAUDE_DIR/commands" ]; then
     mkdir -p "$CLAUDE_DIR/commands"
@@ -54,10 +41,6 @@ main() {
   # Setup Nix configuration first
   setup_nix_config
   echo "Nix config setup done."
-
-  # Deploy all dotfiles using Home Manager
-  deploy_with_home_manager
-  echo "Home Manager deployment done."
 
   # Setup Claude-specific configurations
   copy_claude_config
