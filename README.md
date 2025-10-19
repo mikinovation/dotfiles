@@ -1,6 +1,21 @@
 # dotfiles
 
+このリポジトリはNix/Home-Managerを使用して、宣言的にdotfilesを管理しています。
+
 ## prerequisite
+
+### Nix
+
+Install Nix package manager (required):
+
+```bash
+# Install Nix with flakes support
+sh <(curl -L https://nixos.org/nix/install) --daemon
+
+# Enable flakes (if not already enabled)
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+```
 
 ### Terminal
 
@@ -22,15 +37,9 @@ cp ~/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 suso apt install fdclone
 ```
 
-### Shelldon
+### Sheldon
 
-Install Shelldon
-
-https://github.com/rossmacarthur/sheldon
-
-```bash
-brew install sheldon
-```
+Sheldon will be automatically installed via Home Manager (no manual installation needed).
 
 ### LuaRocks
 
@@ -98,11 +107,42 @@ luarocks install --local busted
 
 ## install
 
-Run this:
+### Automatic Installation (Recommended)
+
+Run the setup script, which will automatically install Home Manager and deploy all configurations:
 
 ```bash
-git clone git@github.com:mikinovation/dotfiles.git ~/.dotfiles
-cd ~/.dotfiles
+git clone git@github.com:mikinovation/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+./setup.sh
+```
+
+### Manual Installation
+
+If you prefer to deploy manually using Home Manager:
+
+```bash
+# Clone the repository
+git clone git@github.com:mikinovation/dotfiles.git ~/dotfiles
+
+# Setup nix.conf first
+mkdir -p ~/.config/nix
+ln -s ~/dotfiles/config/nix/nix.conf ~/.config/nix/nix.conf
+
+# Deploy using Home Manager
+nix run home-manager/master -- switch --flake ~/dotfiles/config/nix#mikinovation
+```
+
+### Update Configuration
+
+After making changes to your configuration files:
+
+```bash
+# Using Home Manager directly
+home-manager switch --flake ~/dotfiles/config/nix#mikinovation
+
+# Or re-run the setup script
+cd ~/dotfiles
 ./setup.sh
 ```
 

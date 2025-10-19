@@ -1,54 +1,31 @@
 #!/bin/bash
 
 DOTFILES_DIR="$HOME/dotfiles"
-NVIM_CONFIG_DIR="$HOME/.config/nvim"
-WEZTERM_CONFIG_DIR="$HOME"
-SHELDON_CONFIG_DIR="$HOME/.config/sheldon"
-ZSH_CONFIG_DIR="$HOME"
 CLAUDE_DIR="$HOME/.claude"
-GIT_CONFIG_DIR="$HOME/.config/git"
+NIX_CONFIG_DIR="$HOME/.config/nix"
 
-link_nvim_config() {
-  if [ ! -d "$NVIM_CONFIG_DIR" ]; then
-    mkdir -p "$NVIM_CONFIG_DIR"
+# Setup nix.conf (system-level configuration)
+setup_nix_config() {
+  if [ ! -d "$NIX_CONFIG_DIR" ]; then
+    mkdir -p "$NIX_CONFIG_DIR"
   fi
- 
-  for file in "$DOTFILES_DIR"/config/nvim/*; do
-    ln -snfv "$file" "$NVIM_CONFIG_DIR/$(basename "$file")"
-  done
+
+  # Only link nix.conf, not the entire directory
+  # (home-manager will manage flake.nix and home.nix)
+  ln -snfv "$DOTFILES_DIR/config/nix/nix.conf" "$NIX_CONFIG_DIR/nix.conf"
 }
 
-link_wezterm_config() {
-  if [ ! -d "$WEZTERM_CONFIG_DIR" ]; then
-    mkdir -p "$WEZTERM_CONFIG_DIR"
-  fi
- 
-  ln -snfv "$DOTFILES_DIR"/config/wezterm/.wezterm.lua "$HOME/.wezterm.lua"
-}
+# Deploy dotfiles using Home Manager
+deploy_with_home_manager() {
+  echo "Deploying dotfiles with Home Manager..."
 
-link_sheldon_config() {
-  if [ ! -d "$SHELDON_CONFIG_DIR" ]; then
-    mkdir -p "$SHELDON_CONFIG_DIR"
+  # Check if home-manager is available
+  if ! command -v home-manager >/dev/null 2>&1; then
+    echo "Home Manager is not installed. Installing via Nix..."
+    nix run home-manager/master -- switch --flake "$DOTFILES_DIR/config/nix#mikinovation"
+  else
+    home-manager switch --flake "$DOTFILES_DIR/config/nix#mikinovation"
   fi
- 
-  ln -snfv "$DOTFILES_DIR"/config/sheldon/plugins.toml "$HOME/.config/sheldon/plugins.toml"
-}
-
-link_zsh_config() {
-  if [ ! -d "$ZSH_CONFIG_DIR" ]; then
-    mkdir -p "$ZSH_CONFIG_DIR"
-  fi
-
-  ln -snfv "$DOTFILES_DIR"/config/zsh/.zshrc "$HOME/.zshrc"
-  ln -snfv "$DOTFILES_DIR"/config/zsh/.p10k.zsh "$HOME/.p10k.zsh"
-}
-
-link_git_config() {
-  if [ ! -d "$GIT_CONFIG_DIR" ]; then
-    mkdir -p "$GIT_CONFIG_DIR"
-  fi
- 
-  ln -snfv "$DOTFILES_DIR"/config/git/config "$GIT_CONFIG_DIR/config"
 }
 
 copy_claude_config() {
@@ -71,25 +48,18 @@ main() {
   echo "Start setup dotfiles..."
 
   if ! command -v npm >/dev/null 2>&1; then
-    echo "Error: npm is not installed or not in PATH"
-    exit 1
+    echo "Warning: npm is not installed or not in PATH"
   fi
 
-  link_nvim_config
-  echo "Linking neovim config done."
+  # Setup Nix configuration first
+  setup_nix_config
+  echo "Nix config setup done."
 
-  link_wezterm_config
-  echo "Linking wezterm config done."
+  # Deploy all dotfiles using Home Manager
+  deploy_with_home_manager
+  echo "Home Manager deployment done."
 
-  link_sheldon_config
-  echo "Linking sheldon config done."
-
-  link_zsh_config
-  echo "Linking zsh config done."
-
-  link_git_config
-  echo "Linking git config done."
-
+  # Setup Claude-specific configurations
   copy_claude_config
   echo "Copying claude commands done."
 
@@ -97,6 +67,8 @@ main() {
   echo "Claude MCP setup done."
 
   echo "Setup dotfiles done."
+  echo ""
+  echo "Note: Please restart your shell or run 'source ~/.zshrc' to apply changes."
 }
 
 main
