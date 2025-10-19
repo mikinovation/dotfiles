@@ -54,43 +54,20 @@
   # Manage dotfiles using home.file
   home.file = {
     # Neovim configuration
-    ".config/nvim" = {
-      source = ../nvim;
-      force = true;
-    };
+    ".config/nvim".source = ../nvim;
 
     # Wezterm configuration
-    ".wezterm.lua" = {
-      source = ../wezterm/.wezterm.lua;
-      force = true;
-    };
+    ".wezterm.lua".source = ../wezterm/.wezterm.lua;
 
     # Powerlevel10k configuration
-    ".p10k.zsh" = {
-      source = ../zsh/plugins/.p10k.zsh;
-      force = true;
-    };
+    ".p10k.zsh".source = ../zsh/plugins/.p10k.zsh;
 
     # Sheldon configuration
-    ".config/sheldon/plugins.toml" = {
-      source = ../sheldon/plugins.toml;
-      force = true;
-    };
+    ".config/sheldon/plugins.toml".source = ../sheldon/plugins.toml;
 
     # WSL-specific configuration
-    "dotfiles/config/zsh/plugins/wsl.zsh" = {
-      source = ../zsh/plugins/wsl.zsh;
-      force = true;
-    };
+    "dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
   };
-
-  # Force overwrite for config files
-  xdg.configFile."git/config".force = true;
-  xdg.configFile."nix/nix.conf".force = true;
-
-  # Force overwrite for zsh files
-  home.file.".zshrc".force = true;
-  home.file.".zshenv".force = true;
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
