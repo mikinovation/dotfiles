@@ -31,6 +31,8 @@
     ./configs/git.nix
     ./configs/zsh.nix
     ./configs/nodejs.nix
+    ./configs/ruby.nix
+    ./configs/database.nix
   ];
 
   # Home Manager can also manage your environment variables through
