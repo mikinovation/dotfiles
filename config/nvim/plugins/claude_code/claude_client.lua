@@ -35,26 +35,16 @@ function claude_client.send_file_paths_to_claude(file_paths)
 	claude_client.send_to_claude(file_paths_text)
 end
 
-function claude_client.send_lines_to_claude(lines, file_info)
-	if not lines or #lines == 0 then
-		vim.notify("No lines to send", vim.log.levels.WARN)
+function claude_client.send_lines_to_claude(file_info)
+	if not file_info or not file_info.path then
+		vim.notify("No file info available", vim.log.levels.WARN)
 		return
 	end
 
-	local content_parts = {}
-	if file_info and file_info.path then
-		local line_info = file_info.line_start == file_info.line_end and file_info.line_start
-			or file_info.line_start .. "-" .. file_info.line_end
-		table.insert(content_parts, file_info.path .. ":" .. line_info)
-		table.insert(content_parts, "")
-	end
+	local line_info = file_info.line_start == file_info.line_end and file_info.line_start
+		or file_info.line_start .. "-" .. file_info.line_end
+	local content = file_info.path .. ":" .. line_info
 
-	-- Add the actual line content
-	for _, line in ipairs(lines) do
-		table.insert(content_parts, line)
-	end
-
-	local content = table.concat(content_parts, "\n")
 	claude_client.send_to_claude(content)
 end
 

@@ -327,13 +327,13 @@ function claudeCode.config()
 			end
 
 			vim.api.nvim_create_user_command("ClaudeCodeSendCurrentLine", function()
-				local lines, file_info = get_current_line_content()
-				claude_client.send_lines_to_claude(lines, file_info)
+				local _, file_info = get_current_line_content()
+				claude_client.send_lines_to_claude(file_info)
 			end, { desc = "Send current line to Claude Code" })
 
 			vim.api.nvim_create_user_command("ClaudeCodeSendSelection", function()
-				local lines, file_info = get_visual_selection_content()
-				claude_client.send_lines_to_claude(lines, file_info)
+				local _, file_info = get_visual_selection_content()
+				claude_client.send_lines_to_claude(file_info)
 			end, { range = true, desc = "Send visual selection to Claude Code" })
 
 			vim.keymap.set(
