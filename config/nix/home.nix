@@ -32,6 +32,7 @@
     ./configs/zsh.nix
     ./configs/nodejs.nix
     ./configs/ruby.nix
+    ./configs/rust.nix
     ./configs/database.nix
   ];
 
