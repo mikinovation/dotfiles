@@ -22,6 +22,7 @@
     sheldon  # Zsh plugin manager
     fnm      # Fast Node Manager
     uv       # Python package manager
+    zoxide   # Smart cd replacement
 
     # Add more packages here as needed
   ];
