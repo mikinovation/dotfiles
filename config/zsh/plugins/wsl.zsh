@@ -5,8 +5,8 @@ if grep -q microsoft /proc/version; then
   alias pbcopy="clip.exe"
   alias pbpaste="powershell.exe -command 'Get-Clipboard' | tr -d '\r'"
 
-  # Japanese locale settings for WSL
-  export LANG=ja_JP.UTF-8
-  export LC_ALL=ja_JP.UTF-8
-  export LANGUAGE=ja_JP:ja
+  # Locale settings for WSL
+  export LANG=en_US.UTF-8
+  export LC_ALL=en_US.UTF-8
+  export LANGUAGE=en_US:en
 fi
