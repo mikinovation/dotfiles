@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nodePkgs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -23,8 +23,7 @@
     fnm      # Fast Node Manager
     uv       # Python package manager
     zoxide   # Smart cd replacement
-
-    # Add more packages here as needed
+    nodePkgs."@anthropic-ai/claude-code"  # Claude Code CLI
   ];
 
   # Import program configurations

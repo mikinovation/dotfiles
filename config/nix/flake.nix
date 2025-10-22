@@ -19,6 +19,7 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
     in {
       # Home Manager configuration
       homeConfigurations = {
@@ -26,15 +27,10 @@
         mikinovation = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home.nix ];
+          extraSpecialArgs = {
+            inherit nodePkgs;
+          };
         };
       };
-
-      # Keep existing devShells for development
-      devShells.${system}.default = pkgs.mkShell {
-        packages = [ pkgs.hello ];
-      };
-
-      # Keep existing packages
-      packages.${system}.default = pkgs.hello;
     };
 }
