@@ -1,0 +1,8 @@
+{
+  "enabledMcpjsonServers": [
+    "deepwiki",
+    "nixos",
+    "playwright",
+    "serena"
+  ]
+}

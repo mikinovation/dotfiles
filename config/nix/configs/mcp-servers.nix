@@ -26,23 +26,13 @@ let
     settings.servers = {
       # DeepWiki MCP Server (SSE connection)
       deepwiki = {
+        type = "sse";
         url = "https://mcp.deepwiki.com/sse";
       };
     };
   };
 in
 {
-  # Debug: Output mcpConfig JSON content
-  warnings = [
-    "MCP Config path: ${mcpConfig}"
-    "MCP Config JSON: ${builtins.readFile "${mcpConfig}"}"
-  ];
-
   # Write MCP configuration as JSON file
   home.file.".mcp.json".text = builtins.readFile "${mcpConfig}";
-
-  # Add a convenient environment variable
-  home.sessionVariables = {
-    MCP_CONFIG_DIR = "${config.home.homeDirectory}/.config/claude";
-  };
 }
