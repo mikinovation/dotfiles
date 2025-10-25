@@ -7,6 +7,10 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mcp-servers-nix = {
+      url = "github:natsukium/mcp-servers-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -14,6 +18,7 @@
       self,
       nixpkgs,
       home-manager,
+      mcp-servers-nix,
       ...
     }:
     let
@@ -28,7 +33,7 @@
           inherit pkgs;
           modules = [ ./home.nix ];
           extraSpecialArgs = {
-            inherit nodePkgs;
+            inherit nodePkgs mcp-servers-nix;
           };
         };
       };

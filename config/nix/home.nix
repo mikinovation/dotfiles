@@ -1,4 +1,4 @@
-{ config, pkgs, nodePkgs, ... }:
+{ config, pkgs, nodePkgs, mcp-servers-nix, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -35,6 +35,7 @@
     ./configs/ruby.nix
     ./configs/rust.nix
     ./configs/database.nix
+    ./configs/mcp-servers.nix
   ];
 
   # Home Manager can also manage your environment variables through
