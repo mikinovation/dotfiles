@@ -12,6 +12,12 @@
     extraPackages = with pkgs; [
       # Language servers
       lua-language-server
+      rust-analyzer
+      typescript-language-server
+      tailwindcss-language-server
+      vscode-langservers-extracted  # HTML, CSS, JSON, ESLint
+      solargraph  # Ruby
+      vue-language-server  # Vue (volar)
 
       # Formatters and linters
       stylua  # Lua formatter
