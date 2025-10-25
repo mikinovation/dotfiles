@@ -9,6 +9,7 @@ vim.g.have_nerd_font = false
 
 require("options")
 require("plugins")
+require("lsp")
 require("keymaps")
 
 -- Create user command for lazydocker
