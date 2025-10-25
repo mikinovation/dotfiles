@@ -30,6 +30,7 @@
   imports = [
     ./configs/git.nix
     ./configs/zsh.nix
+    ./configs/neovim.nix
     ./configs/nodejs.nix
     ./configs/ruby.nix
     ./configs/rust.nix
@@ -53,7 +54,7 @@
   #  /etc/profiles/per-user/mikinovation/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
-    # EDITOR = "emacs";
+    # Note: EDITOR and VISUAL are set in neovim.nix
   };
 
   # Manage dotfiles using home.file
