@@ -61,7 +61,7 @@ function telescope.config()
 							["<C-j>"] = require("telescope.actions").move_selection_next,
 							["<C-k>"] = require("telescope.actions").move_selection_previous,
 							["<C-q>"] = require("telescope.actions").send_to_qflist
-								+ require("telescope.actions").open_qflist,
+							    + require("telescope.actions").open_qflist,
 							["<C-s>"] = require("telescope.actions").toggle_selection,
 							["<C-u>"] = false,
 							["<C-d>"] = false,
@@ -200,7 +200,8 @@ function telescope.config()
 						map("i", "<CR>", function(prompt_bufnr)
 							local confirmation = vim.fn.input("Execute? (y/n): ")
 							if confirmation:lower() == "y" then
-								vim.cmd("%s/" .. search_term .. "/" .. replace_term .. "/g")
+								vim.cmd("%s/" ..
+								search_term .. "/" .. replace_term .. "/g")
 								require("telescope.actions").close(prompt_bufnr)
 							end
 						end)
@@ -209,19 +210,34 @@ function telescope.config()
 				})
 			end
 
+			-- Search for yanked text (from default register)
+			local function grep_yanked_text()
+				local yanked = vim.fn.getreg('"')
+				-- Remove newlines and extra whitespace for cleaner search
+				yanked = yanked:gsub("[\n\r]+", " "):gsub("^%s+", ""):gsub("%s+$", "")
+				if yanked == "" then
+					vim.notify("No text in yank register", vim.log.levels.WARN)
+					return
+				end
+				require("telescope.builtin").grep_string({ search = yanked })
+			end
+
+			-- Find files with yanked text as initial search
+			local function find_files_yanked()
+				local yanked = vim.fn.getreg('"')
+				yanked = yanked:gsub("[\n\r]+", " "):gsub("^%s+", ""):gsub("%s+$", "")
+				require("telescope.builtin").find_files({ default_text = yanked })
+			end
+
 			-- Basic Telescope keymappings
 			local builtin = require("telescope.builtin")
-			vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "[F]ind [H]elp" })
-			vim.keymap.set("n", "<leader>fk", builtin.keymaps, { desc = "[F]ind [K]eymaps" })
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
-			vim.keymap.set("n", "<leader>fs", builtin.builtin, { desc = "[F]ind [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind Current [W]ord" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
-			vim.keymap.set("n", "<leader>fd", builtin.diagnostics, { desc = "[F]ind [D]iagnostics" })
 			vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
-			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>f.", builtin.oldfiles,
+				{ desc = '[F]ind Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
-			vim.keymap.set("n", "<leader>fy", ":Telescope yank_history<CR>", { desc = "[F]ind [Y]ank History" })
 
 			-- Additional Telescope keymappings
 			vim.keymap.set("n", "<leader>f/", function()
@@ -273,11 +289,10 @@ function telescope.config()
 				})
 			end, { desc = "[F]ile Browser - [H]ome Directory" })
 
-			vim.keymap.set("n", "<leader>fp", ":Telescope project<CR>", { desc = "[F]ind [P]roject" })
-			vim.keymap.set("n", "<leader>fR", ":Telescope repo list<CR>", { desc = "[F]ind [R]epositories" })
 			vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "[F]ind [C]ommands" })
 			vim.keymap.set("n", "<leader>fm", ":Telescope media_files<CR>", { desc = "[F]ind [M]edia Files" })
-			vim.keymap.set("n", "<leader>sf", ":Telescope frecency<CR>", { desc = "[S]earch [F]requent Files" })
+			vim.keymap.set("n", "<leader>sf", ":Telescope frecency<CR>",
+				{ desc = "[S]earch [F]requent Files" })
 
 			-- Git integration
 			vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "[G]it [S]tatus" })
@@ -289,6 +304,8 @@ function telescope.config()
 			vim.keymap.set("n", "<leader>sw", grep_current_word, { desc = "[S]earch Current [W]ord" })
 			vim.keymap.set("v", "<leader>sw", grep_visual_selection, { desc = "[S]earch Selected [W]ord" })
 			vim.keymap.set("n", "<leader>sr", search_and_replace, { desc = "[S]earch and [R]eplace" })
+			vim.keymap.set("n", "<leader>fyg", grep_yanked_text, { desc = "[F]ind [Y]anked Text (Grep)" })
+			vim.keymap.set("n", "<leader>fyf", find_files_yanked, { desc = "[F]ind [Y]anked Text (Files)" })
 		end,
 	}
 end
