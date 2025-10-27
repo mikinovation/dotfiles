@@ -48,9 +48,9 @@ function telescope.config()
 						height = 0.9,
 						preview_cutoff = 120,
 					},
-					file_sorter = require("telescope.sorters").get_fuzzy_file,
+					file_sorter = require("telescope.sorters").get_fzy_sorter,
 					file_ignore_patterns = { "node_modules", ".git/", "dist/" },
-					generic_sorter = require("telescope.sorters").get_generic_fuzzy_sorter,
+					generic_sorter = require("telescope.sorters").get_fzy_sorter,
 					winblend = 0,
 					border = {},
 					borderchars = { "─", "│", "─", "│", "╭", "╮", "╯", "╰" },
@@ -93,6 +93,9 @@ function telescope.config()
 						override_generic_sorter = true,
 						override_file_sorter = true,
 						case_mode = "smart_case",
+						-- Prioritize substring matches
+						-- Available matching modes: 'prefix', 'suffix', 'exact', 'inverse-exact', 'inverse-prefix', 'inverse-suffix'
+						-- Use default fuzzy matching but with tighter scoring for substring matches
 					},
 					file_browser = {
 						-- theme = "dropdown",
