@@ -61,7 +61,7 @@ function telescope.config()
 							["<C-j>"] = require("telescope.actions").move_selection_next,
 							["<C-k>"] = require("telescope.actions").move_selection_previous,
 							["<C-q>"] = require("telescope.actions").send_to_qflist
-							    + require("telescope.actions").open_qflist,
+								+ require("telescope.actions").open_qflist,
 							["<C-s>"] = require("telescope.actions").toggle_selection,
 							["<C-u>"] = false,
 							["<C-d>"] = false,
@@ -203,8 +203,7 @@ function telescope.config()
 						map("i", "<CR>", function(prompt_bufnr)
 							local confirmation = vim.fn.input("Execute? (y/n): ")
 							if confirmation:lower() == "y" then
-								vim.cmd("%s/" ..
-								search_term .. "/" .. replace_term .. "/g")
+								vim.cmd("%s/" .. search_term .. "/" .. replace_term .. "/g")
 								require("telescope.actions").close(prompt_bufnr)
 							end
 						end)
@@ -238,8 +237,7 @@ function telescope.config()
 			vim.keymap.set("n", "<leader>fw", builtin.grep_string, { desc = "[F]ind Current [W]ord" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[F]ind by [G]rep" })
 			vim.keymap.set("n", "<leader>fr", builtin.resume, { desc = "[F]ind [R]esume" })
-			vim.keymap.set("n", "<leader>f.", builtin.oldfiles,
-				{ desc = '[F]ind Recent Files ("." for repeat)' })
+			vim.keymap.set("n", "<leader>f.", builtin.oldfiles, { desc = '[F]ind Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader>fb", builtin.buffers, { desc = "[F]ind [B]uffers" })
 
 			-- Additional Telescope keymappings
@@ -294,8 +292,7 @@ function telescope.config()
 
 			vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "[F]ind [C]ommands" })
 			vim.keymap.set("n", "<leader>fm", ":Telescope media_files<CR>", { desc = "[F]ind [M]edia Files" })
-			vim.keymap.set("n", "<leader>sf", ":Telescope frecency<CR>",
-				{ desc = "[S]earch [F]requent Files" })
+			vim.keymap.set("n", "<leader>sf", ":Telescope frecency<CR>", { desc = "[S]earch [F]requent Files" })
 
 			-- Git integration
 			vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "[G]it [S]tatus" })
