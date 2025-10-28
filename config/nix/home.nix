@@ -82,6 +82,9 @@
 
     # Claude Code skills
     ".claude/skills".source = ../claude/skills;
+
+    # Claude Code agents (subagents)
+    ".claude/agents".source = ../claude/agents;
   };
 
   xdg.configFile."nix/nix.conf".force = true;
