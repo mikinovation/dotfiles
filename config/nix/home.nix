@@ -36,6 +36,7 @@
     ./configs/rust.nix
     ./configs/database.nix
     ./configs/mcp-servers.nix
+    ./configs/textlint.nix
   ];
 
   # Home Manager can also manage your environment variables through
