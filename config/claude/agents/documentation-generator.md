@@ -46,109 +46,6 @@ Mermaidを使うことで、テキストベースで保守しやすく、バー�
 - **設計パターン**: 採用されている設計パターンとその理由
 - **データフロー**: データの流れと状態管理
 
-#### フォーマット例
-```markdown
-# アーキテクチャ概要
-
-## システム概要
-[プロジェクトの目的、スコープ、主要機能]
-
-## アーキテクチャ図
-
-```mermaid
-graph TB
-    subgraph "プレゼンテーション層"
-        UI[ユーザーインターフェース]
-        API[REST API]
-    end
-
-    subgraph "ビジネスロジック層"
-        Service[ビジネスサービス]
-        Domain[ドメインモデル]
-    end
-
-    subgraph "データアクセス層"
-        Repository[リポジトリ]
-        DB[(データベース)]
-    end
-
-    UI --> API
-    API --> Service
-    Service --> Domain
-    Service --> Repository
-    Repository --> DB
-```
-
-## システム構成図
-
-```mermaid
-C4Context
-    title システムコンテキスト図
-
-    Person(user, "ユーザー", "システムの利用者")
-    System(app, "アプリケーション", "メインシステム")
-    System_Ext(auth, "認証サービス", "外部認証")
-    SystemDb(db, "データベース", "PostgreSQL")
-
-    Rel(user, app, "使用")
-    Rel(app, auth, "認証")
-    Rel(app, db, "データ保存")
-```
-
-## ディレクトリ構造
-```
-project/
-├── src/           # ソースコード
-│   ├── core/      # コアロジック
-│   ├── api/       # API 層
-│   └── utils/     # ユーティリティ
-├── tests/         # テストコード
-└── docs/          # ドキュメント
-```
-
-## 技術スタック
-[使用言語、フレームワーク、主要ライブラリ]
-
-## 主要コンポーネント
-
-```mermaid
-classDiagram
-    class CoreModule {
-        +processData()
-        +validateInput()
-    }
-
-    class APILayer {
-        +handleRequest()
-        +formatResponse()
-    }
-
-    class DataAccess {
-        +query()
-        +save()
-    }
-
-    APILayer --> CoreModule
-    CoreModule --> DataAccess
-```
-
-## データフロー
-
-```mermaid
-sequenceDiagram
-    participant Client
-    participant API
-    participant Service
-    participant DB
-
-    Client->>API: HTTPリクエスト
-    API->>Service: データ処理依頼
-    Service->>DB: データ取得
-    DB-->>Service: データ返却
-    Service-->>API: 処理結果
-    API-->>Client: HTTPレスポンス
-```
-```
 
 ### 2. API リファレンス
 
@@ -162,43 +59,6 @@ sequenceDiagram
 - **使用例**: 実際のコード例
 - **関連項目**: 関連する関数やクラスへのリンク
 
-#### フォーマット例
-```markdown
-# UserService API
-
-## createUser
-
-新しいユーザーを作成します。
-
-### シグネチャ
-```
-function createUser(userData: UserCreateData): Promise<User>
-```
-
-### パラメータ
-
-| 名前 | 型 | 必須 | 説明 |
-|------|-----|------|------|
-| userData | UserCreateData | Yes | ユーザー作成データ |
-| userData.email | string | Yes | メールアドレス（一意） |
-| userData.name | string | Yes | ユーザー名（3-50文字） |
-| userData.role | UserRole | No | ユーザーロール（デフォルト: "user"） |
-
-### 戻り値
-
-`Promise<User>` - 作成されたユーザーオブジェクト
-
-### 例外
-
-- `ValidationError` - 入力データが無効な場合
-- `DuplicateEmailError` - メールアドレスが既に存在する場合
-- `DatabaseError` - データベース操作に失敗した場合
-
-### 関連項目
-- [updateUser](#updateuser) - ユーザー情報の更新
-- [deleteUser](#deleteuser) - ユーザーの削除
-- [UserCreateData](#usercreatedata) - ユーザー作成データの型定義
-```
 
 ### 3. モジュール/パッケージドキュメント
 
@@ -212,60 +72,6 @@ function createUser(userData: UserCreateData): Promise<User>
 - **依存関係**: 他モジュールへの依存
 - **内部構造**: 主要な内部コンポーネント
 
-#### フォーマット例
-```markdown
-# auth モジュール
-
-## 概要
-
-`auth` モジュールは認証・認可機能を提供します。JWT ベースの認証、ロールベースアクセス制御（RBAC）、セッション管理をサポートします。
-
-## エクスポート
-
-### 関数
-- `authenticate(credentials)` - ユーザー認証
-- `generateToken(user)` - JWT トークン生成
-- `verifyToken(token)` - トークン検証
-- `authorize(roles)` - 認可ミドルウェア
-
-### クラス
-- `AuthService` - 認証サービスのメインクラス
-- `TokenManager` - トークン管理クラス
-
-### 型
-- `Credentials` - 認証情報の型
-- `AuthToken` - 認証トークンの型
-- `UserRole` - ユーザーロールの列挙型
-
-## 設定
-
-### 環境変数
-- `JWT_SECRET` - JWT 署名用のシークレットキー（必須）
-- `JWT_EXPIRY` - トークンの有効期限（デフォルト: "1h"）
-- `BCRYPT_ROUNDS` - パスワードハッシュのラウンド数（デフォルト: 10）
-
-## 依存関係
-
-- `jsonwebtoken` - JWT 処理
-- `bcrypt` - パスワードハッシュ化
-- `@myproject/database` - データベースアクセス
-
-## 内部構造
-
-```
-auth/
-├── index.ts              # エントリーポイント
-├── services/
-│   ├── AuthService.ts    # 認証サービス
-│   └── TokenManager.ts   # トークン管理
-├── middleware/
-│   └── authorize.ts      # 認可ミドルウェア
-├── utils/
-│   └── hash.ts          # ハッシュユーティリティ
-└── types/
-    └── index.ts         # 型定義
-```
-```
 
 ### 4. 使用例・チュートリアル
 
@@ -441,72 +247,14 @@ auth/
 
 ### API リファレンステンプレート
 
-```markdown
-# [モジュール名] API リファレンス
-
-## 概要
-[モジュールの簡単な説明]
-
-## インストール
-```bash
-[インストールコマンド]
-```
-
-## 基本的な使用方法
-```[language]
-[基本的な使用例]
-```
-
-## API
-
-### [関数/クラス名]
-
-[簡単な説明]
-
-#### シグネチャ
-```[language]
-[関数/メソッドのシグネチャ]
-```
-
-#### パラメータ
-| 名前 | 型 | 必須 | デフォルト | 説明 |
-|------|-----|------|-----------|------|
-| param1 | type | Yes/No | default | 説明 |
-
-#### 戻り値
-[戻り値の型と説明]
-
-#### 例外
-- `ExceptionType` - [発生条件]
-
-#### 使用例
-```[language]
-[使用例のコード]
-```
-
-#### 関連項目
-- [関連する関数/クラス]
-
-## 型定義
-
-### [型名]
-```[language]
-[型定義]
-```
-
-[説明]
-
-## エラーハンドリング
-[エラー処理のベストプラクティス]
-
-## ベストプラクティス
-- [推奨される使い方]
-- [避けるべき使い方]
-
-## 変更履歴
-### v1.0.0
-- [変更内容]
-```
+基本構造:
+- 概要とインストール方法
+- 基本的な使用方法
+- API詳細（シグネチャ、パラメータ、戻り値、例外、使用例）
+- 型定義
+- エラーハンドリング
+- ベストプラクティス
+- 変更履歴
 
 ### アーキテクチャドキュメントテンプレート
 
@@ -643,20 +391,7 @@ classDiagram
     Repository --> Model : manages
 ```
 
-### UserController
-**責務**: ユーザー関連のHTTPリクエスト処理
-**技術**: Express.js
-**依存関係**: UserService, AuthMiddleware
-
-### UserService
-**責務**: ユーザー管理のビジネスロジック
-**技術**: TypeScript
-**依存関係**: UserRepository, EmailService
-
-### UserRepository
-**責務**: ユーザーデータの永続化
-**技術**: Prisma ORM
-**依存関係**: PostgreSQL
+[各コンポーネントの責務、使用技術、依存関係の説明]
 
 ## データフロー
 
@@ -748,7 +483,7 @@ sequenceDiagram
 「初心者向けに、このプロジェクトを使って簡単な API を作成するチュートリアルを作成してください。」
 
 ### 入力例4: 既存ドキュメントの更新
-「docs/api.md を最新のコードに合わせて更新してください。特に UserService クラスの変更を反映してください。」
+「docs/api.md を最新のコードに合わせて更新してください。」
 
 ### 入力例5: トラブルシューティングガイド
 「よくある実行時エラーとその解決方法をまとめたトラブルシューティングガイドを作成してください。」
