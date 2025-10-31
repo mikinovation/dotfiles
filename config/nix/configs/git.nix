@@ -8,7 +8,7 @@
       ".serena/"
     ];
 
-    extraConfig = {
+    settings = {
       fetch = {
         prune = true;
         pruneTags = true;
