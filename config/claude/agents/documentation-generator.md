@@ -107,10 +107,7 @@ project/
 ```
 
 ## 技術スタック
-- **言語**: TypeScript 5.0
-- **フレームワーク**: Express.js
-- **データベース**: PostgreSQL
-- **テスト**: Jest
+[使用言語、フレームワーク、主要ライブラリ]
 
 ## 主要コンポーネント
 
@@ -280,67 +277,6 @@ auth/
 - **ステップバイステップ**: 段階的な実装手順（概要レベル）
 - **主要な処理フロー**: Mermaidシーケンス図で視覚化
 - **応用例**: バリエーションや拡張方法
-
-#### フォーマット例
-```markdown
-# チュートリアル: ユーザー認証の実装
-
-## 概要
-
-このチュートリアルでは、JWT を使用したユーザー認証システムを実装します。
-
-## 学習内容
-
-- ユーザー登録エンドポイントの作成
-- ログイン機能の実装
-- 認証ミドルウェアの設定
-- 保護されたルートの作成
-
-## 前提条件
-
-- Node.js 18 以上
-- Express.js の基本知識
-- TypeScript の基本知識
-
-## 実装ステップ
-
-1. プロジェクトのセットアップ（必要なパッケージのインストール）
-2. ユーザーモデルの作成
-3. 認証サービスの実装（登録・ログイン）
-4. APIエンドポイントの作成
-5. 認証ミドルウェアの実装
-6. 保護されたルートの設定
-
-## 認証フロー
-
-```mermaid
-sequenceDiagram
-    actor User
-    participant Client
-    participant API
-    participant AuthService
-    participant DB
-
-    User->>Client: ログイン情報入力
-    Client->>API: POST /auth/login
-    API->>AuthService: 認証処理
-    AuthService->>DB: ユーザー検証
-    DB-->>AuthService: ユーザー情報
-    AuthService->>AuthService: JWT生成
-    AuthService-->>API: トークン
-    API-->>Client: JWT返却
-    Client->>API: リクエスト + JWT
-    API->>API: トークン検証
-    API-->>Client: レスポンス
-```
-
-## 次のステップ
-
-- パスワードリセット機能の追加
-- リフレッシュトークンの実装
-- ロールベースアクセス制御（RBAC）
-- 二要素認証（2FA）
-```
 
 ### 5. トラブルシューティングガイド
 
@@ -659,39 +595,7 @@ flowchart TD
 - **データアクセス層**: データ永続化、キャッシング、外部API連携
 
 ## 技術スタック
-
-### 言語・フレームワーク
-| カテゴリ | 技術 | バージョン | 用途 |
-|---------|------|-----------|------|
-| 言語 | TypeScript | 5.0 | メイン開発言語 |
-| ランタイム | Node.js | 20.x | サーバーサイド実行環境 |
-| フレームワーク | Express.js | 4.x | Webアプリケーション |
-| ORM | Prisma | 5.x | データベースアクセス |
-
-### 主要ライブラリ
-
-```mermaid
-mindmap
-  root((技術スタック))
-    フロントエンド
-      React 18
-      TypeScript
-      TailwindCSS
-    バックエンド
-      Express.js
-      Prisma ORM
-      Zod
-    認証
-      JWT
-      bcrypt
-    テスト
-      Jest
-      Supertest
-    インフラ
-      Docker
-      PostgreSQL
-      Redis
-```
+[使用言語、フレームワーク、主要ライブラリ、バージョン情報]
 
 ## ディレクトリ構造
 ```
@@ -796,16 +700,8 @@ sequenceDiagram
 
 ## 今後の拡張性
 [将来の拡張計画]
-```
 
 ## ツール活用
-
-### ドキュメント生成ツール
-- **TypeDoc** (TypeScript): TSDoc コメントから自動生成
-- **JSDoc** (JavaScript): コメントから HTML ドキュメント生成
-- **Sphinx** (Python): reStructuredText から HTML 生成
-- **Rustdoc** (Rust): コメントから HTML ドキュメント生成
-- **Javadoc** (Java): コメントから API ドキュメント生成
 
 ### 図表作成ツール
 - **Mermaid** (推奨): テキストベースの図表作成、GitHubネイティブサポート
