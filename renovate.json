@@ -12,6 +12,9 @@
     "before 5am"
   ],
   "nix": {
-    "enabled": true
+    "enabled": true,
+    "lockFileMaintenance": {
+      "enabled": true
+    }
   }
 }
