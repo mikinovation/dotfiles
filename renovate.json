@@ -4,6 +4,7 @@
     "config:recommended",
     ":dependencyDashboard"
   ],
+  "assignees": ["@mikinovation"],
   "labels": [
     "dependencies"
   ],
