@@ -1,4 +1,6 @@
 {
+  "autoUpdate": false,
+  "alwaysThinkingEnabled": false,
   "permissions": {
     "ask": [
       "mcp__playwright__browser_navigate(*)",
@@ -328,7 +330,8 @@
       "Bash(cat /etc/passwd)",
       "Bash(curl * | bash)",
       "Bash(wget * | sh)",
-      "Bash(dd if=*)"
+      "Bash(dd if=*)",
+      "Bash(cd *)"
     ]
   }
 }
