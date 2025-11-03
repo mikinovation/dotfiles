@@ -13,7 +13,7 @@
       # Language servers
       lua-language-server
       rust-analyzer
-      typescript-language-server
+      vtsls
       tailwindcss-language-server
       vscode-langservers-extracted  # HTML, CSS, JSON, ESLint
       solargraph  # Ruby
