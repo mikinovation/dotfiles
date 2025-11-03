@@ -174,7 +174,8 @@ local vue_ls_config = {
 			local param = unpack(result)
 			local id, command, payload = unpack(param)
 			ts_client:exec_cmd({
-				title = "vue_request_forward", -- You can give title anything as it's used to represent a command in the UI, `:h Client:exec_cmd`
+				-- Title used to represent a command in the UI, `:h Client:exec_cmd`
+				title = "vue_request_forward",
 				command = "typescript.tsserverRequest",
 				arguments = {
 					command,
@@ -193,10 +194,29 @@ local vue_ls_config = {
 	end,
 }
 
-vim.lsp.config("vtsls", vtsls_config)
-vim.lsp.config("vue_ls", vue_ls_config)
-vim.lsp.config("ts_ls", ts_ls_config)
-vim.lsp.enable({ "vtsls", "vue_ls" })
+-- vtsls (TypeScript/JavaScript LSP)
+vim.lsp.config.vtsls = vim.tbl_deep_extend("force", {
+	cmd = { "vtsls", "--stdio" },
+	filetypes = tsserver_filetypes,
+	root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+	capabilities = capabilities,
+}, vtsls_config)
+
+-- Vue Language Server
+vim.lsp.config.vue_ls = vim.tbl_deep_extend("force", {
+	cmd = { "vue-language-server", "--stdio" },
+	filetypes = { "vue" },
+	root_markers = { "package.json", ".git" },
+	capabilities = capabilities,
+}, vue_ls_config)
+
+-- TypeScript Language Server (fallback)
+vim.lsp.config.ts_ls = vim.tbl_deep_extend("force", {
+	cmd = { "typescript-language-server", "--stdio" },
+	filetypes = tsserver_filetypes,
+	root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
+	capabilities = capabilities,
+}, ts_ls_config)
 
 -- TailwindCSS
 vim.lsp.config.tailwindcss = {
@@ -237,6 +257,3 @@ vim.lsp.config.solargraph = {
 
 -- Enable all configured LSP servers
 vim.lsp.enable({ "lua_ls", "rust_analyzer", "vtsls", "vue_ls", "tailwindcss", "solargraph" })
-
--- Semantic tokens highlight for Vue components (version 3.0.5+)
-vim.api.nvim_set_hl(0, "@lsp.type.component", { link = "Special" })
