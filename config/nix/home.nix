@@ -24,7 +24,7 @@
     uv       # Python package manager
     zoxide   # Smart cd replacement
     nodePkgs."@anthropic-ai/claude-code"
-    nodePkgs."@vue/language-server",
+    nodePkgs."@vue/language-server"
     nodePkgs."@vue/typescript-plugin"
   ];
 
