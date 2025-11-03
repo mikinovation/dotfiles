@@ -88,6 +88,9 @@
 
     # Claude Code agents (subagents)
     ".claude/agents".source = ../claude/agents;
+
+    # Claude Code settings (shared across projects)
+    ".claude/settings.json".source = ../claude/settings.json;
   };
 
   xdg.configFile."nix/nix.conf".force = true;
