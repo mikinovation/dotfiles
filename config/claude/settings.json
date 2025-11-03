@@ -322,7 +322,6 @@
       "Write(**/secrets.json)",
       "Write(**/appsettings.secrets.json)",
       "Write(**/credentials.json)",
-      "Bash(rm -rf *)",
       "Bash(rm -rf /)",
       "Bash(sudo rm *)",
       "Bash(chmod -R 777 *)",
