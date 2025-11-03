@@ -23,7 +23,9 @@
     fnm      # Fast Node Manager
     uv       # Python package manager
     zoxide   # Smart cd replacement
-    nodePkgs."@anthropic-ai/claude-code"  # Claude Code CLI
+    nodePkgs."@anthropic-ai/claude-code"
+    nodePkgs."@vue/language-server",
+    nodePkgs."@vue/typescript-plugin"
   ];
 
   # Import program configurations

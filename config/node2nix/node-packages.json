@@ -1,1 +1,5 @@
-["@anthropic-ai/claude-code", "@vue/language-server", "@vue/typescript-plugin"]
+[
+	"@anthropic-ai/claude-code",
+	"@vue/language-server",
+	"@vue/typescript-plugin"
+]
