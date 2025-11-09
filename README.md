@@ -57,10 +57,18 @@ linter for lua
 sudo luarocks install luacheck
 ```
 
-### npm packages
+### node2nix
 
-```
-npm install -g typescript typescript-language-server @tailwindcss/language-server 
+To update npm packages managed by node2nix:
+
+```bash
+# Navigate to the node2nix directory
+cd ~/dotfiles/config/node2nix
+
+# Edit node-packages.json to add/update packages
+
+# Run node2nix to generate Nix expressions
+nix-shell -p nodePackages.node2nix --command "node2nix -i ./node-packages.json -o node-packages.nix"
 ```
 
 ### win32yank (for WSL)
