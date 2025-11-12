@@ -262,20 +262,6 @@ function telescope.config()
 			-- Extension keymappings
 			vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>", { desc = "[F]ile [B]rowser" })
 
-			-- Open current file's directory in file_browser
-			vim.keymap.set("n", "<leader>fo", function()
-				require("telescope").extensions.file_browser.file_browser({
-					path = "%:p:h",
-					cwd = vim.fn.expand("%:p:h"),
-					respect_gitignore = false,
-					hidden = true,
-					grouped = true,
-					previewer = false,
-					initial_mode = "normal",
-					layout_config = { height = 40 },
-				})
-			end, { desc = "[F]ile Browser - [O]pen Current Directory" })
-
 			-- Open home directory in file_browser
 			vim.keymap.set("n", "<leader>fH", function()
 				require("telescope").extensions.file_browser.file_browser({
