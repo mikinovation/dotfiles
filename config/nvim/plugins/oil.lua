@@ -9,12 +9,7 @@ function oil.config()
 		config = function()
 			require("oil").setup({})
 
-			vim.keymap.set(
-				"n",
-				"<leader>fo",
-				require("oil").open,
-				{ desc = "Open parent directory" }
-			)
+			vim.keymap.set("n", "<leader>fo", require("oil").open, { desc = "Open parent directory" })
 		end,
 	}
 end
