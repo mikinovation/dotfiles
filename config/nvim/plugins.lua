@@ -62,6 +62,7 @@ require("lazy").setup({
 	require("plugins.yanky").config(),
 	require("plugins.claude-code").config(),
 	require("plugins.open-browser").config(),
+	require("plugins.oil").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
