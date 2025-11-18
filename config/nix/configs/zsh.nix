@@ -36,8 +36,12 @@
       fi
       eval "$(fnm env --use-on-cd --shell zsh)"
 
-      # zoxide configuration
-      eval "$(zoxide init zsh --cmd cd)"
+      # zoxide configuration (to avoid conflicts with claude code)
+      if [[ $- == *i* ]]; then
+        eval "$(zoxide init zsh --cmd cd)"
+      else
+        eval "$(zoxide init zsh --cmd z)"
+      fi
 
       # Load WSL specific configurations if on WSL
       [[ -f ~/dotfiles/config/zsh/plugins/wsl.zsh ]] && source ~/dotfiles/config/zsh/plugins/wsl.zsh
