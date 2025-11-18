@@ -44,21 +44,17 @@ function git_operations.find_pr_template()
 	return nil
 end
 
-function git_operations.get_remote_branches()
-	local fetch_handle = io.popen("git fetch 2>&1")
-	if fetch_handle then
-		fetch_handle:read("*a")
-		fetch_handle:close()
-	end
-
-	local handle = io.popen("git branch -r 2>/dev/null | grep -v 'HEAD' | sed 's/^[[:space:]]*//' | sed 's|^origin/||'")
+function git_operations.get_local_branches()
+	local handle = io.popen("git branch 2>/dev/null | sed 's/^[[:space:]]*\\*\\?[[:space:]]*//'")
 	if not handle then
 		return {}
 	end
 
 	local branches = {}
 	for line in handle:lines() do
-		table.insert(branches, line)
+		if line ~= "" then
+			table.insert(branches, line)
+		end
 	end
 	handle:close()
 

@@ -86,18 +86,18 @@ function claudeCode.config()
 				end)
 			end
 
-			local function get_remote_branches()
+			local function get_local_branches()
 				local git_operations = require("plugins.claude_code.git_operations")
-				local branches = git_operations.get_remote_branches()
+				local branches = git_operations.get_local_branches()
 				if #branches == 0 then
-					vim.notify("Error: No remote branches found.", vim.log.levels.ERROR)
+					vim.notify("Error: No local branches found.", vim.log.levels.ERROR)
 					return {}
 				end
 				return branches
 			end
 
 			local function select_base_branch(state, callback)
-				local branches = get_remote_branches()
+				local branches = get_local_branches()
 				vim.ui.select(branches, {
 					prompt = "Select base branch for PR:",
 					format_item = function(item)
