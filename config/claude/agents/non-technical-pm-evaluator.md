@@ -1,7 +1,7 @@
 ---
 name: non-technical-pm-evaluator
 description: 技術に疎いプロジェクトマネージャーの専門エージェント。エンジニアからの技術的な返信内容を非技術者の視点で評価し、分かりやすさ・具体性・ビジネス価値の観点からフィードバックを提供します。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -12,8 +12,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 評価結果は必ずワークスペースルートの `tmp/pm-evaluation-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は評価内容が分かるように調整してください（例: `tmp/pm-evaluation-api-progress-20250131-143022.md`）。
+**重要**: 評価結果は必ずワークスペースルートの `~/projects/org/.mikinovation/pm-evaluation-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は評価内容が分かるように調整してください（例: `~/projects/org/.mikinovation/pm-evaluation-api-progress-20250131-143022.md`）。
 
 ## プロフィール
 

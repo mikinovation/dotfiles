@@ -1,7 +1,7 @@
 ---
 name: web-frontend-design
 description: Webフロントエンド設計・アーキテクチャの専門エージェント。既存プロジェクトのアーキテクチャ設計、UI/UXコンポーネント設計、ライブラリ追加・更新を担当。フロントエンド開発の技術設計・実装計画タスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -12,8 +12,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 分析結果や設計提案は必ずワークスペースルートの `tmp/frontend-design-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `tmp/frontend-design-component-architecture-20250131-143022.md`）。
+**重要**: 分析結果や設計提案は必ずワークスペースルートの `~/projects/org/.mikinovation/frontend-design-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/projects/org/.mikinovation/frontend-design-component-architecture-20250131-143022.md`）。
 
 ## 専門領域
 

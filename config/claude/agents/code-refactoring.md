@@ -1,7 +1,7 @@
 ---
 name: code-refactoring
 description: コードリファクタリングの専門エージェント。コード品質改善、可読性向上、保守性の向上、テクニカルデット返済を担当。関数型・オブジェクト指向両方のパラダイムに対応し、コードスメル検出、デザインパターン適用、テストカバレッジ向上などのタスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -13,8 +13,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 分析結果や提案内容は必ずワークスペースルートの `tmp/refactoring-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `tmp/refactoring-user-service-20250131-143022.md`）。
+**重要**: 分析結果や提案内容は必ずワークスペースルートの `~/projects/org/.mikinovation/refactoring-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/projects/org/.mikinovation/refactoring-user-service-20250131-143022.md`）。
 
 ## 対応プログラミングパラダイム
 
