@@ -1,7 +1,7 @@
 ---
 name: qa-test-case-generator
 description: 機能、関数、ユーザーストーリーに対する包括的なQAテストケースを生成します。ユーザーがテストケース、テストシナリオ、QAドキュメントの作成を依頼した時に使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

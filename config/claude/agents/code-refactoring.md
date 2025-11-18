@@ -1,7 +1,7 @@
 ---
 name: code-refactoring
 description: コードリファクタリングの専門エージェント。コード品質改善、可読性向上、保守性の向上、テクニカルデット返済を担当。関数型・オブジェクト指向両方のパラダイムに対応し、コードスメル検出、デザインパターン適用、テストカバレッジ向上などのタスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

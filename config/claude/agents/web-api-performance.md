@@ -1,7 +1,7 @@
 ---
 name: web-api-performance
 description: Web APIのパフォーマンス調査・分析の専門エージェント。API応答時間、スループット、ボトルネック分析、最適化提案を担当。パフォーマンス測定、負荷テスト、データベースクエリ最適化などのタスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

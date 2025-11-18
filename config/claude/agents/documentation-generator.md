@@ -1,7 +1,7 @@
 ---
 name: documentation-generator
 description: コードドキュメント生成の専門エージェント。既存コードベースからAPIリファレンス、アーキテクチャドキュメント、コード解説、使用例を生成。プロジェクトの全体像把握、新規参加者向けガイド、保守ドキュメント作成などのタスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

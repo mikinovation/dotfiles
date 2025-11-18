@@ -1,7 +1,7 @@
 ---
 name: issue-generator
 description: GitHub Issue起案の専門エージェント。バグレポート、機能要望、タスク管理、改善提案などのIssue作成を担当。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

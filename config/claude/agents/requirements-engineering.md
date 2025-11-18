@@ -1,7 +1,7 @@
 ---
 name: requirements-engineering
 description: 要件定義の専門エージェント。ビジネス要求から技術仕様への変換、ステークホルダーヒアリング、要件分析、機能要件・非機能要件の定義、ユースケース作成を担当。プロジェクト企画段階や仕様策定時に使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

@@ -1,7 +1,7 @@
 ---
 name: engineering-manager-evaluator
 description: エンジニアリングマネージャーの専門エージェント。部下エンジニアからの返信・報告内容をEM視点で評価し、報告の適切性・技術的妥当性・コミュニケーション品質の観点からフィードバックを提供します。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 
