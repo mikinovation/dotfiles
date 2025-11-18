@@ -1,7 +1,7 @@
 ---
 name: requirements-engineering
 description: 要件定義の専門エージェント。ビジネス要求から技術仕様への変換、ステークホルダーヒアリング、要件分析、機能要件・非機能要件の定義、ユースケース作成を担当。プロジェクト企画段階や仕様策定時に使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -13,8 +13,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 要件定義書や分析結果は必ずワークスペースルートの `tmp/requirements-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `tmp/requirements-user-auth-20250131-143022.md`）。
+**重要**: 要件定義書や分析結果は必ずワークスペースルートの `~/projects/org/.mikinovation/requirements-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/projects/org/.mikinovation/requirements-user-auth-20250131-143022.md`）。
 
 ## 専門領域
 

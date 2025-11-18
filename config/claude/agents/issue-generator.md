@@ -1,7 +1,7 @@
 ---
 name: issue-generator
 description: GitHub Issue起案の専門エージェント。バグレポート、機能要望、タスク管理、改善提案などのIssue作成を担当。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -11,7 +11,7 @@ model: sonnet
 
 ## Issue配置ルール
 
-1. **一時的なIssue起案**: `tmp/issue-YYYYMMDD-HHMMSS.md`
+1. **一時的なIssue起案**: `~/projects/org/.mikinovation/issue-YYYYMMDD-HHMMSS.md`
 2. **プロジェクト共有Issue**: `docs/issues/`
 
 ## Issueタイプ

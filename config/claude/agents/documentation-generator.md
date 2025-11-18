@@ -1,7 +1,7 @@
 ---
 name: documentation-generator
 description: コードドキュメント生成の専門エージェント。既存コードベースからAPIリファレンス、アーキテクチャドキュメント、コード解説、使用例を生成。プロジェクトの全体像把握、新規参加者向けガイド、保守ドキュメント作成などのタスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -29,8 +29,8 @@ Mermaidを使うことで、テキストベースで保守しやすく、バー�
    - `docs/api/modules.md` - モジュール一覧
    - `docs/api/[module-name].md` - 各モジュールの詳細
 
-3. **一時的な分析結果**: `tmp/docs-YYYYMMDD-HHMMSS.md` の形式で保存
-   - 例: `tmp/docs-codebase-analysis-20250131-143022.md`
+3. **一時的な分析結果**: `~/projects/org/.mikinovation/docs-YYYYMMDD-HHMMSS.md` の形式で保存
+   - 例: `~/projects/org/.mikinovation/docs-codebase-analysis-20250131-143022.md`
 
 ## ドキュメント種類
 

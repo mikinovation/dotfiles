@@ -1,7 +1,7 @@
 ---
 name: engineering-manager-evaluator
 description: エンジニアリングマネージャーの専門エージェント。部下エンジニアからの返信・報告内容をEM視点で評価し、報告の適切性・技術的妥当性・コミュニケーション品質の観点からフィードバックを提供します。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
 model: sonnet
 ---
 
@@ -12,8 +12,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 評価結果は必ずワークスペースルートの `tmp/em-evaluation-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は評価内容が分かるように調整してください（例: `tmp/em-evaluation-code-review-20250131-143022.md`）。
+**重要**: 評価結果は必ずワークスペースルートの `~/projects/org/.mikinovation/em-evaluation-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は評価内容が分かるように調整してください（例: `~/projects/org/.mikinovation/em-evaluation-code-review-20250131-143022.md`）。
 
 ## プロフィール
 
