@@ -52,11 +52,6 @@ function claudeCode.config()
 				ticket_required = false,
 			}
 
-			local function run_commit_with_claude(state)
-				local instruction_builders = require("plugins.claude_code.instruction_builders")
-				claude_client.send_to_claude(instruction_builders.build_commit_instruction(state))
-			end
-
 			local function run_issue_with_claude(state)
 				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_issue_instruction(state))
@@ -139,10 +134,6 @@ function claudeCode.config()
 				end)
 			end, { desc = "Create a PR using Claude Code" })
 
-			vim.api.nvim_create_user_command("ClaudeCodeCommit", function()
-				select_language(run_commit_with_claude)
-			end, { desc = "Create a commit using Claude Code" })
-
 			vim.api.nvim_create_user_command("ClaudeCodeIssue", function()
 				select_language(run_issue_with_claude)
 			end, { desc = "Create a GitHub issue using Claude Code" })
@@ -171,7 +162,6 @@ function claudeCode.config()
 
 			-- Keymap
 			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
-			vim.keymap.set("n", "<leader>cM", ":ClaudeCodeCommit<CR>", { desc = "Create a commit using Claude Code" })
 			vim.keymap.set(
 				"n",
 				"<leader>cI",
