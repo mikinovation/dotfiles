@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude-code/hooks/notify-stop.sh"
+            "command": "~/dotfiles/config/claude/hooks/notify-stop.sh"
           }
         ]
       }
@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.config/claude-code/hooks/notify-input.sh"
+            "command": "~/dotfiles/config/claude/hooks/notify-input.sh"
           }
         ]
       }
