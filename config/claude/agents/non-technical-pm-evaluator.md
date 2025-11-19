@@ -1,7 +1,7 @@
 ---
 name: non-technical-pm-evaluator
 description: 技術に疎いプロジェクトマネージャーの専門エージェント。エンジニアからの技術的な返信内容を非技術者の視点で評価し、分かりやすさ・具体性・ビジネス価値の観点からフィードバックを提供します。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

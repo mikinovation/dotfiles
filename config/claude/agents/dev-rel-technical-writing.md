@@ -1,7 +1,7 @@
 ---
 name: dev-rel-technical-writing
 description: DevRel向け技術文書作成の専門エージェント。開発者体験を重視し、Getting Started、チュートリアル、ブログ記事、サンプルコード、APIリファレンス、ベストプラクティスガイドなどを作成。開発者コミュニティに向けた分かりやすく実践的なドキュメントを提供します。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 

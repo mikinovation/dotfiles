@@ -1,7 +1,7 @@
 ---
 name: web-frontend-design
 description: Webフロントエンド設計・アーキテクチャの専門エージェント。既存プロジェクトのアーキテクチャ設計、UI/UXコンポーネント設計、ライブラリ追加・更新を担当。フロントエンド開発の技術設計・実装計画タスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 
