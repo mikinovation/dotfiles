@@ -89,6 +89,9 @@
 
     # Claude Code agents (subagents)
     ".claude/agents".source = ../claude/agents;
+
+    # Claude Code commands (slash commands)
+    ".claude/commands".source = ../claude/commands;
   };
 
   xdg.configFile."nix/nix.conf".force = true;

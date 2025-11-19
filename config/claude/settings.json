@@ -1,10 +1,4 @@
 {
-  "enabledMcpjsonServers": [
-    "deepwiki",
-    "nixos",
-    "playwright",
-    "serena"
-  ],
   "hooks": {
     "Stop": [
       {
