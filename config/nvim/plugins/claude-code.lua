@@ -57,11 +57,6 @@ function claudeCode.config()
 				claude_client.send_to_claude(instruction_builders.build_issue_instruction(state))
 			end
 
-			local function run_pr_with_claude(state)
-				local instruction_builders = require("plugins.claude_code.instruction_builders")
-				claude_client.send_to_claude(instruction_builders.build_pr_instruction(state))
-			end
-
 			local function run_push_with_claude(state)
 				local instruction_builders = require("plugins.claude_code.instruction_builders")
 				claude_client.send_to_claude(instruction_builders.build_push_instruction(state))
@@ -108,32 +103,6 @@ function claudeCode.config()
 				end)
 			end
 
-			vim.api.nvim_create_user_command("ClaudeCodeCreatePR", function()
-				select_language(function(state)
-					vim.ui.select(config.draft_options, {
-						prompt = "Select PR status:",
-						format_item = function(item)
-							return item
-						end,
-					}, function(draft_mode)
-						if not draft_mode then
-							return
-						end
-						state.draft_mode = draft_mode
-
-						select_base_branch(state, function(updated_state)
-							vim.ui.input({
-								prompt = config.ticket_required and "Enter ticket link:"
-									or "Enter ticket link (optional):",
-							}, function(ticket)
-								updated_state.ticket = ticket or ""
-								run_pr_with_claude(updated_state)
-							end)
-						end)
-					end)
-				end)
-			end, { desc = "Create a PR using Claude Code" })
-
 			vim.api.nvim_create_user_command("ClaudeCodeIssue", function()
 				select_language(run_issue_with_claude)
 			end, { desc = "Create a GitHub issue using Claude Code" })
@@ -161,7 +130,6 @@ function claudeCode.config()
 			end, { desc = "Create a git branch using Claude Code" })
 
 			-- Keymap
-			vim.keymap.set("n", "<leader>cP", ":ClaudeCodeCreatePR<CR>", { desc = "Create a PR using Claude Code" })
 			vim.keymap.set(
 				"n",
 				"<leader>cI",
