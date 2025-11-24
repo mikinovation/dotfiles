@@ -4,5 +4,29 @@
     "nixos",
     "playwright",
     "serena"
-  ]
+  ],
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/config/claude/hooks/notify-stop.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/config/claude/hooks/notify-input.sh"
+          }
+        ]
+      }
+    ]
+  }
 }

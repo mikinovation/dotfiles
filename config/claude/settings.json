@@ -331,6 +331,30 @@
       "Bash(wget * | sh)",
       "Bash(dd if=*)",
       "Bash(cd *)"
+    }
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/config/claude/hooks/notify-stop.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/config/claude/hooks/notify-input.sh"
+          }
+        ]
+      }
     ]
   }
 }

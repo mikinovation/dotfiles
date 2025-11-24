@@ -231,6 +231,36 @@ function telescope.config()
 				require("telescope.builtin").find_files({ default_text = yanked })
 			end
 
+			-- Find files relative to current buffer's directory
+			local function find_files_cwd()
+				local current_file = vim.fn.expand("%:p")
+				if current_file == "" then
+					vim.notify("No current buffer", vim.log.levels.WARN)
+					return
+				end
+				local cwd = vim.fn.fnamemodify(current_file, ":h")
+				local cwd_display = vim.fn.fnamemodify(cwd, ":~")
+				require("telescope.builtin").find_files({
+					cwd = cwd,
+					prompt_title = "Find Files (CWD: " .. cwd_display .. ")",
+				})
+			end
+
+			-- Live grep relative to current buffer's directory
+			local function live_grep_cwd()
+				local current_file = vim.fn.expand("%:p")
+				if current_file == "" then
+					vim.notify("No current buffer", vim.log.levels.WARN)
+					return
+				end
+				local cwd = vim.fn.fnamemodify(current_file, ":h")
+				local cwd_display = vim.fn.fnamemodify(cwd, ":~")
+				require("telescope.builtin").live_grep({
+					cwd = cwd,
+					prompt_title = "Live Grep (CWD: " .. cwd_display .. ")",
+				})
+			end
+
 			-- Basic Telescope keymappings
 			local builtin = require("telescope.builtin")
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[F]ind [F]iles" })
@@ -262,20 +292,6 @@ function telescope.config()
 			-- Extension keymappings
 			vim.keymap.set("n", "<leader>fb", ":Telescope file_browser<CR>", { desc = "[F]ile [B]rowser" })
 
-			-- Open current file's directory in file_browser
-			vim.keymap.set("n", "<leader>fo", function()
-				require("telescope").extensions.file_browser.file_browser({
-					path = "%:p:h",
-					cwd = vim.fn.expand("%:p:h"),
-					respect_gitignore = false,
-					hidden = true,
-					grouped = true,
-					previewer = false,
-					initial_mode = "normal",
-					layout_config = { height = 40 },
-				})
-			end, { desc = "[F]ile Browser - [O]pen Current Directory" })
-
 			-- Open home directory in file_browser
 			vim.keymap.set("n", "<leader>fH", function()
 				require("telescope").extensions.file_browser.file_browser({
@@ -290,7 +306,6 @@ function telescope.config()
 				})
 			end, { desc = "[F]ile Browser - [H]ome Directory" })
 
-			vim.keymap.set("n", "<leader>fc", builtin.commands, { desc = "[F]ind [C]ommands" })
 			vim.keymap.set("n", "<leader>fm", ":Telescope media_files<CR>", { desc = "[F]ind [M]edia Files" })
 			vim.keymap.set("n", "<leader>sf", ":Telescope frecency<CR>", { desc = "[S]earch [F]requent Files" })
 
@@ -306,6 +321,10 @@ function telescope.config()
 			vim.keymap.set("n", "<leader>sr", search_and_replace, { desc = "[S]earch and [R]eplace" })
 			vim.keymap.set("n", "<leader>fyg", grep_yanked_text, { desc = "[F]ind [Y]anked Text (Grep)" })
 			vim.keymap.set("n", "<leader>fyf", find_files_yanked, { desc = "[F]ind [Y]anked Text (Files)" })
+
+			-- Current buffer directory search keymappings
+			vim.keymap.set("n", "<leader>fcf", find_files_cwd, { desc = "[F]ind Files in [C]urrent Directory" })
+			vim.keymap.set("n", "<leader>fcg", live_grep_cwd, { desc = "[F]ind by [G]rep in [C]urrent Directory" })
 		end,
 	}
 end

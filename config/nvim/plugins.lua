@@ -41,6 +41,7 @@ require("lazy").setup({
 	require("plugins.nvim-ts-context-commentstring").config(),
 	require("plugins.octo").config(),
 	require("plugins.orgmode").config(),
+	require("plugins.org-bullets").config(),
 	require("plugins.package-info").config(),
 	require("plugins.pathtool").config(),
 	require("plugins.rest").config(),
@@ -61,6 +62,7 @@ require("lazy").setup({
 	require("plugins.yanky").config(),
 	require("plugins.claude-code").config(),
 	require("plugins.open-browser").config(),
+	require("plugins.oil").config(),
 }, {
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {

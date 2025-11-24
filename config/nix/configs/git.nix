@@ -7,7 +7,7 @@
     ignores = [
       # Custom tools
       ".serena/"
-      "m-sandbox/"
+      ".mikinovation/"
 
       # OS files
       ".DS_Store"

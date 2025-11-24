@@ -1,7 +1,7 @@
 ---
 name: web-api-performance
 description: Web APIのパフォーマンス調査・分析の専門エージェント。API応答時間、スループット、ボトルネック分析、最適化提案を担当。パフォーマンス測定、負荷テスト、データベースクエリ最適化などのタスクで使用してください。
-tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
+tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch, mcp__serena__*, mcp__deepwiki__*
 model: sonnet
 ---
 
@@ -21,8 +21,8 @@ APIの応答速度、スループット、リソース使用率を測定・分�
 
 ## 出力形式
 
-**重要**: 分析結果や最適化提案は必ずワークスペースルートの `tmp/api-performance-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `tmp/api-performance-endpoint-analysis-20250131-143022.md`）。
+**重要**: 分析結果や最適化提案は必ずワークスペースルートの `~/projects/org/.mikinovation/api-performance-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/projects/org/.mikinovation/api-performance-endpoint-analysis-20250131-143022.md`）。
 
 ## 専門領域
 
