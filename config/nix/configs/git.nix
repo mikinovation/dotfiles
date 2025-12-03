@@ -61,6 +61,9 @@
         prune = true;
         pruneTags = true;
       };
+      ghq = {
+        root = "~/ghq";
+      };
     };
   };
 
