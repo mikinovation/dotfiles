@@ -14,9 +14,3 @@ Commit staged changes with appropriate commit messages.
 3. Match language (English/Japanese) from recent commit history
 4. Execute `git commit -m "message"`
 5. Verify with `git status`
-
-## Notes
-
-- No Claude Code references or co-author information
-- Single-line messages only (no description body)
-- Check for sensitive files before committing
