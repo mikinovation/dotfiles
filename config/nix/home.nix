@@ -23,6 +23,7 @@
     fnm      # Fast Node Manager
     uv       # Python package manager
     zoxide   # Smart cd replacement
+    ghq      # Git repository organizer
     nodePkgs."@anthropic-ai/claude-code"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
