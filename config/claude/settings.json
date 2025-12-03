@@ -24,6 +24,12 @@
       }
     ]
   },
+  "enabledMcpjsonServers": [
+    "deepwiki",
+    "nixos",
+    "playwright",
+    "serena"
+  ],
   "permissions": {
     "ask": [
       "mcp__playwright__browser_navigate(*)",

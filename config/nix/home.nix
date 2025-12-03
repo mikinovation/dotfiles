@@ -96,9 +96,6 @@
     # Claude Code commands (slash commands)
     ".claude/commands".source = ../claude/commands;
 
-    # Claude Code settings (shared across projects)
-    ".claude/settings.json".source = ../claude/settings.json;
-
     # Claude Code global instructions
     ".claude/CLAUDE.md".source = ../claude/CLAUDE.md;
 
