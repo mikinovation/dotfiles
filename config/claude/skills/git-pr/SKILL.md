@@ -10,16 +10,14 @@ Create a pull request with appropriate title and description.
 ## Steps
 
 1. Use the base branch specified in the command arguments
-2. Check for PR template in `.github/pull_request_template.md` or `.github/PULL_REQUEST_TEMPLATE.md`
-3. Run `git status`, `git diff <base-branch>...HEAD`, and `git log <base-branch>..HEAD --oneline`
-4. Analyze all commits and changes from base branch
-5. Generate PR title and description:
+2. Analyze all commits and changes from base branch
+3. Generate PR title and description:
    - Title: Single-line summary using conventional commit format
    - Description: If template exists, fill it in with appropriate content. Otherwise, include summary, test plan, and changes overview
-6. Match language (English/Japanese) from commit history
-7. Push branch if needed: `git push -u origin <branch>`
-8. Create PR with base branch: `gh pr create --base <base-branch> --title "title" --body "description"`
-9. Return PR URL
+4. Match language (English/Japanese) from commit history
+5. Push branch if needed: `git push -u origin <branch>`
+6. Create PR with base branch: `gh pr create --draft --base <base-branch> --title "title" --body "description"`
+7. Return PR URL
 
 ## Notes
 

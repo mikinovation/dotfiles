@@ -84,6 +84,9 @@
     # WSL-specific configuration
     "dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
 
+    # Claude Code Settings
+    ".claude/settings.json".source = ../claude/settings.json;
+
     # Claude Code skills
     ".claude/skills".source = ../claude/skills;
 

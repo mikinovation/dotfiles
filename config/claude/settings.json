@@ -1,6 +1,29 @@
 {
-  "autoUpdate": false,
-  "alwaysThinkingEnabled": false,
+  "includeCoAuthoredBy": false,
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/config/claude/hooks/notify-stop.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/dotfiles/config/claude/hooks/notify-input.sh"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "ask": [
       "mcp__playwright__browser_navigate(*)",
@@ -332,29 +355,5 @@
       "Bash(dd if=*)",
       "Bash(cd *)"
     }
-  },
-  "hooks": {
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/dotfiles/config/claude/hooks/notify-stop.sh"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/dotfiles/config/claude/hooks/notify-input.sh"
-          }
-        ]
-      }
-    ]
   }
 }
