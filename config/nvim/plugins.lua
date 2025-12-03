@@ -60,7 +60,6 @@ require("lazy").setup({
 	require("plugins.vim-sleuth").config(),
 	require("plugins.which-key").config(),
 	require("plugins.yanky").config(),
-	require("plugins.claude-code").config(),
 	require("plugins.open-browser").config(),
 	require("plugins.oil").config(),
 }, {
