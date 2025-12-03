@@ -95,6 +95,10 @@
 
     # Claude Code commands (slash commands)
     ".claude/commands".source = ../claude/commands;
+
+    # Claude Code global instructions
+    ".claude/CLAUDE.md".source = ../claude/CLAUDE.md;
+
   };
 
   xdg.configFile."nix/nix.conf".force = true;
