@@ -45,6 +45,7 @@ require("lazy").setup({
 	require("plugins.package-info").config(),
 	require("plugins.pathtool").config(),
 	require("plugins.rest").config(),
+	require("plugins.sidekick").config(),
 	require("plugins.telescope").config(),
 	require("plugins.todo-comments").config(),
 	require("plugins.toggleterm").config(),
