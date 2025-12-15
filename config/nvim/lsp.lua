@@ -255,13 +255,5 @@ vim.lsp.config.solargraph = {
 	},
 }
 
--- Copilot LSP
-vim.lsp.config.copilot = {
-	cmd = vim.lsp.rpc.connect("127.0.0.1", 27700),
-	filetypes = {},
-	root_markers = {},
-	capabilities = capabilities,
-}
-
 -- Enable all configured LSP servers
-vim.lsp.enable({ "lua_ls", "rust_analyzer", "vtsls", "vue_ls", "tailwindcss", "solargraph", "copilot" })
+vim.lsp.enable({ "lua_ls", "rust_analyzer", "vtsls", "vue_ls", "tailwindcss", "solargraph" })
