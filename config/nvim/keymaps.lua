@@ -13,6 +13,11 @@ keymap("n", "<leader>rm", ":%s/\r//g<CR>", { desc = "Remove ^M" })
 
 keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
 
+-- Format with LSP/null-ls (ESLint, etc.)
+keymap("n", "<leader>fm", function()
+	vim.lsp.buf.format({ async = true })
+end, { desc = "Format document" })
+
 -- Lazydocker integration
 keymap("n", "<leader>ld", function()
 	require("tools.lazydocker").toggle_lazydocker()
