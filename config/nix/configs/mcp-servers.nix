@@ -9,16 +9,10 @@ let
         enable = true;
       };
 
-      # Serena MCP Server (stdio connection)
-      serena = {
-        enable = true;
-        context = "ide-assistant";
-      };
-
       # NixOS MCP Server (stdio connection)
       # Provides information about NixOS packages, options, and configurations
       nixos = {
-        enable = true;
+        enable = false;
       };
     };
 

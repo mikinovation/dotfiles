@@ -1,7 +1,7 @@
 local sidekick = {}
 
 function sidekick.config()
-	return({
+	return {
 		"folke/sidekick.nvim",
 		event = "VeryLazy",
 		opts = {
@@ -65,7 +65,7 @@ function sidekick.config()
 				desc = "Sidekick Select Prompt",
 			},
 		},
-	})
+	}
 end
 
 return sidekick
