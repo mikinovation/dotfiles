@@ -25,6 +25,12 @@ copy_claude_config() {
   done
 }
 
+# Deploy configurations using Home Manager
+deploy_home_manager() {
+  echo "Deploying configurations with Home Manager..."
+  nix run home-manager/master -- switch --flake ~/dotfiles/config/nix#mikinovation
+}
+
 main() {
   echo "Start setup dotfiles..."
 
@@ -35,6 +41,10 @@ main() {
   # Setup Nix configuration first
   setup_nix_config
   echo "Nix config setup done."
+
+  # Deploy dotfiles using Home Manager
+  deploy_home_manager
+  echo "Home Manager deployment done."
 
   # Setup Claude-specific configurations
   copy_claude_config
