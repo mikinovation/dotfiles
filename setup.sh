@@ -1,7 +1,6 @@
 #!/bin/bash
 
 DOTFILES_DIR="$HOME/dotfiles"
-CLAUDE_DIR="$HOME/.claude"
 NIX_CONFIG_DIR="$HOME/.config/nix"
 
 # Setup nix.conf (system-level configuration)
@@ -13,16 +12,6 @@ setup_nix_config() {
   # Only link nix.conf, not the entire directory
   # (home-manager will manage flake.nix and home.nix)
   ln -snfv "$DOTFILES_DIR/config/nix/nix.conf" "$NIX_CONFIG_DIR/nix.conf"
-}
-
-copy_claude_config() {
-  if [ ! -d "$CLAUDE_DIR/commands" ]; then
-    mkdir -p "$CLAUDE_DIR/commands"
-  fi
-
-  for file in "$DOTFILES_DIR"/claude/commands/*; do
-    cp -fv "$file" "$CLAUDE_DIR/commands/$(basename "$file")"
-  done
 }
 
 # Deploy configurations using Home Manager
@@ -45,10 +34,6 @@ main() {
   # Deploy dotfiles using Home Manager
   deploy_home_manager
   echo "Home Manager deployment done."
-
-  # Setup Claude-specific configurations
-  copy_claude_config
-  echo "Copying claude commands done."
 
   echo "Setup dotfiles done."
   echo ""
