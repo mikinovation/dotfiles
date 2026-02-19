@@ -9,6 +9,12 @@ let
         enable = true;
       };
 
+      # Context7 MCP Server (stdio connection)
+      # Provides up-to-date library documentation and code examples for LLMs
+      context7 = {
+        enable = true;
+      };
+
       # NixOS MCP Server (stdio connection)
       # Provides information about NixOS packages, options, and configurations
       nixos = {
