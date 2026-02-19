@@ -36,7 +36,7 @@ Create a pull request against base branch `$ARGUMENTS`.
    ```
 6. Create PR using HEREDOC:
    ```
-   gh pr create --draft --base <base-branch> --title "title" --body "$(cat <<'EOF'
+   gh pr create --draft --base <base-branch> --assignee mikinovation --title "title" --body "$(cat <<'EOF'
    <PR body here>
    EOF
    )"
@@ -50,3 +50,4 @@ Create a pull request against base branch `$ARGUMENTS`.
 - NEVER force push
 - Always create as draft (`--draft`)
 - If PR template exists, respect its structure and fill in all sections
+- Always assign `mikinovation` as the PR assignee (`--assignee mikinovation`)

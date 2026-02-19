@@ -1,6 +1,7 @@
 ---
 name: git-commit
 description: Used when committing staged changes. Generates appropriate commit messages and confirms changes before creating commits.
+disable-model-invocation: true
 allowed-tools: Bash(git *)
 ---
 
@@ -18,17 +19,15 @@ Commit staged changes with appropriate commit messages.
 
 1. Analyze the staged changes shown above
 2. If no changes are staged, ask the user what to stage
-3. Generate a single-line commit message:
+3. Generate a commit message (must be a single line, no line breaks):
    - Use conventional commit format: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`, etc.
    - Match language (English/Japanese) from recent commit history above
-   - Focus on "why" rather than "what"
-4. Execute the commit using HEREDOC format:
+   - Keep it short and concise, focus on "why" rather than "what"
+4. Execute the commit:
    ```
-   git commit -m "$(cat <<'EOF'
-   <commit message here>
-   EOF
-   )"
+   git commit -m "<commit message here>"
    ```
+   - Commit message is always a single line (no multi-line messages)
 5. Verify with `git status`
 
 ## Rules
