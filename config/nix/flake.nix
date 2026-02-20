@@ -1,12 +1,16 @@
 # https://github.com/renovatebot/renovate/issues/29721
 # Trick renovate into working: "github:NixOS/nixpkgs/nixpkgs-unstable"
 {
-  description = "Home Manager configuration";
+  description = "NixOS and Home Manager configuration";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixos-wsl = {
+      url = "github:nix-community/NixOS-WSL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     mcp-servers-nix = {
@@ -43,6 +47,7 @@
       self,
       nixpkgs,
       home-manager,
+      nixos-wsl,
       mcp-servers-nix,
       agent-skills-nix,
       ...
@@ -51,19 +56,45 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
+      hmModules = [
+        agent-skills-nix.homeManagerModules.default
+        mcp-servers-nix.homeManagerModules.default
+      ];
       mkHomeConfig = username: home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [
           ./home.nix
-          agent-skills-nix.homeManagerModules.default
-          mcp-servers-nix.homeManagerModules.default
-        ];
+        ] ++ hmModules;
         extraSpecialArgs = {
           inherit inputs nodePkgs username;
         };
       };
     in {
-      # Home Manager configuration
+      nixosConfigurations = {
+        nixos = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            nixos-wsl.nixosModules.default
+            ./hosts/nixos-wsl/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.mikinovation = {
+                  imports = [
+                    ./hosts/nixos-wsl/home.nix
+                  ] ++ hmModules;
+                };
+                extraSpecialArgs = {
+                  inherit inputs nodePkgs;
+                };
+              };
+            }
+          ];
+        };
+      };
+
       homeConfigurations = {
         mikinovation = mkHomeConfig "mikinovation";
         nixos = mkHomeConfig "nixos";
