@@ -13,6 +13,21 @@
       url = "github:natsukium/mcp-servers-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agent-skills-nix = {
+      url = "github:Kyure-A/agent-skills-nix";
+    };
+    anthropic-skills = {
+      url = "github:anthropics/skills";
+      flake = false;
+    };
+    agent-browser = {
+      url = "github:vercel-labs/agent-browser";
+      flake = false;
+    };
+    vercel-skills = {
+      url = "github:vercel-labs/skills";
+      flake = false;
+    };
   };
 
   outputs =
@@ -21,6 +36,7 @@
       nixpkgs,
       home-manager,
       mcp-servers-nix,
+      agent-skills-nix,
       ...
     }:
     let
@@ -33,9 +49,12 @@
         # Replace with your username
         mikinovation = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home.nix ];
+          modules = [
+            ./home.nix
+            agent-skills-nix.homeManagerModules.default
+          ];
           extraSpecialArgs = {
-            inherit nodePkgs mcp-servers-nix;
+            inherit inputs nodePkgs mcp-servers-nix;
           };
         };
       };

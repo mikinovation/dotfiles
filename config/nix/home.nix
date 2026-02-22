@@ -1,4 +1,4 @@
-{ config, pkgs, nodePkgs, mcp-servers-nix, ... }:
+{ config, pkgs, nodePkgs, mcp-servers-nix, inputs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -26,6 +26,7 @@
     ghq      # Git repository organizer
     jq       # JSON processor
     nodePkgs."@anthropic-ai/claude-code"
+    nodePkgs."agent-browser"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
     nodePkgs."@vue/typescript-plugin"
@@ -40,8 +41,10 @@
     ./configs/ruby.nix
     ./configs/rust.nix
     ./configs/database.nix
+    ./configs/agent-browser.nix
     ./configs/mcp-servers.nix
     ./configs/textlint.nix
+    ./configs/agent-skills.nix
   ];
 
   # Home Manager can also manage your environment variables through
@@ -88,9 +91,6 @@
 
     # Claude Code Settings
     ".claude/settings.json".source = ../claude/settings.json;
-
-    # Claude Code skills
-    ".claude/skills".source = ../claude/skills;
 
     # Claude Code agents (subagents)
     ".claude/agents".source = ../claude/agents;
