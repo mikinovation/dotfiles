@@ -31,6 +31,7 @@
         "git-organize-commits"
         "git-pick-changes"
         "git-pr"
+        "team-dev"
       ];
     };
 
