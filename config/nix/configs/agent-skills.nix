@@ -17,10 +17,6 @@
         path = inputs.vercel-skills;
         subdir = "skills";
       };
-      vue-skills = {
-        path = inputs.vue-skills;
-        subdir = "skills";
-      };
       antfu-skills = {
         path = inputs.antfu-skills;
         subdir = "skills";
