@@ -42,6 +42,16 @@ model: sonnet
 注意事項: [監察方に確認してほしいポイントがあれば]
 ```
 
+## スキルの活用
+
+以下のスキルが利用可能です。対象技術に関連するタスクでは積極的に活用してください:
+
+- **vue-best-practices**: Vue 3 + Composition API + TypeScript のコードを実装する際に使用。ベストプラクティスに沿った実装を行う。
+- **nuxt**: Nuxt フレームワークを使用するプロジェクトで使用。SSR、ルーティング、データ取得などの実装時に参照する。
+- **test-driven-development**: テストを伴う実装タスクで使用。Red-Green-Refactor のワークフローに従って実装する。
+
+スキルは `/スキル名` で呼び出せます（例: `/vue-best-practices`、`/nuxt`、`/test-driven-development`）。
+
 ## 修正対応
 
 監察方や目付方からの指摘を受けた場合:
