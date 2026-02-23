@@ -17,6 +17,18 @@
         path = inputs.vercel-skills;
         subdir = "skills";
       };
+      vue-skills = {
+        path = inputs.vue-skills;
+        subdir = "skills";
+      };
+      antfu-skills = {
+        path = inputs.antfu-skills;
+        subdir = "skills";
+      };
+      obra-superpowers = {
+        path = inputs.obra-superpowers;
+        subdir = "skills";
+      };
       local = {
         path = ../../claude/skills;
       };
@@ -32,6 +44,9 @@
         "git-pick-changes"
         "git-pr"
         "team-dev"
+        "vue-best-practices"
+        "nuxt"
+        "test-driven-development"
       ];
     };
 
