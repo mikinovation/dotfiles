@@ -1,5 +1,6 @@
 {
   "includeCoAuthoredBy": false,
+  "teammateMode": "in-process",
   "hooks": {
     "Stop": [
       {
