@@ -28,10 +28,6 @@
       url = "github:vercel-labs/skills";
       flake = false;
     };
-    vue-skills = {
-      url = "github:hyf0/vue-skills";
-      flake = false;
-    };
     antfu-skills = {
       url = "github:antfu/skills";
       flake = false;
