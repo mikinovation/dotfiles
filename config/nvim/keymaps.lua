@@ -18,6 +18,13 @@ keymap("n", "<leader>fm", function()
 	vim.lsp.buf.format({ async = true })
 end, { desc = "Format document" })
 
+-- Open current file's directory in Windows Explorer
+keymap("n", "<leader>fe", function()
+	local dir = vim.fn.expand("%:p:h")
+	local win_dir = vim.fn.system({ "wslpath", "-w", dir }):gsub("\n", "")
+	vim.fn.system({ "explorer.exe", win_dir })
+end, { desc = "Open in Windows Explorer" })
+
 -- Lazydocker integration
 keymap("n", "<leader>ld", function()
 	require("tools.lazydocker").toggle_lazydocker()
