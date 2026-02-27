@@ -106,6 +106,8 @@ Task:
     TaskListで自分に割り当てられたタスクを確認し、実装を進めてください。
     実装完了後はTaskUpdateでタスクを完了にし、SendMessageで副長に報告してください。
 
+    【重要】型チェック・lint・formatterは実行しないでください。これらは監察方の責務です。
+
     コミュニケーション規約: config/claude/skills/team-dev/references/communication-protocol.md を参照
     完了基準: config/claude/skills/team-dev/references/completion-criteria.md を参照
 ```
@@ -134,6 +136,12 @@ Task:
     副長の指揮のもと、隊士の実装コードを厳正にレビューしてください。
 
     TaskListで自分に割り当てられたレビュータスクを確認し、コードレビューを実施してください。
+
+    【重要】レビュー時に、プロジェクトのCLAUDE.mdやREADMEを確認し、
+    型チェック・lint・formatterのコマンドが定義されていれば実行してください。
+    違反があれば指摘事項としてレビュー報告に含めてください。
+    型チェック・lint・formatterの実行はチーム内で監察方のみに許可された責務です。
+
     レビュー完了後はTaskUpdateでタスクを完了にし、SendMessageで副長に報告してください。
 
     コミュニケーション規約: config/claude/skills/team-dev/references/communication-protocol.md を参照
@@ -248,6 +256,8 @@ TeamDeleteでチームリソースをクリーンアップする。
 
 - 実装 → レビュー＆QA の順次フローを必ず守る（並列にしない）
 - 監察方はコードを変更できない（読み取り専用）
+- **型チェック、lint・formatter の実行は監察方のみが行う**（隊士・目付方・副長は実行しない）
+  - lint・format違反があった場合は指摘事項として報告する
 - フィードバックループは最大3回まで
 - エージェント数はタスク数に応じて動的に決定する
 - すべてのエージェントはチームのタスクリストを通じて連携する
