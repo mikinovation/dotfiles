@@ -40,7 +40,10 @@
       "Bash(ls *)",
       "Bash(ls)",
       "Bash(find *)",
-      "Bash(gh api *)"
+      "Bash(gh api *)",
+      "Bash(gh run view *)",
+      "Bash(git log *)",
+      "Bash(git fetch *)"
     ]
   }
 }
