@@ -43,7 +43,10 @@
       "Bash(find *)",
       "Bash(gh api *)",
       "Bash(git status *)",
-      "Bash(git diff *)"
+      "Bash(git diff *)",
+      "Bash(gh run view *)",
+      "Bash(git log *)",
+      "Bash(git fetch *)"
     ]
   }
 }
