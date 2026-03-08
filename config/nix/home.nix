@@ -1,4 +1,4 @@
-{ config, pkgs, nodePkgs, mcp-servers-nix, inputs, ... }:
+{ config, pkgs, nodePkgs, inputs, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -25,7 +25,6 @@
     zoxide   # Smart cd replacement
     ghq      # Git repository organizer
     jq       # JSON processor
-    nodePkgs."@anthropic-ai/claude-code"
     nodePkgs."agent-browser"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
@@ -42,7 +41,7 @@
     ./configs/rust.nix
     ./configs/database.nix
     ./configs/agent-browser.nix
-    ./configs/mcp-servers.nix
+    ./configs/claude-code.nix
     ./configs/textlint.nix
     ./configs/agent-skills.nix
   ];
@@ -88,18 +87,6 @@
 
     # WSL-specific configuration
     "dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
-
-    # Claude Code Settings
-    ".claude/settings.json".source = ../claude/settings.json;
-
-    # Claude Code agents (subagents)
-    ".claude/agents".source = ../claude/agents;
-
-    # Claude Code commands (slash commands)
-    ".claude/commands".source = ../claude/commands;
-
-    # Claude Code global instructions
-    ".claude/CLAUDE.md".source = ../claude/CLAUDE.md;
 
   };
 

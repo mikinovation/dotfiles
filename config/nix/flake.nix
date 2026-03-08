@@ -60,9 +60,10 @@
           modules = [
             ./home.nix
             agent-skills-nix.homeManagerModules.default
+            mcp-servers-nix.homeManagerModules.default
           ];
           extraSpecialArgs = {
-            inherit inputs nodePkgs mcp-servers-nix;
+            inherit inputs nodePkgs;
           };
         };
       };
