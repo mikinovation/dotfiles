@@ -3,5 +3,6 @@
 	"@vue/language-server",
 	"@vue/typescript-plugin",
 	"agent-browser",
-	"ccmanager"
+	"ccmanager",
+	"vde-monitor"
 ]
