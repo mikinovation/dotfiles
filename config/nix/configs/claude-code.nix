@@ -12,7 +12,7 @@
   programs.mcp = {
     enable = true;
     servers.deepwiki = {
-      url = "https://mcp.deepwiki.com/sse";
+      url = "https://mcp.deepwiki.com/mcp";
     };
   };
 
