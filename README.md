@@ -41,22 +41,6 @@ suso apt install fdclone
 
 Sheldon will be automatically installed via Home Manager (no manual installation needed).
 
-### LuaRocks
-
-package manager for Lua modules
-
-```
-sudo apt install luarocks
-```
-
-### luacheck
-
-linter for lua
-
-```
-sudo luarocks install luacheck
-```
-
 ### node2nix
 
 To update npm packages managed by node2nix:
@@ -96,22 +80,6 @@ rm /tmp/win32yank.zip
 ```
 
 Make sure `~/.local/bin` is in your PATH to use clipboard features in Neovim and ZSH.
-
-### luaformatter
-
-formatter for lua
-
-```
-brew install stylua
-```
-
-### busted
-
-Testing framework for Lua
-
-```
-luarocks install --local busted
-```
 
 ## install
 

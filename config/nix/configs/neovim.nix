@@ -21,6 +21,9 @@
 
       # Formatters and linters
       stylua  # Lua formatter
+      luajitPackages.luacheck  # Lua linter
+      luajitPackages.busted    # Lua testing framework
+      luarocks                 # Lua package manager
     ];
   };
 
