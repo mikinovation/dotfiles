@@ -64,6 +64,7 @@ require("lazy").setup({
 	require("plugins.open-browser").config(),
 	require("plugins.oil").config(),
 }, {
+	lockfile = os.getenv("HOME") .. "/dotfiles/config/nvim/lazy-lock.json",
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
 			cmd = "⌘",
