@@ -553,13 +553,13 @@ let
         sha512 = "nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ==";
       };
     };
-    "effect-3.20.0" = {
+    "effect-3.21.0" = {
       name = "effect";
       packageName = "effect";
-      version = "3.20.0";
+      version = "3.21.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/effect/-/effect-3.20.0.tgz";
-        sha512 = "qMLfDJscrNG8p/aw+IkT9W7fgj50Z4wG5bLBy0Txsxz8iUHjDIkOgO3SV0WZfnQbNG2VJYb0b+rDLMrhM4+Krw==";
+        url = "https://registry.npmjs.org/effect/-/effect-3.21.0.tgz";
+        sha512 = "PPN80qRokCd1f015IANNhrwOnLO7GrrMQfk4/lnZRE/8j7UPWrNNjPV0uBrZutI/nHzernbW+J0hdqQysHiSnQ==";
       };
     };
     "emmet-2.4.11" = {
@@ -1408,13 +1408,13 @@ let
         sha512 = "TeTSQ6H5YHvpqVwBRcnLDCBnDOHWYu7IvGbHT6N8AOymcr9PJGjc1GTtiWZTYg0NCgYwvnYWEkVChQAr9bjfwA==";
       };
     };
-    "type-fest-5.4.4" = {
+    "type-fest-5.5.0" = {
       name = "type-fest";
       packageName = "type-fest";
-      version = "5.4.4";
+      version = "5.5.0";
       src = fetchurl {
-        url = "https://registry.npmjs.org/type-fest/-/type-fest-5.4.4.tgz";
-        sha512 = "JnTrzGu+zPV3aXIUhnyWJj4z/wigMsdYajGLIYakqyOW1nPllzXEJee0QQbHj+CTIQtXGlAjuK0UY+2xTyjVAw==";
+        url = "https://registry.npmjs.org/type-fest/-/type-fest-5.5.0.tgz";
+        sha512 = "PlBfpQwiUvGViBNX84Yxwjsdhd1TUlXr6zjX7eoirtCPIr08NAmxwa+fcYBTeRQxHo9YC9wwF3m9i700sHma8g==";
       };
     };
     "typescript-5.9.3" = {
@@ -1720,10 +1720,10 @@ in
   "@anthropic-ai/claude-code" = nodeEnv.buildNodePackage {
     name = "_at_anthropic-ai_slash_claude-code";
     packageName = "@anthropic-ai/claude-code";
-    version = "2.1.78";
+    version = "2.1.80";
     src = fetchurl {
-      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-2.1.78.tgz";
-      sha512 = "CQDwZoMZhXicm2HHhVqCO319eepmXx01tVmq1COC35hP5mTwdDvMJkz+y//8xrhpSc6kBu6nw1uGLcG1IsIHlA==";
+      url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-2.1.80.tgz";
+      sha512 = "YAgNNr3fzn3xaTNm+CYgebdEinU9D0HxGUT2C1N2Ej2HCvt5AjrSoU8vTgccxx4oPkj1R4gpuZWi1rTKvxNaPQ==";
     };
     buildInputs = globalBuildInputs;
     meta = {
@@ -1886,10 +1886,10 @@ in
   agent-browser = nodeEnv.buildNodePackage {
     name = "agent-browser";
     packageName = "agent-browser";
-    version = "0.21.0";
+    version = "0.21.2";
     src = fetchurl {
-      url = "https://registry.npmjs.org/agent-browser/-/agent-browser-0.21.0.tgz";
-      sha512 = "isVHEeb2WL5hLhr4o+zNmcYwmBrldxvrH+FIoRoUmDxyrHr3bhIS6L8BlUMHqT77YtkPq0YSmwoBRrwqeouw9Q==";
+      url = "https://registry.npmjs.org/agent-browser/-/agent-browser-0.21.2.tgz";
+      sha512 = "05TgoluWYRPAwUruJqFGsZVoZfoUVMpT8AT3HcA4sxSHbYsIsLkQTZmNvsmMGS3DL2I/7tu27RiqYDOPswAeMg==";
     };
     buildInputs = globalBuildInputs;
     meta = {
@@ -1904,10 +1904,10 @@ in
   ccmanager = nodeEnv.buildNodePackage {
     name = "ccmanager";
     packageName = "ccmanager";
-    version = "3.12.3";
+    version = "4.0.1";
     src = fetchurl {
-      url = "https://registry.npmjs.org/ccmanager/-/ccmanager-3.12.3.tgz";
-      sha512 = "JK+lzJtKs40gBBRUJB1XNmtBlmvJyN46sFf/IdPBAst9Bz/5t3Iu9z+wbfvd95IFzafh70bcoDiM4xyPOBiQbw==";
+      url = "https://registry.npmjs.org/ccmanager/-/ccmanager-4.0.1.tgz";
+      sha512 = "6hakBhyMTBRBWCuvwwRjJM+Pm16IJS00GYZYagIi/KT6gyfK6qmqT7VMRx7U9T7sXDzmQ52MsfgudCx2APP0Dw==";
     };
     dependencies = [
       sources."@alcalzone/ansi-tokenize-0.2.5"
@@ -1926,7 +1926,7 @@ in
       sources."code-excerpt-4.0.0"
       sources."convert-to-spaces-2.0.1"
       sources."csstype-3.2.3"
-      sources."effect-3.20.0"
+      sources."effect-3.21.0"
       sources."emoji-regex-10.6.0"
       sources."environment-1.1.0"
       sources."es-toolkit-1.45.1"
@@ -1971,7 +1971,7 @@ in
       sources."tagged-tag-1.0.0"
       sources."terminal-size-4.0.1"
       sources."to-rotated-1.0.0"
-      sources."type-fest-5.4.4"
+      sources."type-fest-5.5.0"
       sources."utf-8-validate-6.0.6"
       sources."widest-line-6.0.0"
       (sources."wrap-ansi-9.0.2" // {
