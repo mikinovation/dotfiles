@@ -6,14 +6,21 @@ return {
 
 		if is_wsl then
 			-- Configure clipboard for WSL using clip.exe and PowerShell
-			local paste_cmd = "powershell.exe -NoProfile -Command "
-				.. "[Console]::Out.Write($(Get-Clipboard -Raw)"
-				.. '.tostring().replace("`r", ""))'
+			-- clip.exe expects UTF-16LE input, so convert from UTF-8 via iconv
+			local copy_cmd = { "sh", "-c", "iconv -f UTF-8 -t UTF-16LE | clip.exe" }
+			local paste_cmd = {
+				"sh",
+				"-c",
+				"powershell.exe -NoProfile -Command "
+					.. "'[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;"
+					.. "[Console]::Out.Write($(Get-Clipboard -Raw)"
+					.. '.tostring().replace("`r", ""))\'',
+			}
 			vim.g.clipboard = {
 				name = "wsl-clipboard",
 				copy = {
-					["+"] = "clip.exe",
-					["*"] = "clip.exe",
+					["+"] = copy_cmd,
+					["*"] = copy_cmd,
 				},
 				paste = {
 					["+"] = paste_cmd,
