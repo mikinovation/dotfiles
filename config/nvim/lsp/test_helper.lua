@@ -8,12 +8,14 @@ function M.get_lsp_dir()
 	local info = debug.getinfo(2, "S")
 	local test_file = info.source:gsub("^@", "")
 	if not test_file:match("^/") then
+		local cwd
 		local handle = io.popen("pwd")
 		if handle then
-			local cwd = handle:read("*l")
+			cwd = handle:read("*l")
 			handle:close()
-			test_file = cwd .. "/" .. test_file
 		end
+		cwd = cwd or os.getenv("PWD") or "."
+		test_file = cwd .. "/" .. test_file
 	end
 	return test_file:match("(.*/)")
 end
@@ -51,6 +53,8 @@ local function deep_merge(base, override)
 	for k, v in pairs(base) do
 		if type(v) == "table" and type(override[k]) == "table" then
 			result[k] = deep_merge(v, override[k])
+		elseif override[k] ~= nil then
+			result[k] = override[k]
 		else
 			result[k] = v
 		end
@@ -101,6 +105,9 @@ function M.setup_vim_mock()
 		fn = {
 			has = function()
 				return 0
+			end,
+			executable = function()
+				return 1
 			end,
 			sign_define = function(name, opts)
 				M.captured.signs_defined[name] = opts
@@ -180,15 +187,12 @@ function M.setup_vim_mock()
 end
 
 function M.load_lsp()
-	-- Ensure lsp submodules can be re-required on each test run
-	package.loaded["lsp.keymaps"] = nil
-	package.loaded["lsp.diagnostics"] = nil
-	package.loaded["lsp.servers"] = nil
-	package.loaded["lsp.servers.lua_ls"] = nil
-	package.loaded["lsp.servers.rust_analyzer"] = nil
-	package.loaded["lsp.servers.typescript"] = nil
-	package.loaded["lsp.servers.tailwindcss"] = nil
-	package.loaded["lsp.servers.solargraph"] = nil
+	-- Clear all lsp.* modules to ensure fresh require on each test run
+	for name in pairs(package.loaded) do
+		if name:match("^lsp%.") then
+			package.loaded[name] = nil
+		end
+	end
 
 	-- Add nvim dir to package path so require("lsp.xxx") resolves correctly
 	local nvim_path = M.nvim_dir .. "?.lua"
