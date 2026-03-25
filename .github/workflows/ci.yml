@@ -49,5 +49,9 @@ jobs:
           neovim: true
           version: stable
 
+      - name: Install luarocks
+        run: sudo apt-get update && sudo apt-get install -y luarocks
+
       - name: Run Neovim smoke test
         run: sh ./scripts/nvim-smoke-test.sh
+        timeout-minutes: 5
