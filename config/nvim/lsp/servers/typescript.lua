@@ -2,7 +2,8 @@
 -- TypeScript, JavaScript, Vue related LSP servers (vtsls, ts_ls, vue_ls)
 
 return function(capabilities)
-	local vue_language_server_path = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server"
+	local vue_language_server_path = vim.env.VUE_LANGUAGE_SERVER_PATH
+		or (vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server")
 	local tsserver_filetypes = {
 		"typescript",
 		"javascript",
@@ -53,6 +54,11 @@ return function(capabilities)
 						"Could not find `vtsls` or `ts_ls` lsp client, `vue_ls` would not work without it.",
 						vim.log.levels.ERROR
 					)
+					-- Send nil response to prevent vue_ls from waiting indefinitely
+					local param = unpack(result)
+					local id = unpack(param)
+					---@diagnostic disable-next-line: param-type-mismatch
+					client:notify("tsserver/response", { { id, nil } })
 					return
 				end
 				local ts_client = clients[1]

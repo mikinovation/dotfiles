@@ -33,10 +33,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("<leader>e", vim.diagnostic.open_float, "Open [E]rror")
 		map("[d", vim.diagnostic.goto_prev, "Previous [D]iagnostic")
 		map("]d", vim.diagnostic.goto_next, "Next [D]iagnostic")
-		map("<leader>q", vim.diagnostic.setloclist, "Diagnostics to [Q]uickfix List")
+		map("<leader>q", vim.diagnostic.setloclist, "Diagnostics to [L]ocation List")
 
 		-- Format document
-		if client.supports_method("textDocument/formatting") then
+		if client and client:supports_method("textDocument/formatting") then
 			map("<leader>f", function()
 				vim.lsp.buf.format({ async = true })
 			end, "[F]ormat document")

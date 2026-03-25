@@ -49,5 +49,22 @@ jobs:
           neovim: true
           version: stable
 
+      - name: Install luarocks and build dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y luarocks lua5.1 liblua5.1-0-dev
+          sudo luarocks install luarocks-build-treesitter-parser
+          npm install -g tree-sitter-cli
+
+      - name: Cache Neovim plugins
+        uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
+        with:
+          path: |
+            ~/.local/share/nvim/lazy
+            ~/.local/share/nvim/lazy-rocks
+          key: nvim-plugins-${{ hashFiles('config/nvim/plugins.lua', 'config/nvim/plugins/*.lua') }}
+          restore-keys: |
+            nvim-plugins-
+
       - name: Run Neovim smoke test
         run: sh ./scripts/nvim-smoke-test.sh
+        timeout-minutes: 5
