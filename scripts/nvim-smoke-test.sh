@@ -12,9 +12,6 @@ main() {
     exit 0
   fi
 
-  SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-  export XDG_CONFIG_HOME="$(cd "$SCRIPT_DIR/../config" && pwd)"
-
   if error_output=$(nvim --headless -c 'quit' 2>&1) && [ -z "$error_output" ]; then
     echo "Neovim smoke test passed!"
   else
