@@ -53,6 +53,7 @@ jobs:
         run: |
           sudo apt-get update && sudo apt-get install -y luarocks lua5.1 liblua5.1-0-dev
           sudo luarocks install luarocks-build-treesitter-parser
+          npm install -g tree-sitter-cli
 
       - name: Cache Neovim plugins
         uses: actions/cache@5a3ec84eff668545956fd18022155c47e93e2684 # v4.2.3
