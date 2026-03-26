@@ -151,7 +151,6 @@ local lazy_plugin_files = {
 	"plenary",
 	"quick-scope",
 	"rest",
-	"sidekick",
 	"sqlite",
 	"telescope",
 	"telescope-file-browser",
