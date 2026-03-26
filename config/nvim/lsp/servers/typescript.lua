@@ -1,57 +1,24 @@
 -- lsp/servers/typescript.lua
--- TypeScript, JavaScript, Vue related LSP servers (vtsls, ts_ls, vue_ls)
+-- TypeScript, JavaScript, Vue related LSP servers (tsgo, vtsls, vue_ls)
 
 return function(capabilities)
 	local vue_language_server_path = vim.env.VUE_LANGUAGE_SERVER_PATH
 		or (vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server")
-	local tsserver_filetypes = {
-		"typescript",
-		"javascript",
-		"javascriptreact",
-		"typescriptreact",
-		"vue",
-	}
 	local vue_plugin = {
 		name = "@vue/typescript-plugin",
 		location = vue_language_server_path,
 		languages = { "vue" },
 		configNamespace = "typescript",
 	}
-	local vtsls_config = {
-		settings = {
-			vtsls = {
-				tsserver = {
-					globalPlugins = {
-						vue_plugin,
-					},
-				},
-			},
-		},
-		filetypes = tsserver_filetypes,
-	}
-
-	local ts_ls_config = {
-		init_options = {
-			plugins = {
-				vue_plugin,
-			},
-		},
-		filetypes = tsserver_filetypes,
-	}
 
 	local vue_ls_config = {
 		on_init = function(client)
 			client.handlers["tsserver/request"] = function(_, result, context)
-				local ts_clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = "ts_ls" })
 				local vtsls_clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = "vtsls" })
-				local clients = {}
 
-				vim.list_extend(clients, ts_clients)
-				vim.list_extend(clients, vtsls_clients)
-
-				if #clients == 0 then
+				if #vtsls_clients == 0 then
 					vim.notify(
-						"Could not find `vtsls` or `ts_ls` lsp client, `vue_ls` would not work without it.",
+						"Could not find `vtsls` lsp client, `vue_ls` would not work without it.",
 						vim.log.levels.ERROR
 					)
 					-- Send nil response to prevent vue_ls from waiting indefinitely
@@ -61,7 +28,7 @@ return function(capabilities)
 					client:notify("tsserver/response", { { id, nil } })
 					return
 				end
-				local ts_client = clients[1]
+				local ts_client = vtsls_clients[1]
 
 				local param = unpack(result)
 				local id, command, payload = unpack(param)
@@ -87,13 +54,44 @@ return function(capabilities)
 		end,
 	}
 
-	-- vtsls (TypeScript/JavaScript LSP)
+	-- tsgo (TypeScript Go-based LSP)
+	vim.lsp.config.tsgo = {
+		cmd = { "tsgo", "--lsp", "--stdio" },
+		filetypes = {
+			"typescript",
+			"javascript",
+			"javascriptreact",
+			"typescriptreact",
+		},
+		root_markers = {
+			"package-lock.json",
+			"yarn.lock",
+			"pnpm-lock.yaml",
+			"bun.lockb",
+			"bun.lock",
+			".git",
+		},
+		capabilities = capabilities,
+	}
+
+	-- vtsls (Vue support only - tsserver request forwarding for vue_ls)
 	vim.lsp.config.vtsls = vim.tbl_deep_extend("force", {
 		cmd = { "vtsls", "--stdio" },
-		filetypes = tsserver_filetypes,
+		filetypes = { "vue" },
 		root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
 		capabilities = capabilities,
-	}, vtsls_config)
+	}, {
+		settings = {
+			vtsls = {
+				tsserver = {
+					globalPlugins = {
+						vue_plugin,
+					},
+				},
+			},
+		},
+		filetypes = { "vue" },
+	})
 
 	-- Vue Language Server
 	vim.lsp.config.vue_ls = vim.tbl_deep_extend("force", {
@@ -102,12 +100,4 @@ return function(capabilities)
 		root_markers = { "package.json", ".git" },
 		capabilities = capabilities,
 	}, vue_ls_config)
-
-	-- TypeScript Language Server (fallback)
-	vim.lsp.config.ts_ls = vim.tbl_deep_extend("force", {
-		cmd = { "typescript-language-server", "--stdio" },
-		filetypes = tsserver_filetypes,
-		root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
-		capabilities = capabilities,
-	}, ts_ls_config)
 end

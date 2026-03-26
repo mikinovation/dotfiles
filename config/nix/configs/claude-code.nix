@@ -32,7 +32,7 @@
             hooks = [
               {
                 type = "command";
-                command = "~/dotfiles/config/claude/hooks/notify-stop.sh";
+                command = "~/ghq/github.com/mikinovation/dotfiles/config/claude/hooks/notify-stop.sh";
               }
             ];
           }
@@ -43,7 +43,7 @@
             hooks = [
               {
                 type = "command";
-                command = "~/dotfiles/config/claude/hooks/notify-input.sh";
+                command = "~/ghq/github.com/mikinovation/dotfiles/config/claude/hooks/notify-input.sh";
               }
             ];
           }

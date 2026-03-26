@@ -44,10 +44,10 @@
       fi
 
       # Load WSL specific configurations if on WSL
-      [[ -f ~/dotfiles/config/zsh/plugins/wsl.zsh ]] && source ~/dotfiles/config/zsh/plugins/wsl.zsh
+      [[ -f ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/wsl.zsh ]] && source ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/wsl.zsh
 
       # Load zsh abbreviations
-      [[ -f ~/dotfiles/config/zsh/plugins/abbr.zsh ]] && source ~/dotfiles/config/zsh/plugins/abbr.zsh
+      [[ -f ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/abbr.zsh ]] && source ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/abbr.zsh
 
       # Load Powerlevel10k configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
