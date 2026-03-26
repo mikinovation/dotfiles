@@ -56,7 +56,9 @@ local function search_and_replace()
 			map("i", "<CR>", function(prompt_bufnr)
 				local confirmation = vim.fn.input("Execute? (y/n): ")
 				if confirmation:lower() == "y" then
-					vim.cmd("%s/" .. search_term .. "/" .. replace_term .. "/g")
+					local escaped_search = vim.fn.escape(search_term, "/\\")
+					local escaped_replace = vim.fn.escape(replace_term, "/\\&")
+					vim.cmd("%s/" .. escaped_search .. "/" .. escaped_replace .. "/g")
 					require("telescope.actions").close(prompt_bufnr)
 				end
 			end)

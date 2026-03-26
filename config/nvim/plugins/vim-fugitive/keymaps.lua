@@ -35,7 +35,7 @@ function M.setup()
 	vim.keymap.set("n", "<leader>gbr", ":Git branch<CR>", { desc = "Git [BR]anch List" })
 	vim.keymap.set("n", "<leader>gbl", ":Git branch -vv<CR>", { desc = "Git [B]ranch [L]ist Verbose" })
 	vim.keymap.set("n", "<leader>gbn", ":Git checkout -b ", { desc = "Git [B]ranch [N]ew" })
-	vim.keymap.set("n", "<leader>gsw", ":Git switch ", { desc = "Git [S]itch" })
+	vim.keymap.set("n", "<leader>gsw", ":Git switch ", { desc = "Git [S]witch" })
 
 	-- Rebase operations
 	vim.keymap.set("n", "<leader>grb", ":Git rebase ", { desc = "Git [R]e[B]ase" })

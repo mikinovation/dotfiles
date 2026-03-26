@@ -215,6 +215,7 @@ local plugins_with_keymaps = {
 	"nvim-dbee",
 	"dropbar",
 	"git-conflict",
+	"gitlinker",
 }
 
 -- Find conflicts: entries with same (mode, lhs, scope)
