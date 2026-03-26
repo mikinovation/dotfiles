@@ -218,6 +218,23 @@ local plugins_with_keymaps = {
 	"gitlinker",
 }
 
+-- Scan filesystem for plugins that have keymaps.lua
+local function find_plugins_with_keymaps_on_disk()
+	local result = {}
+	local handle = io.popen('ls -d "' .. plugins_dir .. '"*/keymaps.lua 2>/dev/null')
+	if handle then
+		for line in handle:lines() do
+			local plugin_name = line:match(".*/plugins/([^/]+)/keymaps%.lua$")
+			if plugin_name then
+				table.insert(result, plugin_name)
+			end
+		end
+		handle:close()
+	end
+	table.sort(result)
+	return result
+end
+
 -- Find conflicts: entries with same (mode, lhs, scope)
 local function find_conflicts(keymaps)
 	local groups = {}
@@ -447,6 +464,56 @@ describe("keymap conflict detection", function()
 				package.loaded[name] = nil
 			end
 		end
+	end)
+
+	it("plugins_with_keymaps list matches actual keymaps.lua files on disk", function()
+		local on_disk = find_plugins_with_keymaps_on_disk()
+		local in_list = {}
+		for _, name in ipairs(plugins_with_keymaps) do
+			table.insert(in_list, name)
+		end
+		table.sort(in_list)
+
+		-- Check for plugins on disk but missing from the list
+		local missing_from_list = {}
+		local list_set = {}
+		for _, name in ipairs(in_list) do
+			list_set[name] = true
+		end
+		for _, name in ipairs(on_disk) do
+			if not list_set[name] then
+				table.insert(missing_from_list, name)
+			end
+		end
+
+		-- Check for plugins in the list but not on disk
+		local extra_in_list = {}
+		local disk_set = {}
+		for _, name in ipairs(on_disk) do
+			disk_set[name] = true
+		end
+		for _, name in ipairs(in_list) do
+			if not disk_set[name] then
+				table.insert(extra_in_list, name)
+			end
+		end
+
+		local messages = {}
+		if #missing_from_list > 0 then
+			table.insert(
+				messages,
+				"Plugins with keymaps.lua on disk but missing from plugins_with_keymaps: "
+					.. table.concat(missing_from_list, ", ")
+			)
+		end
+		if #extra_in_list > 0 then
+			table.insert(
+				messages,
+				"Plugins in plugins_with_keymaps but without keymaps.lua on disk: " .. table.concat(extra_in_list, ", ")
+			)
+		end
+
+		assert.equals(0, #missing_from_list + #extra_in_list, table.concat(messages, "\n"))
 	end)
 
 	it("captures keymaps from all sources", function()
