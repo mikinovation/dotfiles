@@ -38,6 +38,19 @@ jobs:
       - name: Run Busted Tests
         run: busted .
 
+  nix-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: cachix/install-nix-action@526118121621777ccd86f79b04685a9319637641 # v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Run Nix tests
+        run: sh ./scripts/nix-test.sh
+
   nvim-smoke-test:
     runs-on: ubuntu-latest
     steps:

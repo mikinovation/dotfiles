@@ -67,5 +67,10 @@
           };
         };
       };
+
+      # Nix flake checks
+      checks.${system} = {
+        home-manager-build = self.homeConfigurations.mikinovation.activationPackage;
+      };
     };
 }
