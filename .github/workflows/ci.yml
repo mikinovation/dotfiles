@@ -48,11 +48,8 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
-      - name: Run nix flake check
-        run: nix flake check ./config/nix --no-build
-
-      - name: Dry-run home-manager build
-        run: nix build ./config/nix#homeConfigurations.mikinovation.activationPackage --dry-run
+      - name: Run Nix tests
+        run: sh ./scripts/nix-test.sh
 
   nvim-smoke-test:
     runs-on: ubuntu-latest
