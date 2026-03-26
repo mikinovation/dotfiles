@@ -88,7 +88,7 @@ end
 
 -- Load a plugin file using dofile (avoids require path issues)
 local function load_plugin(name)
-	local filepath = plugins_dir .. name .. ".lua"
+	local filepath = plugins_dir .. name .. "/init.lua"
 	return dofile(filepath)
 end
 
@@ -280,15 +280,15 @@ describe("plugin specs", function()
 end)
 
 describe("plugin file coverage", function()
-	local excluded = { clipboard = true, plugin_spec_spec = true }
+	local excluded = { clipboard = true }
 
-	it("all plugin files are covered by the test list", function()
+	it("all plugin directories are covered by the test list", function()
 		local covered = {}
 		for _, name in ipairs(lazy_plugin_files) do
 			covered[name] = true
 		end
 
-		local handle = io.popen("ls " .. plugins_dir .. "*.lua")
+		local handle = io.popen("ls -d " .. plugins_dir .. "*/")
 		if not handle then
 			error("failed to list plugin directory")
 		end
@@ -296,14 +296,14 @@ describe("plugin file coverage", function()
 		handle:close()
 
 		local missing = {}
-		for file in result:gmatch("[^\n]+") do
-			local name = file:match("([^/]+)%.lua$")
+		for dir in result:gmatch("[^\n]+") do
+			local name = dir:match("([^/]+)/$")
 			if name and not covered[name] and not excluded[name] then
 				table.insert(missing, name)
 			end
 		end
 
-		assert.same({}, missing, "Plugin files not covered by tests: " .. table.concat(missing, ", "))
+		assert.same({}, missing, "Plugin directories not covered by tests: " .. table.concat(missing, ", "))
 	end)
 end)
 
