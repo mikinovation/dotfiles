@@ -28,7 +28,7 @@ https://wezfurlong.org/wezterm/
 Windowsの場合は以下のようにweztermの設定ファイルをホストOSのWindows側にファイルをコピーする
 
 ```bash
-cp ~/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
+cp ~/ghq/github.com/mikinovation/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
 ### 
@@ -43,7 +43,7 @@ To update npm packages managed by node2nix:
 
 ```bash
 # Navigate to the node2nix directory
-cd ~/dotfiles/config/node2nix
+cd ~/ghq/github.com/mikinovation/dotfiles/config/node2nix
 
 # Edit node-packages.json to add/update packages
 
@@ -59,8 +59,8 @@ nix-shell -p nodePackages.node2nix --command "node2nix -i ./node-packages.json -
 Run the setup script, which will automatically install Home Manager and deploy all configurations:
 
 ```bash
-git clone git@github.com:mikinovation/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+ghq get git@github.com:mikinovation/dotfiles.git
+cd ~/ghq/github.com/mikinovation/dotfiles
 ./setup.sh
 ```
 
@@ -70,14 +70,14 @@ If you prefer to deploy manually using Home Manager:
 
 ```bash
 # Clone the repository
-git clone git@github.com:mikinovation/dotfiles.git ~/dotfiles
+ghq get git@github.com:mikinovation/dotfiles.git
 
 # Setup nix.conf first
 mkdir -p ~/.config/nix
-ln -s ~/dotfiles/config/nix/nix.conf ~/.config/nix/nix.conf
+ln -s ~/ghq/github.com/mikinovation/dotfiles/config/nix/nix.conf ~/.config/nix/nix.conf
 
 # Deploy using Home Manager
-nix run home-manager/master -- switch --flake ~/dotfiles/config/nix#mikinovation
+nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotfiles/config/nix#mikinovation
 ```
 
 ### Update Configuration
@@ -86,10 +86,10 @@ After making changes to your configuration files:
 
 ```bash
 # Using Home Manager directly
-home-manager switch --flake ~/dotfiles/config/nix#mikinovation
+home-manager switch --flake ~/ghq/github.com/mikinovation/dotfiles/config/nix#mikinovation
 
 # Or re-run the setup script
-cd ~/dotfiles
+cd ~/ghq/github.com/mikinovation/dotfiles
 ./setup.sh
 ```
 

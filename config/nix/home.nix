@@ -86,7 +86,7 @@
     ".config/sheldon/plugins.toml".source = ../sheldon/plugins.toml;
 
     # WSL-specific configuration
-    "dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
+    "ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
 
   };
 
