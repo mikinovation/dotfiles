@@ -12,8 +12,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 分析結果や設計提案は必ずワークスペースルートの `~/projects/org/.mikinovation/frontend-design-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/projects/org/.mikinovation/frontend-design-component-architecture-20250131-143022.md`）。
+**重要**: 分析結果や設計提案は必ずワークスペースルートの `~/ghq/github.com/mikinovation/org/.mikinovation/frontend-design-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/ghq/github.com/mikinovation/org/.mikinovation/frontend-design-component-architecture-20250131-143022.md`）。
 
 ## 専門領域
 

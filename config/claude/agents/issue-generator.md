@@ -11,7 +11,7 @@ model: sonnet
 
 ## Issue配置ルール
 
-1. **一時的なIssue起案**: `~/projects/org/.mikinovation/issue-YYYYMMDD-HHMMSS.md`
+1. **一時的なIssue起案**: `~/ghq/github.com/mikinovation/org/.mikinovation/issue-YYYYMMDD-HHMMSS.md`
 2. **プロジェクト共有Issue**: `docs/issues/`
 
 ## Issueタイプ

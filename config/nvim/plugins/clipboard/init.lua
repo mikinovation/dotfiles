@@ -13,8 +13,10 @@ return {
 				"-c",
 				"powershell.exe -NoProfile -Command "
 					.. "'[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;"
-					.. "[Console]::Out.Write($(Get-Clipboard -Raw)"
-					.. '.tostring().replace("`r", ""))\'',
+					.. "$c = Get-Clipboard -Raw;"
+					.. "if ($c -ne $null) {"
+					.. '[Console]::Out.Write($c.tostring().replace("`r", ""))'
+					.. "}'",
 			}
 			vim.g.clipboard = {
 				name = "wsl-clipboard",

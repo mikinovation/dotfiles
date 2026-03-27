@@ -16,7 +16,7 @@ main() {
   export XDG_CONFIG_HOME="$(cd "$SCRIPT_DIR/../config" && pwd)"
 
   # Create directories referenced by config to avoid warnings
-  mkdir -p "$HOME/projects/org"
+  mkdir -p "$HOME/ghq/github.com/mikinovation/org"
 
   # First pass: install plugins via lazy.nvim
   echo "Installing plugins..."

@@ -1,4 +1,4 @@
-{ config, pkgs, nodePkgs, inputs, username, ... }:
+{ config, lib, pkgs, nodePkgs, inputs, username, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -119,7 +119,7 @@
 
   # Nix settings
   nix = {
-    package = pkgs.nix;
+    package = lib.mkDefault pkgs.nix;
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
     };

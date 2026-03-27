@@ -106,7 +106,7 @@ function telescope.config()
 					},
 					project = {
 						base_dirs = {
-							{ "~/projects", max_depth = 4 },
+							{ "~/ghq", max_depth = 5 },
 						},
 						hidden_files = true,
 						sync_with_nvim_tree = true,
@@ -118,7 +118,7 @@ function telescope.config()
 						disable_devicons = false,
 						workspaces = {
 							["conf"] = "~/.config",
-							["project"] = "~/projects",
+							["project"] = "~/ghq",
 						},
 					},
 				},
