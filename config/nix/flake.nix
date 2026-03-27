@@ -62,8 +62,37 @@
           inherit inputs nodePkgs username;
         };
       };
+      mkNixosConfig = username: hostname: nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = {
+          inherit inputs username;
+        };
+        modules = [
+          ./nixos/configuration.nix
+          (/etc/nixos/hardware-configuration.nix)
+          home-manager.nixosModules.home-manager
+          {
+            networking.hostName = hostname;
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.${username} = import ./home.nix;
+            home-manager.extraSpecialArgs = {
+              inherit inputs nodePkgs username;
+            };
+            home-manager.sharedModules = [
+              agent-skills-nix.homeManagerModules.default
+              mcp-servers-nix.homeManagerModules.default
+            ];
+          }
+        ];
+      };
     in {
-      # Home Manager configuration
+      # NixOS system configuration
+      nixosConfigurations = {
+        nixos = mkNixosConfig "mikinovation" "nixos";
+      };
+
+      # Home Manager configuration (standalone)
       homeConfigurations = {
         mikinovation = mkHomeConfig "mikinovation";
         nixos = mkHomeConfig "nixos";
