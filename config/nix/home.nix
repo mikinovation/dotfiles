@@ -1,10 +1,10 @@
-{ config, pkgs, nodePkgs, inputs, ... }:
+{ config, pkgs, nodePkgs, inputs, username, ... }:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
-  home.username = "mikinovation";
-  home.homeDirectory = "/home/mikinovation";
+  home.username = username;
+  home.homeDirectory = "/home/${username}";
 
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
@@ -60,7 +60,7 @@
   #
   # or
   #
-  #  /etc/profiles/per-user/mikinovation/etc/profile.d/hm-session-vars.sh
+  #  /etc/profiles/per-user/<username>/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
     # Note: EDITOR and VISUAL are set in neovim.nix

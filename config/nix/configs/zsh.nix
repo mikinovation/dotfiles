@@ -8,6 +8,7 @@
     sessionVariables = {
       ZSH = "$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh";
       BUN_INSTALL = "$HOME/.bun";
+      DOTFILES_DIR = "$HOME/ghq/github.com/mikinovation/dotfiles";
       POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
     };
 
@@ -44,16 +45,16 @@
       fi
 
       # Load WSL specific configurations if on WSL
-      [[ -f ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/wsl.zsh ]] && source ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/wsl.zsh
+      [[ -f "$DOTFILES_DIR/config/zsh/plugins/wsl.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/wsl.zsh"
 
       # Load zsh abbreviations
-      [[ -f ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/abbr.zsh ]] && source ~/ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/abbr.zsh
+      [[ -f "$DOTFILES_DIR/config/zsh/plugins/abbr.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/abbr.zsh"
 
       # Load Powerlevel10k configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
       # bun completions
-      [ -s "/home/mikinovation/.bun/_bun" ] && source "/home/mikinovation/.bun/_bun"
+      [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
     '';
   };
 }

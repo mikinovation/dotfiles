@@ -16,8 +16,10 @@ setup_nix_config() {
 
 # Deploy configurations using Home Manager
 deploy_home_manager() {
+  local username
+  username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotfiles/config/nix#mikinovation
+  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/config/nix#$username"
 }
 
 main() {
