@@ -9,9 +9,9 @@ setup_nix_config() {
     mkdir -p "$NIX_CONFIG_DIR"
   fi
 
-  # Only link nix.conf, not the entire directory
-  # (home-manager will manage flake.nix and home.nix)
   ln -snfv "$DOTFILES_DIR/config/nix/nix.conf" "$NIX_CONFIG_DIR/nix.conf"
+  ln -snfv "$DOTFILES_DIR/config/nix/flake.nix" "$NIX_CONFIG_DIR/flake.nix"
+  ln -snfv "$DOTFILES_DIR/config/nix/flake.lock" "$NIX_CONFIG_DIR/flake.lock"
 }
 
 # Deploy configurations using Home Manager
@@ -19,7 +19,7 @@ deploy_home_manager() {
   local username
   username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/config/nix#$username"
+  nix run home-manager/master -- switch --flake "$NIX_CONFIG_DIR#$username"
 }
 
 main() {
