@@ -53,7 +53,7 @@
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
       # bun completions
-      [ -s "/home/mikinovation/.bun/_bun" ] && source "/home/mikinovation/.bun/_bun"
+      [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
     '';
   };
 }

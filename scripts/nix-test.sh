@@ -9,7 +9,7 @@ nix flake check "$FLAKE_DIR" --no-build
 
 echo ""
 echo "=== Dry-run home-manager build ==="
-nix build "$FLAKE_DIR#homeConfigurations.mikinovation.activationPackage" --dry-run
+nix build "$FLAKE_DIR#homeConfigurations.${USER}.activationPackage" --dry-run
 
 echo ""
 echo "All Nix checks passed."

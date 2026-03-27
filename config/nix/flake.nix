@@ -51,21 +51,22 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
+      mkHomeConfig = username: home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [
+          ./home.nix
+          agent-skills-nix.homeManagerModules.default
+          mcp-servers-nix.homeManagerModules.default
+        ];
+        extraSpecialArgs = {
+          inherit inputs nodePkgs username;
+        };
+      };
     in {
       # Home Manager configuration
       homeConfigurations = {
-        # Replace with your username
-        mikinovation = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            ./home.nix
-            agent-skills-nix.homeManagerModules.default
-            mcp-servers-nix.homeManagerModules.default
-          ];
-          extraSpecialArgs = {
-            inherit inputs nodePkgs;
-          };
-        };
+        mikinovation = mkHomeConfig "mikinovation";
+        nixos = mkHomeConfig "nixos";
       };
 
       # Nix flake checks
