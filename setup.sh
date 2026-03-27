@@ -19,7 +19,7 @@ deploy_home_manager() {
   local username
   username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch --flake "$NIX_CONFIG_DIR#$username"
+  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/config/nix#$username"
 }
 
 main() {
