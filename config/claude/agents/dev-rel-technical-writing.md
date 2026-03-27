@@ -12,8 +12,8 @@ model: sonnet
 
 ## 出力形式
 
-**重要**: 作成した技術文書は必ずワークスペースルートの `~/projects/org/.mikinovation/devrel-doc-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
-タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/projects/org/.mikinovation/devrel-doc-getting-started-20250131-143022.md`）。
+**重要**: 作成した技術文書は必ずワークスペースルートの `~/ghq/github.com/mikinovation/org/.mikinovation/devrel-doc-YYYYMMDD-HHMMSS.md` の形式でマークダウンファイルとして保存してください。
+タイムスタンプは実行時の日時を使用し、ファイル名は内容が分かるように調整してください（例: `~/ghq/github.com/mikinovation/org/.mikinovation/devrel-doc-getting-started-20250131-143022.md`）。
 
 ## 専門領域
 

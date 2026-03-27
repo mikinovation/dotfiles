@@ -14,7 +14,15 @@ setup_nix_config() {
   ln -snfv "$DOTFILES_DIR/config/nix/flake.lock" "$NIX_CONFIG_DIR/flake.lock"
 }
 
-# Deploy configurations using Home Manager
+# Deploy NixOS system configuration
+deploy_nixos() {
+  local hostname
+  hostname="$(hostname)"
+  echo "Deploying NixOS system configuration..."
+  sudo nixos-rebuild switch --flake "$DOTFILES_DIR/config/nix#$hostname"
+}
+
+# Deploy configurations using Home Manager (standalone, for non-NixOS)
 deploy_home_manager() {
   local username
   username="$(id -un)"
@@ -33,9 +41,16 @@ main() {
   setup_nix_config
   echo "Nix config setup done."
 
-  # Deploy dotfiles using Home Manager
-  deploy_home_manager
-  echo "Home Manager deployment done."
+  # Deploy configuration
+  if [ -f /etc/nixos/hardware-configuration.nix ]; then
+    # NixOS system: use nixos-rebuild (includes Home Manager as a module)
+    deploy_nixos
+    echo "NixOS deployment done."
+  else
+    # Non-NixOS: use standalone Home Manager
+    deploy_home_manager
+    echo "Home Manager deployment done."
+  fi
 
   echo "Setup dotfiles done."
   echo ""
