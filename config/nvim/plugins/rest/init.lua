@@ -11,11 +11,6 @@ function rest.config()
 				table.insert(opts.ensure_installed, "http")
 			end,
 		},
-		opts = {
-			rocks = {
-				enabled = false,
-			},
-		},
 		config = function()
 			require("plugins.rest.keymaps").setup()
 		end,

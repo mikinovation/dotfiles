@@ -19,6 +19,9 @@
       solargraph  # Ruby
       vue-language-server  # Vue (volar)
 
+      # Lua runtime (required by rest.nvim luarocks build)
+      lua5_1
+
       # Formatters and linters
       stylua  # Lua formatter
       luajitPackages.luacheck  # Lua linter
