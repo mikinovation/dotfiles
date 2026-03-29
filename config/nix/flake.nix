@@ -106,6 +106,7 @@
       # Nix flake checks
       checks.${system} = {
         home-manager-build = self.homeConfigurations.mikinovation.activationPackage;
+        nixos-build = self.nixosConfigurations.nixos.config.system.build.toplevel;
       };
     };
 }
