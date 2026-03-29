@@ -12,4 +12,8 @@ echo "=== Dry-run home-manager build ==="
 nix build "$FLAKE_DIR#homeConfigurations.mikinovation.activationPackage" --dry-run
 
 echo ""
+echo "=== Dry-run NixOS configuration build ==="
+nix build "$FLAKE_DIR#nixosConfigurations.nixos.config.system.build.toplevel" --dry-run
+
+echo ""
 echo "All Nix checks passed."

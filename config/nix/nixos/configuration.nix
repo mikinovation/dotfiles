@@ -32,6 +32,9 @@
   # Enable zsh system-wide
   programs.zsh.enable = true;
 
+  # Enable nix-ld for dynamically linked executables (e.g. sass-embedded)
+  programs.nix-ld.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
