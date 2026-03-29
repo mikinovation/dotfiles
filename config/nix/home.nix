@@ -23,6 +23,8 @@
     fnm      # Fast Node Manager
     uv       # Python package manager
     zoxide   # Smart cd replacement
+    fzf      # Fuzzy finder
+    ripgrep  # Fast grep alternative
     ghq      # Git repository organizer
     jq       # JSON processor
     nodePkgs."agent-browser"
