@@ -29,6 +29,11 @@
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
     nodePkgs."@vue/typescript-plugin"
+
+    # Lua tools
+    stylua                   # Lua formatter
+    luajitPackages.luacheck  # Lua linter
+    luajitPackages.busted    # Lua testing framework
   ];
 
   # Import program configurations
