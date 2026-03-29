@@ -44,6 +44,7 @@
     ./configs/claude-code.nix
     ./configs/textlint.nix
     ./configs/agent-skills.nix
+    ./configs/tmux.nix
   ];
 
   # Home Manager can also manage your environment variables through
