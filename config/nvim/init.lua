@@ -12,6 +12,7 @@ require("options")
 require("plugins")
 require("lsp")
 require("keymaps")
+require("ime").setup()
 
 -- Create user command for lazydocker
 vim.api.nvim_create_user_command("Lazydocker", function()
