@@ -50,6 +50,9 @@
       # Load zsh abbreviations
       [[ -f "$DOTFILES_DIR/config/zsh/plugins/abbr.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/abbr.zsh"
 
+      # Load fzf integrations
+      [[ -f "$DOTFILES_DIR/config/zsh/plugins/fzf.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/fzf.zsh"
+
       # Load Powerlevel10k configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
