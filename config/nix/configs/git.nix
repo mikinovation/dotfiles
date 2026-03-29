@@ -4,6 +4,9 @@
   programs.git = {
     enable = true;
 
+    userName = "mikinovation";
+    userEmail = "maneuver2472@gmail.com";
+
     ignores = [
       # Custom tools
       ".serena/"
