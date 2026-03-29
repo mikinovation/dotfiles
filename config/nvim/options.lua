@@ -23,4 +23,5 @@ vim.opt.winblend = 10
 vim.opt.pumblend = 10
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
-vim.opt.shell = vim.fn.exepath("zsh") ~= "" and vim.fn.exepath("zsh") or "zsh"
+local zsh_path = vim.fn.exepath("zsh")
+vim.opt.shell = zsh_path ~= "" and zsh_path or "zsh"
