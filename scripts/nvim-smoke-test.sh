@@ -18,19 +18,42 @@ main() {
   # Create directories referenced by config to avoid warnings
   mkdir -p "$HOME/ghq/github.com/mikinovation/org"
 
-  # First pass: install plugins via lazy.nvim
+  # First pass: install plugins via lazy.nvim (skip if already installed)
   echo "Installing plugins..."
-  nvim --headless "+Lazy! sync" +qa 2>&1 || true
+  nvim --headless "+Lazy! install" +qa 2>&1 || true
 
-  # Second pass: verify clean startup with no errors
+  # Second pass: verify clean startup by capturing all errors and warnings
+  # Uses two Lua scripts:
+  #   hook   (--cmd): runs BEFORE init.lua — hooks vim.notify
+  #   result (-c)   : runs AFTER init.lua  — checks results + lazy state
+  # NOTE: Do not redirect nvim's stdout/stderr — some plugins behave
+  # differently when output is redirected, which can suppress errors.
   echo "Verifying clean startup..."
-  if error_output=$(nvim --headless -c 'quit' 2>&1) && [ -z "$error_output" ]; then
-    echo "Neovim smoke test passed!"
-  else
-    echo "Neovim smoke test failed! Startup errors detected:"
-    [ -n "$error_output" ] && echo "$error_output"
+  export SMOKE_RESULT_FILE=$(mktemp)
+  trap 'rm -f "$SMOKE_RESULT_FILE"' EXIT
+
+  nvim --headless \
+    --cmd "luafile $SCRIPT_DIR/nvim-smoke-check-hook.lua" \
+    -c "luafile $SCRIPT_DIR/nvim-smoke-check-result.lua"
+  nvim_exit=$?
+
+  notify_errors=$(grep "^ERROR:" "$SMOKE_RESULT_FILE" 2>/dev/null | sed 's/^ERROR://')
+  notify_warnings=$(grep "^WARN:" "$SMOKE_RESULT_FILE" 2>/dev/null | sed 's/^WARN://')
+
+  if [ -n "$notify_errors" ] || { [ $nvim_exit -ne 0 ] && [ $nvim_exit -ne 2 ]; }; then
+    echo "Neovim smoke test failed! Errors detected:"
+    [ -n "$notify_errors" ] && echo "[error] $notify_errors"
+    [ -n "$notify_warnings" ] && echo "[warning] $notify_warnings"
     exit 1
   fi
+
+  if [ -n "$notify_warnings" ]; then
+    echo "Neovim smoke test failed! Warnings detected:"
+    echo "[warning] $notify_warnings"
+    exit 1
+  fi
+
+  echo "Neovim smoke test passed!"
 }
 
 main
