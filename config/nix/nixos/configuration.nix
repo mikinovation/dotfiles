@@ -25,7 +25,7 @@
   # User account
   users.users.${username} = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.zsh;
   };
 
@@ -35,8 +35,8 @@
   # Enable nix-ld for dynamically linked executables (e.g. sass-embedded)
   programs.nix-ld.enable = true;
 
-  # Docker
-  virtualisation.docker.enable = true;
+  # Docker (rootless — no host-socket exposure, no docker group needed)
+  virtualisation.docker.rootless.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
