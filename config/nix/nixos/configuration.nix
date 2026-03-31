@@ -50,7 +50,6 @@
     git
     curl
     wget
-    docker-compose
   ];
 
   # This value determines the NixOS release from which the default
