@@ -35,6 +35,9 @@
   # Enable nix-ld for dynamically linked executables (e.g. sass-embedded)
   programs.nix-ld.enable = true;
 
+  # Docker (rootless — no host-socket exposure, no docker group needed)
+  virtualisation.docker.rootless.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
