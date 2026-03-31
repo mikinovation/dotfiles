@@ -26,6 +26,7 @@
     fzf      # Fuzzy finder
     ripgrep  # Fast grep alternative
     ghq      # Git repository organizer
+    (callPackage ./pkgs/gwq.nix {})  # Git worktree manager
     jq       # JSON processor
     nodePkgs."agent-browser"
     nodePkgs."ccmanager"

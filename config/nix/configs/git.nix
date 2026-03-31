@@ -67,6 +67,9 @@
       ghq = {
         root = "~/ghq";
       };
+      gwq = {
+        root = "~/worktrees";
+      };
     };
   };
 
