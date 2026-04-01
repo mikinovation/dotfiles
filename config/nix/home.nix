@@ -27,6 +27,8 @@
     ripgrep  # Fast grep alternative
     ghq      # Git repository organizer
     jq       # JSON processor
+    curl     # HTTP client
+    lsof     # List open files
     nodePkgs."agent-browser"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"

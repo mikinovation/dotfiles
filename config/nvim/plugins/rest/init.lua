@@ -6,12 +6,13 @@ function rest.config()
 		-- renovate: datasource=git-refs depName=https://github.com/rest-nvim/rest.nvim
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter",
-			opts = function(_, opts)
-				opts.ensure_installed = opts.ensure_installed or {}
-				table.insert(opts.ensure_installed, "http")
-			end,
 		},
 		config = function()
+			local ts = require("nvim-treesitter")
+			local installed = ts.get_installed()
+			if not vim.list_contains(installed, "http") then
+				ts.install({ "http" })
+			end
 			require("plugins.rest.keymaps").setup()
 		end,
 	}
