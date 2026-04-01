@@ -47,12 +47,9 @@ in
     postgresql
   ];
 
-  # Prisma engine environment variables for NixOS
-  home.sessionVariables = {
+  # Prisma engine environment variables (Linux only, binaries are debian-openssl-3.0.x)
+  home.sessionVariables = lib.mkIf pkgs.stdenv.isLinux {
     PRISMA_QUERY_ENGINE_LIBRARY = "${prismaQueryEngineLib}/lib/libquery_engine.so.node";
     PRISMA_SCHEMA_ENGINE_BINARY = "${prismaSchemaEngine}/bin/schema-engine";
-    # Required when using externally-provided engines; Prisma's checksum validation
-    # expects binaries from its own download mechanism
-    PRISMA_ENGINES_CHECKSUM_IGNORE_MISSING = "1";
   };
 }
