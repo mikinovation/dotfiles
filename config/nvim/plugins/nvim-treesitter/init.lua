@@ -11,6 +11,7 @@ function nvimTreesitter.config()
 				"c",
 				"diff",
 				"html",
+				"http",
 				"lua",
 				"luadoc",
 				"markdown",
@@ -34,14 +35,17 @@ function nvimTreesitter.config()
 				ts.install(to_install)
 			end
 
+			local augroup = vim.api.nvim_create_augroup("NvimTreesitterStart", { clear = true })
 			vim.api.nvim_create_autocmd("FileType", {
+				group = augroup,
 				callback = function(args)
 					local ft = args.match
 					local lang = vim.treesitter.language.get_lang(ft) or ft
-					local ok = pcall(vim.treesitter.language.inspect, lang)
+					local ok = pcall(vim.treesitter.start, args.buf, lang)
 					if ok then
-						vim.treesitter.start()
-						vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+						if ft ~= "ruby" then
+							vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr"
+						end
 					end
 				end,
 			})

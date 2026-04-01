@@ -8,11 +8,6 @@ function rest.config()
 			"nvim-treesitter/nvim-treesitter",
 		},
 		config = function()
-			local ts = require("nvim-treesitter")
-			local installed = ts.get_installed()
-			if not vim.list_contains(installed, "http") then
-				ts.install({ "http" })
-			end
 			require("plugins.rest.keymaps").setup()
 		end,
 	}
