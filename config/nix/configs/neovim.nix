@@ -19,11 +19,18 @@
       solargraph  # Ruby
       vue-language-server  # Vue (volar)
 
+      # Tree-sitter parser build tools
+      tree-sitter
+      gcc
+
+      # Lua runtime and package manager (required for luarocks plugin deps)
+      lua5_1
+      luarocks
+
       # Formatters and linters
       stylua  # Lua formatter
       luajitPackages.luacheck  # Lua linter
       luajitPackages.busted    # Lua testing framework
-      luarocks                 # Lua package manager
     ];
   };
 
