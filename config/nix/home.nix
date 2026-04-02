@@ -44,6 +44,7 @@
     ./configs/ruby.nix
     ./configs/rust.nix
     ./configs/database.nix
+    ./configs/docker.nix
     ./configs/agent-browser.nix
     ./configs/claude-code.nix
     ./configs/textlint.nix
@@ -99,10 +100,13 @@
   # Set zsh as default shell using activation script
   # This is necessary for standalone home-manager (non-NixOS)
   home.activation.make-zsh-default-shell = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    PATH="/usr/bin:/bin:$PATH"
+    PATH="/run/current-system/sw/bin:/usr/bin:/bin:$PATH"
     ZSH_PATH="${config.home.homeDirectory}/.nix-profile/bin/zsh"
 
-    if [[ $(getent passwd ${config.home.username}) != *"$ZSH_PATH" ]]; then
+    # Skip on NixOS (shell is managed by NixOS configuration)
+    if [ -e /etc/NIXOS ]; then
+      echo "NixOS detected, skipping shell change (managed by NixOS config)"
+    elif [[ $(getent passwd ${config.home.username}) != *"$ZSH_PATH" ]]; then
       echo "Setting zsh as default shell (using chsh). Password might be necessary."
 
       if ! grep -q "$ZSH_PATH" /etc/shells; then
