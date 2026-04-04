@@ -103,6 +103,9 @@
         nixos = mkHomeConfig "nixos";
       };
 
+      # Nix formatter
+      formatter.${system} = pkgs.nixfmt-rfc-style;
+
       # Nix flake checks
       checks.${system} = {
         home-manager-build = self.homeConfigurations.mikinovation.activationPackage;
