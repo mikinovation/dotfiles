@@ -12,7 +12,7 @@ main() {
 
   echo "Secret lint started..."
 
-  if ! git ls-files | xargs ./node_modules/.bin/secretlint; then
+  if ! git ls-files -z | xargs -0 ./node_modules/.bin/secretlint; then
     echo "Secret lint failed!"
     exit 1
   fi
