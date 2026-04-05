@@ -75,8 +75,8 @@
     };
 
     # Agents, commands, CLAUDE.md
-    agentsDir = ../../claude/agents;
-    commandsDir = ../../claude/commands;
-    memory.source = ../../claude/CLAUDE.md;
+    agentsDir = ../../../claude/agents;
+    commandsDir = ../../../claude/commands;
+    memory.source = ../../../claude/CLAUDE.md;
   };
 }
