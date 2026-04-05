@@ -1,0 +1,8 @@
+{
+  "name": "dotfiles",
+  "private": true,
+  "devDependencies": {
+    "secretlint": "^9.0.0",
+    "@secretlint/secretlint-rule-preset-recommend": "^9.0.0"
+  }
+}
