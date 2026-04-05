@@ -14,7 +14,7 @@
     nodePackages.typescript-language-server
     nodePackages.eslint
     nodePackages.prettier
-    typescript-go  # Go implementation of TypeScript
+    typescript-go # Go implementation of TypeScript
   ];
 
   # Environment variables for Node.js
@@ -24,9 +24,7 @@
   };
 
   # Add npm global bin to PATH
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.npm-global/bin"
-  ];
+  home.sessionPath = [ "${config.home.homeDirectory}/.npm-global/bin" ];
 
   # Create .npmrc configuration
   home.file.".npmrc".text = ''

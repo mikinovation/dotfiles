@@ -20,9 +20,7 @@
   };
 
   # Add cargo bin to PATH
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.cargo/bin"
-  ];
+  home.sessionPath = [ "${config.home.homeDirectory}/.cargo/bin" ];
 
   # Create cargo config
   home.file.".cargo/config.toml".text = ''

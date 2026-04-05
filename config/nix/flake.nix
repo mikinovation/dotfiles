@@ -56,42 +56,47 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
-      mkHomeConfig = username: home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [
-          ./home.nix
-          agent-skills-nix.homeManagerModules.default
-          mcp-servers-nix.homeManagerModules.default
-        ];
-        extraSpecialArgs = {
-          inherit inputs nodePkgs username;
+      mkHomeConfig =
+        username:
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./home.nix
+            agent-skills-nix.homeManagerModules.default
+            mcp-servers-nix.homeManagerModules.default
+          ];
+          extraSpecialArgs = {
+            inherit inputs nodePkgs username;
+          };
         };
-      };
-      mkNixosConfig = username: hostname: nixpkgs.lib.nixosSystem {
-        inherit system;
-        specialArgs = {
-          inherit inputs username;
+      mkNixosConfig =
+        username: hostname:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = {
+            inherit inputs username;
+          };
+          modules = [
+            nixos-wsl.nixosModules.wsl
+            ./nixos/configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              networking.hostName = hostname;
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./home.nix;
+              home-manager.extraSpecialArgs = {
+                inherit inputs nodePkgs username;
+              };
+              home-manager.sharedModules = [
+                agent-skills-nix.homeManagerModules.default
+                mcp-servers-nix.homeManagerModules.default
+              ];
+            }
+          ];
         };
-        modules = [
-          nixos-wsl.nixosModules.wsl
-          ./nixos/configuration.nix
-          home-manager.nixosModules.home-manager
-          {
-            networking.hostName = hostname;
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.${username} = import ./home.nix;
-            home-manager.extraSpecialArgs = {
-              inherit inputs nodePkgs username;
-            };
-            home-manager.sharedModules = [
-              agent-skills-nix.homeManagerModules.default
-              mcp-servers-nix.homeManagerModules.default
-            ];
-          }
-        ];
-      };
-    in {
+    in
+    {
       # NixOS system configuration
       nixosConfigurations = {
         nixos = mkNixosConfig "nixos" "nixos";

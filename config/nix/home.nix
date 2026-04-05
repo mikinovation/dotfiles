@@ -1,4 +1,12 @@
-{ config, lib, pkgs, nodePkgs, inputs, username, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  nodePkgs,
+  inputs,
+  username,
+  ...
+}:
 
 {
   # Home Manager needs a bit of information about you and the paths it should
@@ -19,16 +27,16 @@
   # environment.
   home.packages = with pkgs; [
     # Shell and development tools
-    sheldon  # Zsh plugin manager
-    fnm      # Fast Node Manager
-    uv       # Python package manager
-    zoxide   # Smart cd replacement
-    fzf      # Fuzzy finder
-    ripgrep  # Fast grep alternative
-    ghq      # Git repository organizer
-    jq       # JSON processor
-    curl     # HTTP client
-    lsof     # List open files
+    sheldon # Zsh plugin manager
+    fnm # Fast Node Manager
+    uv # Python package manager
+    zoxide # Smart cd replacement
+    fzf # Fuzzy finder
+    ripgrep # Fast grep alternative
+    ghq # Git repository organizer
+    jq # JSON processor
+    curl # HTTP client
+    lsof # List open files
     nodePkgs."agent-browser"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
@@ -76,9 +84,12 @@
     # Neovim configuration (exclude lazy-lock.json as it will be managed in data directory)
     ".config/nvim".source = pkgs.lib.cleanSourceWith {
       src = ../nvim;
-      filter = path: type:
-        let baseName = baseNameOf path;
-        in baseName != "lazy-lock.json";
+      filter =
+        path: type:
+        let
+          baseName = baseNameOf path;
+        in
+        baseName != "lazy-lock.json";
     };
 
     # Wezterm configuration
@@ -129,7 +140,10 @@
   nix = {
     package = lib.mkDefault pkgs.nix;
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     };
   };
 }

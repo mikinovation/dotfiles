@@ -4,13 +4,13 @@
   home.packages = with pkgs; [
     # Ruby version (3.4.x)
     ruby_3_4
-    
+
     # Build dependencies for native extensions
     gcc
     gnumake
-    
+
     # Development tools
-    rubyPackages.solargraph  # Ruby language server
+    rubyPackages.solargraph # Ruby language server
   ];
 
   # Environment variables for Ruby
@@ -21,9 +21,7 @@
   };
 
   # Add gem bin to PATH
-  home.sessionPath = [
-    "${config.home.homeDirectory}/.gem/bin"
-  ];
+  home.sessionPath = [ "${config.home.homeDirectory}/.gem/bin" ];
 
   # Create .gemrc configuration
   home.file.".gemrc".text = ''
