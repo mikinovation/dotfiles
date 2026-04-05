@@ -54,6 +54,23 @@ jobs:
       - name: Run Nix tests
         run: sh ./scripts/nix-test.sh
 
+  secret-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Secretlint
+        run: |
+          if ! git ls-files -z | xargs -0 ./node_modules/.bin/secretlint; then
+            echo "Secret lint failed! Sensitive data may have been committed."
+            exit 1
+          fi
+
   nvim-smoke-test:
     runs-on: ubuntu-latest
     steps:

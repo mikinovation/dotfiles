@@ -1,5 +1,6 @@
 result
 .env
+node_modules
 
 # Claude directory - ignore everything except commands
 /claude/*
