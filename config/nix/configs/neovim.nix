@@ -15,9 +15,9 @@
       rust-analyzer
       vtsls
       tailwindcss-language-server
-      vscode-langservers-extracted  # HTML, CSS, JSON, ESLint
-      solargraph  # Ruby
-      vue-language-server  # Vue (volar)
+      vscode-langservers-extracted # HTML, CSS, JSON, ESLint
+      solargraph # Ruby
+      vue-language-server # Vue (volar)
 
       # Tree-sitter parser build tools
       tree-sitter
@@ -28,9 +28,9 @@
       luarocks
 
       # Formatters and linters
-      stylua  # Lua formatter
-      luajitPackages.luacheck  # Lua linter
-      luajitPackages.busted    # Lua testing framework
+      stylua # Lua formatter
+      luajitPackages.luacheck # Lua linter
+      luajitPackages.busted # Lua testing framework
     ];
   };
 

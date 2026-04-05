@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   # Prisma 6.12.0 engine commit hash
@@ -12,8 +17,14 @@ let
       hash = "sha256-VU0rcE7bUE1yuRgPWclhjWAGAxRpclmchSnbqJR3M4s=";
     };
     dontUnpack = true;
-    nativeBuildInputs = with pkgs; [ gzip autoPatchelfHook ];
-    buildInputs = with pkgs; [ openssl stdenv.cc.cc.lib ];
+    nativeBuildInputs = with pkgs; [
+      gzip
+      autoPatchelfHook
+    ];
+    buildInputs = with pkgs; [
+      openssl
+      stdenv.cc.cc.lib
+    ];
     installPhase = ''
       mkdir -p $out/lib
       gzip -dc $src > $out/lib/libquery_engine.so.node
@@ -29,8 +40,14 @@ let
       hash = "sha256-G/uKzCUTwjUe2NNsMIceBVaYThBS1KSnGhTAKDU3JxI=";
     };
     dontUnpack = true;
-    nativeBuildInputs = with pkgs; [ gzip autoPatchelfHook ];
-    buildInputs = with pkgs; [ openssl stdenv.cc.cc.lib ];
+    nativeBuildInputs = with pkgs; [
+      gzip
+      autoPatchelfHook
+    ];
+    buildInputs = with pkgs; [
+      openssl
+      stdenv.cc.cc.lib
+    ];
     installPhase = ''
       mkdir -p $out/bin
       gzip -dc $src > $out/bin/schema-engine

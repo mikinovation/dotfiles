@@ -1,4 +1,9 @@
-{ config, pkgs, nodePkgs, ... }:
+{
+  config,
+  pkgs,
+  nodePkgs,
+  ...
+}:
 
 {
   mcp-servers.programs = {
