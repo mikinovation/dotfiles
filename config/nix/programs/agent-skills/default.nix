@@ -31,7 +31,7 @@
         subdir = "skills";
       };
       local = {
-        path = ../../claude/skills;
+        path = ../../../claude/skills;
       };
     };
 

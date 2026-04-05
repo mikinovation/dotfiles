@@ -45,18 +45,18 @@
 
   # Import program configurations
   imports = [
-    ./configs/git.nix
-    ./configs/zsh.nix
-    ./configs/neovim.nix
-    ./configs/nodejs.nix
-    ./configs/ruby.nix
-    ./configs/rust.nix
-    ./configs/database.nix
-    ./configs/docker.nix
-    ./configs/agent-browser.nix
-    ./configs/claude-code.nix
-    ./configs/textlint.nix
-    ./configs/agent-skills.nix
+    ./programs/git
+    ./programs/zsh
+    ./programs/neovim
+    ./programs/nodejs
+    ./programs/ruby
+    ./programs/rust
+    ./programs/database
+    ./programs/docker
+    ./programs/agent-browser
+    ./programs/claude-code
+    ./programs/textlint
+    ./programs/agent-skills
   ];
 
   # Home Manager can also manage your environment variables through
