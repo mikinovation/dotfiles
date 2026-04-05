@@ -12,7 +12,7 @@ main() {
 
   echo "Secret lint started..."
 
-  if ! npx secretlint "**/*"; then
+  if ! ./node_modules/.bin/secretlint "**/*"; then
     echo "Secret lint failed!"
     exit 1
   fi
