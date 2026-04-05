@@ -48,6 +48,9 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
+      - name: Run Nix format check
+        run: sh ./scripts/nix-fmt.sh
+
       - name: Run Nix tests
         run: sh ./scripts/nix-test.sh
 
