@@ -52,7 +52,6 @@
     ./programs/ruby
     ./programs/rust
     ./programs/database
-    ./programs/docker
     ./programs/agent-browser
     ./programs/claude-code
     ./programs/textlint
