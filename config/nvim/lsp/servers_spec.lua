@@ -26,6 +26,7 @@ describe("lsp servers", function()
 			"vue_ls",
 			"tailwindcss",
 			"solargraph",
+			"nil_ls",
 		}
 
 		it("has no unexpected servers", function()
