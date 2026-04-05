@@ -5,7 +5,8 @@ set -eu
 FLAKE_DIR="$(cd "$(dirname "$0")/../config/nix" && pwd)"
 
 echo "=== Running nix fmt check ==="
-nix fmt "$FLAKE_DIR" -- --check
+cd "$FLAKE_DIR"
+nix fmt -- --check
 
 echo ""
 echo "Nix format check passed."
