@@ -48,7 +48,7 @@
         };
       };
       vue = {
-        command = "${nodePkgs."@vue/language-server"}/bin/vue-language-server";
+        command = "vue-language-server";
         args = [ "--stdio" ];
         extensionToLanguage = {
           ".vue" = "vue";
@@ -56,14 +56,12 @@
       };
       nix = {
         command = "nil";
-        args = [ ];
         extensionToLanguage = {
           ".nix" = "nix";
         };
       };
       lua = {
         command = "lua-language-server";
-        args = [ ];
         extensionToLanguage = {
           ".lua" = "lua";
         };
@@ -79,7 +77,6 @@
       };
       rust = {
         command = "rust-analyzer";
-        args = [ ];
         extensionToLanguage = {
           ".rs" = "rust";
         };
