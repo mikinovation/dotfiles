@@ -56,6 +56,7 @@
       };
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+        DISABLE_AUTOUPDATER = "1";
       };
       permissions = {
         defaultMode = "bypassPermissions";
