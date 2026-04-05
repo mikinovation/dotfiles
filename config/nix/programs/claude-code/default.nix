@@ -43,8 +43,12 @@
         extensionToLanguage = {
           ".ts" = "typescript";
           ".tsx" = "typescriptreact";
+          ".mts" = "typescript";
+          ".cts" = "typescript";
           ".js" = "javascript";
           ".jsx" = "javascriptreact";
+          ".mjs" = "javascript";
+          ".cjs" = "javascript";
         };
       };
       vue = {
