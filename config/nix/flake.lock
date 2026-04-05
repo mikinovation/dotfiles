@@ -67,6 +67,22 @@
         "type": "github"
       }
     },
+    "claude-code-plugins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1775263316,
+        "narHash": "sha256-DNRiSbJR77PjLIMK7BC/LN9A1g7q9NPybnPLxngvh9o=",
+        "owner": "anthropics",
+        "repo": "claude-code",
+        "rev": "b543a256248ce5ff98804b8dfef4cd6247423d98",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "claude-code",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -219,6 +235,7 @@
         "agent-skills-nix": "agent-skills-nix",
         "antfu-skills": "antfu-skills",
         "anthropic-skills": "anthropic-skills",
+        "claude-code-plugins": "claude-code-plugins",
         "home-manager": "home-manager_2",
         "mcp-servers-nix": "mcp-servers-nix",
         "nixos-wsl": "nixos-wsl",

@@ -16,6 +16,7 @@
       vtsls
       tailwindcss-language-server
       vscode-langservers-extracted # HTML, CSS, JSON, ESLint
+      nil # Nix
       solargraph # Ruby
       vue-language-server # Vue (volar)
 

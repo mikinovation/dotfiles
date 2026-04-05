@@ -40,6 +40,10 @@
       url = "github:obra/superpowers";
       flake = false;
     };
+    claude-code-plugins = {
+      url = "github:anthropics/claude-code";
+      flake = false;
+    };
   };
 
   outputs =

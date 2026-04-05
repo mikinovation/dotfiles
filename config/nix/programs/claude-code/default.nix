@@ -2,6 +2,7 @@
   config,
   pkgs,
   nodePkgs,
+  inputs,
   ...
 }:
 
@@ -25,6 +26,66 @@
     enable = true;
     package = nodePkgs."@anthropic-ai/claude-code";
     enableMcpIntegration = true;
+
+    # Plugins (from anthropics/claude-code repository)
+    plugins = [
+      "${inputs.claude-code-plugins}/plugins/code-review"
+      "${inputs.claude-code-plugins}/plugins/security-guidance"
+      "${inputs.claude-code-plugins}/plugins/commit-commands"
+      "${inputs.claude-code-plugins}/plugins/pr-review-toolkit"
+    ];
+
+    # LSP servers
+    lspServers = {
+      typescript = {
+        command = "typescript-language-server";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".ts" = "typescript";
+          ".tsx" = "typescriptreact";
+          ".mts" = "typescript";
+          ".cts" = "typescript";
+          ".js" = "javascript";
+          ".jsx" = "javascriptreact";
+          ".mjs" = "javascript";
+          ".cjs" = "javascript";
+        };
+      };
+      vue = {
+        command = "vue-language-server";
+        args = [ "--stdio" ];
+        extensionToLanguage = {
+          ".vue" = "vue";
+        };
+      };
+      nix = {
+        command = "nil";
+        extensionToLanguage = {
+          ".nix" = "nix";
+        };
+      };
+      lua = {
+        command = "lua-language-server";
+        extensionToLanguage = {
+          ".lua" = "lua";
+        };
+      };
+      ruby = {
+        command = "solargraph";
+        args = [ "stdio" ];
+        extensionToLanguage = {
+          ".rb" = "ruby";
+          ".rake" = "ruby";
+          ".gemspec" = "ruby";
+        };
+      };
+      rust = {
+        command = "rust-analyzer";
+        extensionToLanguage = {
+          ".rs" = "rust";
+        };
+      };
+    };
 
     # settings.json
     settings = {
@@ -75,9 +136,8 @@
       };
     };
 
-    # Agents, commands, CLAUDE.md
+    # Agents, CLAUDE.md
     agentsDir = ../../../claude/agents;
-    commandsDir = ../../../claude/commands;
     memory.source = ../../../claude/CLAUDE.md;
   };
 }
