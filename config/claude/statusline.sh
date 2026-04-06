@@ -10,12 +10,12 @@ else
 fi
 
 # Git branch name (skip optional locks)
-if [ -n "$workspace_dir" ] && [ -d "$workspace_dir/.git" ]; then
+if [ -n "$workspace_dir" ] && git -C "$workspace_dir" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   branch=$(git -C "$workspace_dir" --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
   if [ -z "$branch" ]; then
     branch=$(git -C "$workspace_dir" --no-optional-locks rev-parse --short HEAD 2>/dev/null)
   fi
-elif [ -d ".git" ]; then
+elif git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
   branch=$(git --no-optional-locks symbolic-ref --short HEAD 2>/dev/null)
   if [ -z "$branch" ]; then
     branch=$(git --no-optional-locks rev-parse --short HEAD 2>/dev/null)
