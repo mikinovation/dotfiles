@@ -7,13 +7,13 @@
 
     # Package managers
     yarn
-    nodePackages.pnpm
+    pnpm
 
     # Development tools
-    nodePackages.typescript
-    nodePackages.typescript-language-server
-    nodePackages.eslint
-    nodePackages.prettier
+    typescript
+    typescript-language-server
+    eslint
+    prettier
     typescript-go # Go implementation of TypeScript
   ];
 
