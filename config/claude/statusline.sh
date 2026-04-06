@@ -1,8 +1,13 @@
 #!/bin/sh
 input=$(cat)
 
-# Workspace directory name
-workspace_dir=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // empty')
+# Parse all needed fields in a single jq invocation
+eval "$(echo "$input" | jq -r '
+  "workspace_dir=" + (.workspace.current_dir // .cwd // "" | @sh) +
+  " five_pct=" + (.rate_limits.five_hour.used_percentage // "" | tostring | @sh) +
+  " week_pct=" + (.rate_limits.seven_day.used_percentage // "" | tostring | @sh)
+')"
+
 if [ -n "$workspace_dir" ]; then
   dir_name=$(basename "$workspace_dir")
 else
@@ -21,10 +26,6 @@ elif git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     branch=$(git --no-optional-locks rev-parse --short HEAD 2>/dev/null)
   fi
 fi
-
-# Rate limit info
-five_pct=$(echo "$input" | jq -r '.rate_limits.five_hour.used_percentage // empty')
-week_pct=$(echo "$input" | jq -r '.rate_limits.seven_day.used_percentage // empty')
 
 # Build output
 parts=""
