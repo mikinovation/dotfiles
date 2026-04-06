@@ -2,7 +2,7 @@
   "name": "dotfiles",
   "private": true,
   "devDependencies": {
-    "secretlint": "11.4.1",
-    "@secretlint/secretlint-rule-preset-recommend": "11.4.1"
+    "secretlint": "11.6.0",
+    "@secretlint/secretlint-rule-preset-recommend": "11.6.0"
   }
 }
