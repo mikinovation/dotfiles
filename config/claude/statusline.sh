@@ -35,15 +35,15 @@ fi
 
 if [ -n "$branch" ]; then
   if [ -n "$parts" ]; then
-    parts="${parts} [${branch}]"
+    parts="${parts}(${branch})"
   else
-    parts="[${branch}]"
+    parts="(${branch})"
   fi
 fi
 
 rate_info=""
 if [ -n "$five_pct" ]; then
-  rate_info="5h:$(printf '%.0f' "$five_pct")%"
+  rate_info="Rate Limit 5h:$(printf '%.0f' "$five_pct")%"
 fi
 if [ -n "$week_pct" ]; then
   if [ -n "$rate_info" ]; then
