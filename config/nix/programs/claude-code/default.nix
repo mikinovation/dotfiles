@@ -115,6 +115,10 @@
           }
         ];
       };
+      statusLine = {
+        type = "command";
+        command = "sh $HOME/ghq/github.com/mikinovation/dotfiles/config/claude/statusline.sh";
+      };
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
         DISABLE_AUTOUPDATER = "1";
