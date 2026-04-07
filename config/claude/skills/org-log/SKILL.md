@@ -33,7 +33,20 @@ SESSION_ID=$(basename "${LATEST_JSONL}" .jsonl)
 # ghqルートからの相対パスを取得（例: github.com/mikinovation/dotfiles）
 GHQ_ROOT="${HOME}/ghq"
 CURRENT_DIR=$(pwd)
-REPO_REL_PATH=$(echo "${CURRENT_DIR}" | sed "s|${GHQ_ROOT}/||")
+REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+if [ -z "${REPO_ROOT}" ]; then
+  echo "ERROR: Gitリポジトリ外のため org-log を中断します" >&2
+  exit 1
+fi
+case "${REPO_ROOT}" in
+  "${GHQ_ROOT}"/*)
+    REPO_REL_PATH="${REPO_ROOT#${GHQ_ROOT}/}"
+    ;;
+  *)
+    echo "ERROR: ghq配下のリポジトリではないため org-log を中断します: ${REPO_ROOT}" >&2
+    exit 1
+    ;;
+esac
 TODAY=$(date +%Y%m%d)
 echo "SESSION_ID: $SESSION_ID"
 echo "DIR: $CURRENT_DIR"
@@ -72,7 +85,7 @@ claude --continue {セッションID}
 
 ファイルが存在しない場合は、先頭に `#+TITLE:` を付けて新規作成する:
 ```org
-#+TITLE: {作業タイトル} - {owner}/{repo}
+#+TITLE: {作業タイトル} - {REPO_REL_PATH}
 ```
 
 ### 4. refile.orgにリンク付きインデックスを追記する
