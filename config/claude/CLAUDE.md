@@ -1,1 +1,2 @@
 - 常に日本語で回答してください。
+- 作業完了後、対応内容を `~/ghq/github.com/mikinovation/org/refile.org` にorg-mode形式で追記してください。
