@@ -35,21 +35,21 @@ GHQ_ROOT="${HOME}/ghq"
 CURRENT_DIR=$(pwd)
 REPO_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
 if [ -z "${REPO_ROOT}" ]; then
-  echo "ERROR: Gitリポジトリ外のため org-log を中断します" >&2
+  echo "ERROR: not inside a git repository, aborting org-log" >&2
   exit 1
 fi
 case "${REPO_ROOT}" in
-  "${GHQ_ROOT}"/*)
-    REPO_REL_PATH="${REPO_ROOT#${GHQ_ROOT}/}"
-    ;;
+  "${GHQ_ROOT}"/*) ;;
   *)
-    echo "ERROR: ghq配下のリポジトリではないため org-log を中断します: ${REPO_ROOT}" >&2
+    echo "ERROR: repository root is not under ${GHQ_ROOT}/, aborting org-log: ${REPO_ROOT}" >&2
     exit 1
     ;;
 esac
+REPO_REL_PATH="${REPO_ROOT#${GHQ_ROOT}/}"
 TODAY=$(date +%Y%m%d)
 echo "SESSION_ID: $SESSION_ID"
 echo "DIR: $CURRENT_DIR"
+echo "REPO_ROOT: $REPO_ROOT"
 echo "REPO_REL_PATH: $REPO_REL_PATH"
 echo "TODAY: $TODAY"
 ```
@@ -59,6 +59,12 @@ echo "TODAY: $TODAY"
 書き込み先: `~/ghq/github.com/mikinovation/org/journal/{REPO_REL_PATH}/{TODAY}-{TITLE_SLUG}.org`
 
 TITLE_SLUGは作業タイトルを英語のkebab-caseに変換したもの（例: 「Notion MCP移行」→ `notion-mcp-migration`）。
+生成ルール:
+```bash
+TITLE_SLUG=$(printf '%s' "$WORK_TITLE" \
+  | tr '[:upper:]' '[:lower:]' \
+  | sed -E 's/[^a-z0-9]+/-/g; s/^-+|-+$//g; s/-{2,}/-/g')
+```
 
 例:
 - タイトル「fix login bug」で `~/ghq/github.com/mikinovation/dotfiles` → `journal/github.com/mikinovation/dotfiles/20260407-fix-login-bug.org`
