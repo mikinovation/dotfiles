@@ -1,6 +1,4 @@
 {
-  config,
-  pkgs,
   nodePkgs,
   inputs,
   ...
@@ -29,10 +27,7 @@
 
     # Plugins (from anthropics/claude-code repository)
     plugins = [
-      "${inputs.claude-code-plugins}/plugins/code-review"
-      "${inputs.claude-code-plugins}/plugins/security-guidance"
       "${inputs.claude-code-plugins}/plugins/commit-commands"
-      "${inputs.claude-code-plugins}/plugins/pr-review-toolkit"
     ];
 
     # LSP servers
