@@ -44,6 +44,7 @@
         "vue-best-practices"
         "nuxt"
         "test-driven-development"
+        "org-log"
       ];
     };
 
