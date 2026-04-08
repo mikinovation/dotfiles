@@ -33,15 +33,16 @@ function orgmode.config()
 						target = "~/ghq/github.com/mikinovation/org/refile.org",
 					},
 				},
+				mappings = {
+					org = {
+						org_global_cycle = "<leader>zz",
+						org_open_at_point = "<CR>",
+					},
+				},
 			})
 
 			require("plugins.orgmode.keymaps").setup()
 		end,
-		mappings = {
-			org = {
-				org_global_cycle = "<leader>zz",
-			},
-		},
 	}
 end
 
