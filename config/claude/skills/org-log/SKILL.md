@@ -100,7 +100,7 @@ claude --continue {セッションID}
 
 ```org
 * TODO {作業タイトル}
-[[file:journal/{REPO_REL_PATH}/{TODAY}-{TITLE_SLUG}.org::*{作業タイトル}][セッション詳細]]
+[[file:~/ghq/github.com/mikinovation/org/journal/{REPO_REL_PATH}/{TODAY}-{TITLE_SLUG}.org::*{作業タイトル}][セッション詳細]]
 ```
 
 **重要**: refile.orgには詳細を書かない。リンクのみ。
