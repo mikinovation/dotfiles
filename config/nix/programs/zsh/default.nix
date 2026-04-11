@@ -21,6 +21,15 @@
     '';
 
     initContent = ''
+      # Auto-start tmux on WSL launch
+      if grep -qi microsoft /proc/version 2>/dev/null \
+        && command -v tmux &> /dev/null \
+        && [ -z "$TMUX" ] && [ -z "$INSIDE_EMACS" ] && [ -z "$VSCODE_RESOLVING_ENVIRONMENT" ]; then
+        TMUX_START_DIR="$HOME/ghq/github.com/mikinovation/org"
+        [ -d "$TMUX_START_DIR" ] || TMUX_START_DIR="$HOME"
+        exec tmux new-session -A -s main -c "$TMUX_START_DIR"
+      fi
+
       # Enable Powerlevel10k instant prompt
       if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
         source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"

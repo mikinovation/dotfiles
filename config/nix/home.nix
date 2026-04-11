@@ -56,6 +56,7 @@
     ./programs/claude-code
     ./programs/textlint
     ./programs/agent-skills
+    ./programs/tmux
     ./programs/aws
   ];
 
