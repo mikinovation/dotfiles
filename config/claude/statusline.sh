@@ -9,7 +9,7 @@ eval "$(echo "$input" | jq -r '
 ')"
 
 if [ -n "$workspace_dir" ]; then
-  dir_name=$(basename "$workspace_dir")
+  dir_name=$(echo "$workspace_dir" | sed "s|^$HOME|~|")
 else
   dir_name=""
 fi
