@@ -85,7 +85,7 @@ TITLE_SLUG=$(printf '%s' "$WORK_TITLE" \
 - 再開コマンド:
 #+begin_src shell
 cd {ワークスペースのディレクトリパス}
-claude --continue {セッションID}
+claude --resume {セッションID}
 #+end_src
 ```
 

@@ -6,10 +6,8 @@
 
 {
   mcp-servers.programs = {
-    playwright.enable = true;
     context7.enable = true;
     nixos.enable = true;
-    notion.enable = true;
     terraform.enable = true;
   };
 

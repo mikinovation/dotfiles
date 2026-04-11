@@ -57,6 +57,7 @@
     ./programs/textlint
     ./programs/agent-skills
     ./programs/tmux
+    ./programs/aws
   ];
 
   # Home Manager can also manage your environment variables through
