@@ -56,6 +56,7 @@
     ./programs/claude-code
     ./programs/textlint
     ./programs/agent-skills
+    ./programs/tmux
   ];
 
   # Home Manager can also manage your environment variables through
