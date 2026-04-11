@@ -13,7 +13,7 @@ end
 --- Resolve :DIR: property to an expanded path, returns nil on failure
 local function resolve_dir()
 	local dir = get_heading_property("DIR")
-	if not dir then
+	if not dir or vim.trim(dir) == "" then
 		vim.notify("No :DIR: property found in current heading", vim.log.levels.WARN)
 		return nil
 	end
@@ -80,7 +80,7 @@ local function resume_claude_session()
 		return
 	end
 	local session_id = get_heading_property("SESSION_ID")
-	if not session_id then
+	if not session_id or vim.trim(session_id) == "" then
 		vim.notify("No :SESSION_ID: property found in current heading", vim.log.levels.WARN)
 		return
 	end
@@ -100,8 +100,18 @@ local function send_prompt_to_claude()
 	if not check_tmux() then
 		return
 	end
-	vim.cmd('normal! "vy')
-	local text = vim.fn.getreg("v")
+	local srow, scol = unpack(vim.api.nvim_buf_get_mark(0, "<"))
+	local erow, ecol = unpack(vim.api.nvim_buf_get_mark(0, ">"))
+	if srow == 0 or erow == 0 then
+		vim.notify("No text selected", vim.log.levels.WARN)
+		return
+	end
+	if (srow > erow) or (srow == erow and scol > ecol) then
+		srow, erow = erow, srow
+		scol, ecol = ecol, scol
+	end
+	local lines = vim.api.nvim_buf_get_text(0, srow - 1, scol, erow - 1, ecol + 1, {})
+	local text = table.concat(lines, "\n")
 	if not text or text == "" then
 		vim.notify("No text selected", vim.log.levels.WARN)
 		return
@@ -130,10 +140,19 @@ end
 function M.setup()
 	local org_dir = "~/ghq/github.com/mikinovation/org"
 	vim.keymap.set("n", "<leader>or", "<cmd>edit " .. org_dir .. "/refile.org<CR>", { desc = "Open refile.org" })
-	vim.keymap.set("n", "<leader>ov", open_nvim_pane, { desc = "Open nvim in left tmux pane at :DIR:" })
-	vim.keymap.set("n", "<leader>oC", resume_claude_session, { desc = "Resume Claude session in right tmux pane" })
-	vim.keymap.set("v", "<leader>op", send_prompt_to_claude, { desc = "Send selection to Claude Code" })
-	vim.keymap.set("n", "<leader>oT", open_terminal_pane, { desc = "Open terminal in left tmux pane at :DIR:" })
+
+	vim.api.nvim_create_autocmd("FileType", {
+		pattern = "org",
+		callback = function(ev)
+			local opts = function(desc)
+				return { buffer = ev.buf, desc = desc }
+			end
+			vim.keymap.set("n", "<leader>ov", open_nvim_pane, opts("Open nvim in left tmux pane at :DIR:"))
+			vim.keymap.set("n", "<leader>oC", resume_claude_session, opts("Resume Claude session in right tmux pane"))
+			vim.keymap.set("v", "<leader>op", send_prompt_to_claude, opts("Send selection to Claude Code"))
+			vim.keymap.set("n", "<leader>oT", open_terminal_pane, opts("Open terminal in left tmux pane at :DIR:"))
+		end,
+	})
 end
 
 return M
