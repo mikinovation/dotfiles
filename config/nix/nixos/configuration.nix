@@ -28,6 +28,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     shell = pkgs.zsh;
   };
@@ -38,8 +39,8 @@
   # Enable nix-ld for dynamically linked executables (e.g. sass-embedded)
   programs.nix-ld.enable = true;
 
-  # Docker (rootless — no host-socket exposure, no docker group needed)
-  virtualisation.docker.rootless.enable = true;
+  # Docker
+  virtualisation.docker.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
