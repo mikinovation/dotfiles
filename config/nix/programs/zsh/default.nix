@@ -67,6 +67,64 @@
 
       # bun completions
       [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
+      # pass (password-store) environment variable helpers.
+      # Secrets live in ~/.password-store and are expected to be kept in
+      # a separate private repository; nothing from the store is committed
+      # to this public dotfiles repo.
+      passenv() {
+        local env="''${1:-dev}"
+        local prefix="env/$env"
+        if ! pass ls "$prefix" >/dev/null 2>&1; then
+          echo "passenv: no entries under $prefix" >&2
+          return 1
+        fi
+
+        local keys
+        keys=$(pass ls "$prefix" 2>/dev/null \
+          | tail -n +2 \
+          | sed 's/^[├└│─ ]*//' \
+          | grep -v '^$')
+
+        if [[ -z "$keys" ]]; then
+          echo "passenv: no entries under $prefix" >&2
+          return 1
+        fi
+
+        export PASS_ENV_LOADED_KEYS=""
+        local key val
+        while IFS= read -r key; do
+          val=$(pass show "$prefix/$key" | head -n1)
+          export "$key=$val"
+          PASS_ENV_LOADED_KEYS="$PASS_ENV_LOADED_KEYS $key"
+        done <<< "$keys"
+
+        export PASS_ENV="$env"
+        echo "passenv: loaded '$env' ($(echo "$keys" | wc -l) vars)"
+      }
+
+      passenv-unset() {
+        if [[ -z "$PASS_ENV_LOADED_KEYS" ]]; then
+          return 0
+        fi
+        local key
+        for key in $PASS_ENV_LOADED_KEYS; do
+          unset "$key"
+        done
+        unset PASS_ENV PASS_ENV_LOADED_KEYS
+      }
+
+      passrun() {
+        if [[ $# -lt 2 ]]; then
+          echo "usage: passrun <env> <command> [args...]" >&2
+          return 2
+        fi
+        local env="$1"; shift
+        (
+          passenv "$env" >/dev/null || exit 1
+          "$@"
+        )
+      }
     '';
   };
 }

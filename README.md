@@ -93,6 +93,61 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 ./setup.sh
 ```
 
+## Secrets management (password-store)
+
+シークレットや環境ごとの変数は `password-store` (`pass`) で管理します。
+暗号化されたストア本体 (`~/.password-store`) は **この public dotfiles には含めず**、
+別のプライベートリポジトリとして管理してください。
+
+### 初期セットアップ
+
+```bash
+# 1. GPG 鍵を作成（既にあればスキップ）
+gpg --full-generate-key
+
+# 2. password-store を初期化
+pass init <YOUR_GPG_KEY_ID>
+
+# 3. 既存のストアを private リポジトリから復元する場合
+git clone git@github.com:<you>/password-store.git ~/.password-store
+```
+
+### ディレクトリ規約
+
+環境切替用の変数は `env/<env-name>/<VAR_NAME>` に格納します。
+
+```
+~/.password-store/
+├── env/
+│   ├── dev/
+│   │   ├── AWS_ACCESS_KEY_ID.gpg
+│   │   └── DATABASE_URL.gpg
+│   └── prod/
+│       └── ...
+```
+
+投入例:
+
+```bash
+pass insert env/dev/AWS_ACCESS_KEY_ID
+pass insert -m env/dev/DATABASE_URL
+```
+
+### 環境の切り替え
+
+zsh に `passenv` / `passrun` / `passenv-unset` が定義されます。
+
+```bash
+# カレントシェルに env/dev/* を export
+passenv dev
+
+# サブシェルだけに env/prod/* を注入して 1 コマンド実行（推奨）
+passrun prod aws s3 ls
+
+# passenv でロードした変数をクリア
+passenv-unset
+```
+
 ## lint and format
 
 ```bash
