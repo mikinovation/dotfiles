@@ -115,31 +115,39 @@ git clone git@github.com:<you>/password-store.git ~/.password-store
 ### ディレクトリ規約
 
 グローバル用と案件別の 2 階層を併存運用します。
+環境名は **`local` / `dev` / `staging` / `prod` をそれぞれ独立した環境として扱います**
+（`local` は自分の手元マシン、`dev` は共有の開発環境、という別物の位置付け）。
+デフォルトは `local`（=自分のマシン）です。
 
 ```
 ~/.password-store/
 ├── env/                      # グローバル（案件に紐づかない共通環境変数）
-│   ├── dev/
-│   │   ├── AWS_ACCESS_KEY_ID.gpg
-│   │   └── DATABASE_URL.gpg
+│   ├── local/                # 自分のマシン用（Docker, モック DB 等）
+│   ├── dev/                  # 共有の開発環境
+│   ├── staging/
 │   └── prod/
 ├── project-a/                # 案件別（<project> は git repo の basename 推奨）
+│   ├── local/
+│   │   ├── API_KEY.gpg
+│   │   └── DATABASE_URL.gpg
 │   ├── dev/
 │   │   ├── API_KEY.gpg
 │   │   └── DATABASE_URL.gpg
 │   ├── staging/
 │   └── prod/
 └── project-b/
-    └── dev/
+    └── local/
 ```
 
 投入例:
 
 ```bash
-# グローバル
-pass insert env/dev/AWS_ACCESS_KEY_ID
+# グローバル（環境ごとに独立）
+pass insert env/local/DATABASE_URL
+pass insert env/dev/DATABASE_URL
 
-# 案件別
+# 案件別（local と dev は別物の値）
+pass insert project-a/local/API_KEY
 pass insert project-a/dev/API_KEY
 pass insert -m project-a/prod/DATABASE_URL
 ```
@@ -149,11 +157,13 @@ pass insert -m project-a/prod/DATABASE_URL
 zsh に以下が定義されます。
 
 ```bash
-# グローバル env/dev/* をカレントシェルに export
-passenv dev
+# グローバル（local と dev は別物、それぞれロード可能）
+passenv local                 # env/local/*
+passenv dev                   # env/dev/*
 
-# 案件別 project-a/prod/* をカレントシェルに export
-passenv project-a prod
+# 案件別
+passenv project-a local       # project-a/local/*
+passenv project-a dev         # project-a/dev/*
 passenv project-a/prod        # スラッシュ形でも可
 
 # サブシェルだけに注入して 1 コマンド実行（推奨）
@@ -171,7 +181,7 @@ passenv-unset
 
 ```sh
 # ~/ghq/github.com/mikinovation/project-a/.envrc
-use pass                      # project = git repo 名、env = $APP_ENV か dev
+use pass                      # project = git repo 名、env = $APP_ENV か local
 ```
 
 初回のみ許可:
@@ -180,12 +190,14 @@ use pass                      # project = git repo 名、env = $APP_ENV か dev
 direnv allow .
 ```
 
-dev/prod の切替は `projenv` で:
+環境の切替は `projenv` で（local / dev / staging / prod はそれぞれ別環境）:
 
 ```bash
-cd ~/ghq/.../project-a        # APP_ENV=dev が自動ロード
-projenv prod                  # direnv reload で prod に切替
-projenv dev                   # dev に戻す
+cd ~/ghq/.../project-a        # APP_ENV=local が自動ロード（自分のマシン）
+projenv dev                   # direnv reload で共有開発環境に切替
+projenv staging               # ステージング
+projenv prod                  # 本番
+projenv                       # 引数省略で local (自マシン) に戻る
 projenv-reset                 # APP_ENV を unset してデフォルト挙動に
 ```
 
@@ -194,8 +206,8 @@ projenv-reset                 # APP_ENV を unset してデフォルト挙動に
 ### プロンプト表示
 
 Powerlevel10k の右プロンプトに `<project>:<env>` が表示されます
-（prod は赤、staging は黄、dev は緑）。どの案件のどの環境で作業しているかが
-常に視認できるので、prod への誤操作を防げます。
+（prod は赤、staging は黄、dev は緑、local はシアン）。どの案件のどの環境で
+作業しているかが常に視認できるので、prod への誤操作を防げます。
 
 ## lint and format
 

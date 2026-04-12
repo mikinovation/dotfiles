@@ -9,7 +9,7 @@
   #   ~/.password-store/<project>/<env>/<VAR_NAME>
   #
   # where <project> defaults to the current git repository's basename
-  # and <env> defaults to $APP_ENV (or "dev" if unset). This lets each
+  # and <env> defaults to $APP_ENV (or "local" if unset). This lets each
   # repository's `.envrc` be a single line:
   #
   #   use pass
@@ -24,7 +24,7 @@
     stdlib = ''
       use_pass() {
         local project="''${1:-}"
-        local env="''${2:-''${APP_ENV:-dev}}"
+        local env="''${2:-''${APP_ENV:-local}}"
 
         if [[ -z "$project" ]]; then
           local toplevel

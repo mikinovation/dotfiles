@@ -182,7 +182,7 @@
           echo "projenv: direnv not found" >&2
           return 1
         fi
-        export APP_ENV="''${1:-dev}"
+        export APP_ENV="''${1:-local}"
         direnv reload
       }
 
@@ -193,7 +193,8 @@
       }
 
       # Powerlevel10k segment: show <project>:<env> in the right prompt.
-      # Prod is red to discourage accidents; staging yellow, dev green.
+      # Prod is red to discourage accidents; staging yellow, dev green,
+      # local cyan.
       function prompt_app_env() {
         [[ -z "''${APP_ENV:-}" ]] && return
         local color=blue
@@ -201,6 +202,7 @@
           prod|production) color=red ;;
           stg|staging)     color=yellow ;;
           dev|development) color=green ;;
+          local)           color=cyan ;;
         esac
         p10k segment -f "$color" -t "''${APP_PROJECT:-?}:$APP_ENV"
       }
