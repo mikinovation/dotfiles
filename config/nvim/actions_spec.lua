@@ -18,9 +18,11 @@ local nvim_dir = spec_dir()
 
 local lazydocker_calls
 local system_calls
+local notify_calls
 
 local function setup_vim_mock()
 	system_calls = {}
+	notify_calls = {}
 	_G.vim = {
 		fn = {
 			expand = function(s)
@@ -37,6 +39,11 @@ local function setup_vim_mock()
 				return ""
 			end,
 		},
+		v = { shell_error = 0 },
+		log = { levels = { WARN = 2, ERROR = 4, INFO = 1 } },
+		notify = function(msg, level)
+			table.insert(notify_calls, { msg = msg, level = level })
+		end,
 		lsp = {
 			buf = {
 				format_calls = {},
@@ -93,13 +100,60 @@ describe("actions (global)", function()
 			assert.equals(2, #system_calls, "should invoke wslpath and explorer.exe")
 			assert.same({ "wslpath", "-w", "/home/u/project/src" }, system_calls[1])
 			assert.same({ "explorer.exe", "C:\\home\\u\\project\\src" }, system_calls[2])
+			assert.equals(0, #notify_calls, "happy path should not notify")
 		end)
 
-		it("strips the trailing newline from the wslpath output", function()
+		it("strips trailing whitespace from the wslpath output (handles \\n and \\r\\n)", function()
+			_G.vim.fn.system = function(args)
+				table.insert(system_calls, args)
+				if type(args) == "table" and args[1] == "wslpath" then
+					return "C:\\home\\u\\project\\src\r\n"
+				end
+				return ""
+			end
 			local actions = dofile(nvim_dir .. "actions.lua")
 			actions.open_in_explorer()
-			-- The second call's path argument should not contain a newline
-			assert.is_nil(system_calls[2][2]:find("\n"))
+			local win_dir_arg = system_calls[2][2]
+			assert.is_nil(win_dir_arg:find("[\r\n]"))
+			assert.is_nil(win_dir_arg:find("%s$"))
+		end)
+
+		it("notifies and aborts when wslpath fails", function()
+			_G.vim.fn.system = function(args)
+				table.insert(system_calls, args)
+				if type(args) == "table" and args[1] == "wslpath" then
+					_G.vim.v.shell_error = 1
+					return ""
+				end
+				return ""
+			end
+			local actions = dofile(nvim_dir .. "actions.lua")
+			actions.open_in_explorer()
+
+			assert.equals(1, #system_calls, "should not invoke explorer.exe after wslpath failure")
+			assert.equals(1, #notify_calls)
+			assert.equals(_G.vim.log.levels.ERROR, notify_calls[1].level)
+			assert.truthy(notify_calls[1].msg:find("wslpath"))
+		end)
+
+		it("notifies when explorer.exe fails", function()
+			_G.vim.fn.system = function(args)
+				table.insert(system_calls, args)
+				if type(args) == "table" and args[1] == "wslpath" then
+					return "C:\\home\\u\\project\\src\n"
+				end
+				if type(args) == "table" and args[1] == "explorer.exe" then
+					_G.vim.v.shell_error = 1
+				end
+				return ""
+			end
+			local actions = dofile(nvim_dir .. "actions.lua")
+			actions.open_in_explorer()
+
+			assert.equals(2, #system_calls)
+			assert.equals(1, #notify_calls)
+			assert.equals(_G.vim.log.levels.ERROR, notify_calls[1].level)
+			assert.truthy(notify_calls[1].msg:find("Explorer"))
 		end)
 	end)
 

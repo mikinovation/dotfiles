@@ -224,6 +224,48 @@ describe("plugins.telescope.actions", function()
 			assert.truthy(call.args[1].prompt_title:find("bar"))
 			assert.is_function(call.args[1].attach_mappings)
 		end)
+
+		it("builds a very-nomagic substitute command when the user confirms", function()
+			-- Inputs: search term, replace term, then the Execute? prompt.
+			input_queue = { "foo.bar", "baz", "y" }
+			load_actions().search_and_replace()
+
+			-- Capture the <CR> callback registered inside attach_mappings.
+			local attach = builtin_calls[1].args[1].attach_mappings
+			local captured_cb
+			local function fake_map(_, key, cb)
+				if key == "<CR>" then
+					captured_cb = cb
+				end
+			end
+			attach(nil, fake_map)
+			assert.is_function(captured_cb)
+			captured_cb(42)
+
+			assert.equals(1, #cmd_calls)
+			-- The command must start with "%s/\V" so . is matched literally.
+			assert.truthy(cmd_calls[1]:find("^%%s/\\V"), "expected \\V prefix, got: " .. cmd_calls[1])
+			assert.truthy(cmd_calls[1]:find("foo%.bar"))
+			assert.truthy(cmd_calls[1]:find("baz"))
+			assert.truthy(cmd_calls[1]:match("/g$"))
+		end)
+
+		it("does not execute substitute when the user declines confirmation", function()
+			input_queue = { "foo", "bar", "n" }
+			load_actions().search_and_replace()
+
+			local attach = builtin_calls[1].args[1].attach_mappings
+			local captured_cb
+			local function fake_map(_, key, cb)
+				if key == "<CR>" then
+					captured_cb = cb
+				end
+			end
+			attach(nil, fake_map)
+			captured_cb(42)
+
+			assert.equals(0, #cmd_calls)
+		end)
 	end)
 
 	describe("grep_yanked_text", function()

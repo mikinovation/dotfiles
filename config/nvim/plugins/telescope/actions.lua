@@ -61,7 +61,10 @@ function M.search_and_replace()
 				if confirmation:lower() == "y" then
 					local escaped_search = vim.fn.escape(search_term, "/\\")
 					local escaped_replace = vim.fn.escape(replace_term, "/\\&")
-					vim.cmd("%s/" .. escaped_search .. "/" .. escaped_replace .. "/g")
+					-- \V (very nomagic) makes the pattern literal: only the delimiter
+					-- and backslash remain special, so characters like . * [ ] ^ $
+					-- in the user's input match themselves.
+					vim.cmd("%s/\\V" .. escaped_search .. "/" .. escaped_replace .. "/g")
 					require("telescope.actions").close(prompt_bufnr)
 				end
 			end)
