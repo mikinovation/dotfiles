@@ -284,10 +284,11 @@ describe("plugins.orgmode.actions", function()
 			load_actions().send_prompt_to_claude()
 			local call = find_system_call({ "tmux", "send-keys" })
 			assert.is_not_nil(call)
-			-- target = {right}; payload = "hello"; suffix = "Enter"
-			assert.equals("{right}", call[3])
-			assert.equals("hello", call[4])
-			assert.equals("Enter", call[5])
+			-- tmux send-keys -t {right} <payload> Enter
+			assert.equals("-t", call[3])
+			assert.equals("{right}", call[4])
+			assert.equals("hello", call[5])
+			assert.equals("Enter", call[6])
 		end)
 
 		it("normalizes inverted marks (end before start) before extraction", function()
