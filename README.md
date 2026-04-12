@@ -119,6 +119,10 @@ git clone git@github.com:<you>/password-store.git ~/.password-store
 （`local` は自分の手元マシン、`dev` は共有の開発環境、という別物の位置付け）。
 デフォルトは `local`（=自分のマシン）です。
 
+**ロードポリシー**: カレントシェルや direnv で**常駐できるのは `local` のみ**です。
+`dev` / `staging` / `prod` は **`passrun` による単発（サブシェル）実行専用**で、
+誤って prod の認証情報が対話シェルに残り続ける事故を避ける設計にしています。
+
 ```
 ~/.password-store/
 ├── env/                      # グローバル（案件に紐づかない共通環境変数）
@@ -152,36 +156,55 @@ pass insert project-a/dev/API_KEY
 pass insert -m project-a/prod/DATABASE_URL
 ```
 
-### シェル関数による切り替え
+### シェル関数（`local` 常駐）
 
-zsh に以下が定義されます。
+`passenv` はカレントシェルへロードしますが、**`local` 以外は拒否**されます。
+非 local 環境を使いたい場合は `passrun`（サブシェル）を使ってください。
 
 ```bash
-# グローバル（local と dev は別物、それぞれロード可能）
+# OK: local はカレントシェルに常駐可能
 passenv local                 # env/local/*
-passenv dev                   # env/dev/*
-
-# 案件別
 passenv project-a local       # project-a/local/*
-passenv project-a dev         # project-a/dev/*
-passenv project-a/prod        # スラッシュ形でも可
+passenv project-a/local       # スラッシュ形
 
-# サブシェルだけに注入して 1 コマンド実行（推奨）
-passrun env/prod aws s3 ls
-passrun project-a prod npm run start
+# NG: dev/staging/prod は passenv で拒否される
+passenv dev
+# => passenv: 'dev' is restricted to single-command execution.
+#             Only 'local' can be loaded into the current shell.
+#             Run instead:  passrun env/dev <command>
 
 # クリア
 passenv-unset
 ```
 
-### direnv による案件ごとの自動切替
+### 単発実行（`dev` / `staging` / `prod` 専用）
 
-案件 (`<project>/<env>`) は direnv と組み合わせると `cd` だけで自動ロードされます。
-各プロジェクトの `.envrc` は 1 行で済みます。
+非 local 環境は `passrun` で**サブシェル内の単発コマンドとしてのみ**実行します。
+コマンド終了と同時に認証情報は破棄され、対話シェルには残りません。
+
+```bash
+# グローバル dev/prod の単発実行
+passrun env/dev  aws s3 ls
+passrun env/prod aws s3 ls
+
+# 案件別
+passrun project-a dev     npm run start
+passrun project-a staging npm run deploy
+passrun project-a prod    aws s3 ls
+
+# 対話的に作業したい場合はシェルそのものを単発で起動
+passrun project-a prod zsh
+# => prod の値が入った一時シェル。exit すると元のシェルに戻る。
+#    プロンプトは赤色の <project>:prod 表示で誤操作防止。
+```
+
+### direnv による自動ロード（`local` のみ）
+
+各プロジェクト repo の `.envrc` に 1 行書けば、`cd` で自動的に `local` がロードされます。
 
 ```sh
 # ~/ghq/github.com/mikinovation/project-a/.envrc
-use pass                      # project = git repo 名、env = $APP_ENV か local
+use pass                      # project = git repo 名、env = local
 ```
 
 初回のみ許可:
@@ -190,18 +213,9 @@ use pass                      # project = git repo 名、env = $APP_ENV か loca
 direnv allow .
 ```
 
-環境の切替は `projenv` で（local / dev / staging / prod はそれぞれ別環境）:
-
-```bash
-cd ~/ghq/.../project-a        # APP_ENV=local が自動ロード（自分のマシン）
-projenv dev                   # direnv reload で共有開発環境に切替
-projenv staging               # ステージング
-projenv prod                  # 本番
-projenv                       # 引数省略で local (自マシン) に戻る
-projenv-reset                 # APP_ENV を unset してデフォルト挙動に
-```
-
-`.envrc` を `use pass project-a prod` のように引数で固定化することもできます。
+direnv が読み込めるのも **`local` のみ**です。`.envrc` 側で `use pass project-a prod`
+のように非 local を指定した場合はロード拒否され、エラーメッセージに `passrun` の
+使い方が案内されます。
 
 ### プロンプト表示
 

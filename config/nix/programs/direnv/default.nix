@@ -14,8 +14,10 @@
   #
   #   use pass
   #
-  # and individual envs are switched via the `projenv <env>` shell
-  # function (defined in the zsh module), which re-triggers direnv.
+  # POLICY: only the 'local' env is ever loaded persistently. Non-local
+  # envs (dev / staging / prod / ...) must go through `passrun` (defined
+  # in the zsh module) for one-shot subshell execution, so that a prod
+  # credential never lingers in an interactive shell by accident.
   programs.direnv = {
     enable = true;
     enableZshIntegration = true;
@@ -25,6 +27,12 @@
       use_pass() {
         local project="''${1:-}"
         local env="''${2:-''${APP_ENV:-local}}"
+
+        if [[ "$env" != "local" ]]; then
+          log_error "use_pass: only 'local' may be loaded persistently via direnv."
+          log_error "         Use: passrun ''${project:-<project>} $env <command>"
+          return 1
+        fi
 
         if [[ -z "$project" ]]; then
           local toplevel

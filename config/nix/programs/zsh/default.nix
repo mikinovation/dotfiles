@@ -76,6 +76,12 @@
       #   ~/.password-store/<project>/<env>/<KEY>     # project-scoped
       # where <project> conventionally matches the git repo basename.
       #
+      # POLICY: only 'local' may be loaded into the current shell or kept
+      # persistent via direnv. Non-local envs (dev / staging / prod / ...)
+      # are intentionally restricted to one-shot subshell execution via
+      # `passrun` so that a prod credential never lingers in an
+      # interactive shell by accident.
+      #
       # The store itself lives in a separate PRIVATE repository; nothing
       # from it is committed to this public dotfiles repo.
       # ----------------------------------------------------------------
@@ -106,14 +112,19 @@
         esac
       }
 
-      passenv() {
-        local prefix
-        if ! prefix=$(_passenv_prefix "$@"); then
-          echo "usage: passenv <env>                  # global env/<env>/*" >&2
-          echo "       passenv <project> <env>        # <project>/<env>/*" >&2
-          echo "       passenv <project>/<env>        # explicit path" >&2
-          return 2
+      # Internal: extract the env component from a resolved prefix.
+      _passenv_env_of() {
+        if [[ "''${1%%/*}" == "env" ]]; then
+          printf '%s\n' "''${1#env/}"
+        else
+          printf '%s\n' "''${1#*/}"
         fi
+      }
+
+      # Internal: actually load pass entries under $prefix into the
+      # current environment. No policy check - callers must enforce.
+      _passenv_load() {
+        local prefix="$1"
 
         if ! pass ls "$prefix" >/dev/null 2>&1; then
           echo "passenv: no entries under $prefix" >&2
@@ -145,6 +156,27 @@
         echo "passenv: loaded '$prefix' ($(echo "$keys" | wc -l) vars)"
       }
 
+      passenv() {
+        local prefix
+        if ! prefix=$(_passenv_prefix "$@"); then
+          echo "usage: passenv <env>                  # global env/<env>/*" >&2
+          echo "       passenv <project> <env>        # <project>/<env>/*" >&2
+          echo "       passenv <project>/<env>        # explicit path" >&2
+          return 2
+        fi
+
+        local env_part
+        env_part=$(_passenv_env_of "$prefix")
+        if [[ "$env_part" != "local" ]]; then
+          echo "passenv: '$env_part' is restricted to single-command execution." >&2
+          echo "         Only 'local' can be loaded into the current shell." >&2
+          echo "         Run instead:  passrun $prefix <command>" >&2
+          return 1
+        fi
+
+        _passenv_load "$prefix"
+      }
+
       passenv-unset() {
         [[ -z "''${PASS_ENV_LOADED_KEYS:-}" ]] && return 0
         local key
@@ -171,30 +203,15 @@
           prefix="$1/$2"; shift 2
         fi
         (
-          passenv "$prefix" >/dev/null || exit 1
+          _passenv_load "$prefix" >/dev/null || exit 1
           "$@"
         )
       }
 
-      # Switch APP_ENV in the current direnv-managed directory and reload.
-      projenv() {
-        if ! command -v direnv >/dev/null 2>&1; then
-          echo "projenv: direnv not found" >&2
-          return 1
-        fi
-        export APP_ENV="''${1:-local}"
-        direnv reload
-      }
-
-      # Clear the manual APP_ENV override and let direnv re-evaluate.
-      projenv-reset() {
-        unset APP_ENV
-        command -v direnv >/dev/null 2>&1 && direnv reload
-      }
-
       # Powerlevel10k segment: show <project>:<env> in the right prompt.
       # Prod is red to discourage accidents; staging yellow, dev green,
-      # local cyan.
+      # local cyan. In the outer shell only 'local' is ever persistent,
+      # so a non-cyan segment means you are in a `passrun` subshell.
       function prompt_app_env() {
         [[ -z "''${APP_ENV:-}" ]] && return
         local color=blue
