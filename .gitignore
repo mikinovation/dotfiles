@@ -1,6 +1,15 @@
 result
 .env
+.env.*
+!.env.example
 node_modules
+
+# Secrets - never commit these to this public repository
+.password-store/
+*.gpg
+*.asc
+.envrc
+.envrc.local
 
 # Claude directory - ignore everything except commands
 /claude/*
