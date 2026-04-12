@@ -59,6 +59,7 @@
     ./programs/tmux
     ./programs/aws
     ./programs/pass
+    ./programs/direnv
   ];
 
   # Home Manager can also manage your environment variables through

@@ -114,39 +114,88 @@ git clone git@github.com:<you>/password-store.git ~/.password-store
 
 ### ディレクトリ規約
 
-環境切替用の変数は `env/<env-name>/<VAR_NAME>` に格納します。
+グローバル用と案件別の 2 階層を併存運用します。
 
 ```
 ~/.password-store/
-├── env/
+├── env/                      # グローバル（案件に紐づかない共通環境変数）
 │   ├── dev/
 │   │   ├── AWS_ACCESS_KEY_ID.gpg
 │   │   └── DATABASE_URL.gpg
 │   └── prod/
-│       └── ...
+├── project-a/                # 案件別（<project> は git repo の basename 推奨）
+│   ├── dev/
+│   │   ├── API_KEY.gpg
+│   │   └── DATABASE_URL.gpg
+│   ├── staging/
+│   └── prod/
+└── project-b/
+    └── dev/
 ```
 
 投入例:
 
 ```bash
+# グローバル
 pass insert env/dev/AWS_ACCESS_KEY_ID
-pass insert -m env/dev/DATABASE_URL
+
+# 案件別
+pass insert project-a/dev/API_KEY
+pass insert -m project-a/prod/DATABASE_URL
 ```
 
-### 環境の切り替え
+### シェル関数による切り替え
 
-zsh に `passenv` / `passrun` / `passenv-unset` が定義されます。
+zsh に以下が定義されます。
 
 ```bash
-# カレントシェルに env/dev/* を export
+# グローバル env/dev/* をカレントシェルに export
 passenv dev
 
-# サブシェルだけに env/prod/* を注入して 1 コマンド実行（推奨）
-passrun prod aws s3 ls
+# 案件別 project-a/prod/* をカレントシェルに export
+passenv project-a prod
+passenv project-a/prod        # スラッシュ形でも可
 
-# passenv でロードした変数をクリア
+# サブシェルだけに注入して 1 コマンド実行（推奨）
+passrun env/prod aws s3 ls
+passrun project-a prod npm run start
+
+# クリア
 passenv-unset
 ```
+
+### direnv による案件ごとの自動切替
+
+案件 (`<project>/<env>`) は direnv と組み合わせると `cd` だけで自動ロードされます。
+各プロジェクトの `.envrc` は 1 行で済みます。
+
+```sh
+# ~/ghq/github.com/mikinovation/project-a/.envrc
+use pass                      # project = git repo 名、env = $APP_ENV か dev
+```
+
+初回のみ許可:
+
+```bash
+direnv allow .
+```
+
+dev/prod の切替は `projenv` で:
+
+```bash
+cd ~/ghq/.../project-a        # APP_ENV=dev が自動ロード
+projenv prod                  # direnv reload で prod に切替
+projenv dev                   # dev に戻す
+projenv-reset                 # APP_ENV を unset してデフォルト挙動に
+```
+
+`.envrc` を `use pass project-a prod` のように引数で固定化することもできます。
+
+### プロンプト表示
+
+Powerlevel10k の右プロンプトに `<project>:<env>` が表示されます
+（prod は赤、staging は黄、dev は緑）。どの案件のどの環境で作業しているかが
+常に視認できるので、prod への誤操作を防げます。
 
 ## lint and format
 
