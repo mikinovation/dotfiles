@@ -82,6 +82,7 @@
 
     # settings.json
     settings = {
+      model = "sonnet";
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
       hooks = {
@@ -114,6 +115,7 @@
       };
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
+        CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR = "1";
         DISABLE_AUTOUPDATER = "1";
       };
       permissions = {
