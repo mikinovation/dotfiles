@@ -83,6 +83,7 @@
     # settings.json
     settings = {
       model = "sonnet";
+      effortLevel = "high";
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
       hooks = {
