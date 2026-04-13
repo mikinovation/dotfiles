@@ -1,19 +1,12 @@
 local M = {}
 
 function M.setup()
-	vim.keymap.set("n", "<leader>tn", ":lua require('neotest').run.run()<CR>", { desc = "Run test nearest" })
-	vim.keymap.set(
-		"n",
-		"<leader>tD",
-		":lua require('neotest').run.run({strategy = 'dap'})<CR>",
-		{ desc = "Debug test nearest (DAP)" }
-	)
-	vim.keymap.set(
-		"n",
-		"<leader>tf",
-		":lua require('neotest').run.run(vim.fn.expand('%'))<CR>",
-		{ desc = "Run test file" }
-	)
+	local actions = require("plugins.neotest.actions")
+	local map = vim.keymap.set
+
+	map("n", "<leader>tn", actions.run_nearest, { desc = "Run test nearest" })
+	map("n", "<leader>tD", actions.debug_nearest, { desc = "Debug test nearest (DAP)" })
+	map("n", "<leader>tf", actions.run_file, { desc = "Run test file" })
 end
 
 return M

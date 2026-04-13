@@ -1,31 +1,23 @@
-local keymap = vim.keymap.set
+-- keymaps.lua
+-- Global keymaps. This file contains only key bindings.
+-- All non-trivial logic lives in actions.lua (or other modules).
 
-keymap("n", "<Esc>", "<cmd>nohlsearch<CR>")
-keymap("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics in loclist" })
-keymap("n", "<leader>df", vim.diagnostic.open_float, { desc = "Open diagnostics in float" })
-keymap("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
-keymap("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-keymap("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-keymap("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-keymap("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+local actions = require("actions")
+local map = vim.keymap.set
 
-keymap("n", "<leader>rm", ":%s/\r//g<CR>", { desc = "Remove ^M" })
+map("n", "<Esc>", "<cmd>nohlsearch<CR>")
+map("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Open diagnostics in loclist" })
+map("n", "<leader>df", vim.diagnostic.open_float, { desc = "Open diagnostics in float" })
+map("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+map("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+map("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+map("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+map("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
-keymap("i", "jj", "<Esc>", { noremap = true, silent = true })
+map("n", "<leader>rm", ":%s/\r//g<CR>", { desc = "Remove ^M" })
 
--- Format with LSP/null-ls (ESLint, etc.)
-keymap("n", "<leader>fm", function()
-	vim.lsp.buf.format({ async = true })
-end, { desc = "Format document" })
+map("i", "jj", "<Esc>", { noremap = true, silent = true })
 
--- Open current file's directory in Windows Explorer
-keymap("n", "<leader>fe", function()
-	local dir = vim.fn.expand("%:p:h")
-	local win_dir = vim.fn.system({ "wslpath", "-w", dir }):gsub("\n", "")
-	vim.fn.system({ "explorer.exe", win_dir })
-end, { desc = "Open in Windows Explorer" })
-
--- Lazydocker integration
-keymap("n", "<leader>ld", function()
-	require("tools.lazydocker").toggle_lazydocker()
-end, { desc = "Toggle lazydocker" })
+map("n", "<leader>fm", actions.format_document, { desc = "Format document" })
+map("n", "<leader>fe", actions.open_in_explorer, { desc = "Open in Windows Explorer" })
+map("n", "<leader>ld", actions.toggle_lazydocker, { desc = "Toggle lazydocker" })

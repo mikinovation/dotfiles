@@ -1,12 +1,14 @@
 -- lsp/keymaps.lua
+-- Buffer-local LSP keymaps. This file contains only key bindings.
+-- All non-trivial logic lives in lsp/actions.lua (or other modules).
 
--- Keybinding settings for LSP attach
 vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
 	callback = function(event)
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
 		local bufnr = event.buf
 		local builtin = require("telescope.builtin")
+		local actions = require("lsp.actions")
 
 		-- Enable completion triggered by <c-x><c-o>
 		vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
@@ -16,7 +18,6 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
 		end
 
-		-- Keymappings for commonly used features
 		map("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
 		map("gr", builtin.lsp_references, "[G]oto [R]eferences")
 		map("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
@@ -35,11 +36,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("]d", vim.diagnostic.goto_next, "Next [D]iagnostic")
 		map("<leader>q", vim.diagnostic.setloclist, "Diagnostics to [L]ocation List")
 
-		-- Format document
+		-- Format document (only when supported by the attached client)
 		if client and client:supports_method("textDocument/formatting") then
-			map("<leader>f", function()
-				vim.lsp.buf.format({ async = true })
-			end, "[F]ormat document")
+			map("<leader>f", actions.format_document, "[F]ormat document")
 		end
 	end,
 })
