@@ -56,12 +56,13 @@ local function setup_vim_mock()
 end
 
 describe("actions (global)", function()
-	local saved_vim, saved_path, saved_lazydocker
+	local saved_vim, saved_path, saved_lazydocker, saved_actions
 
 	setup(function()
 		saved_vim = _G.vim
 		saved_path = package.path
 		saved_lazydocker = package.loaded["tools.lazydocker"]
+		saved_actions = package.loaded["actions"]
 		package.path = nvim_dir .. "?.lua;" .. nvim_dir .. "?/init.lua;" .. package.path
 	end)
 
@@ -69,7 +70,7 @@ describe("actions (global)", function()
 		_G.vim = saved_vim
 		package.path = saved_path
 		package.loaded["tools.lazydocker"] = saved_lazydocker
-		package.loaded["actions"] = nil
+		package.loaded["actions"] = saved_actions
 	end)
 
 	before_each(function()
