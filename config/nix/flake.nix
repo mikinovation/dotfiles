@@ -62,7 +62,7 @@
       nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
       lintApp = pkgs.writeShellApplication {
         name = "lint";
-        runtimeInputs = [ pkgs.lua51Packages.luacheck ];
+        runtimeInputs = [ pkgs.lua51Packages.luacheck pkgs.git ];
         text = ''
           echo "=== Running luacheck ==="
           luacheck .
