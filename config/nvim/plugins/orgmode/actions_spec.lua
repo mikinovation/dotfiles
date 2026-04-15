@@ -17,6 +17,7 @@ local actions_dir = spec_dir()
 
 local notify_calls
 local system_calls
+local setreg_calls
 local heading_props
 local has_heading
 local executables
@@ -25,9 +26,10 @@ local marks
 local function setup_vim_mock()
 	notify_calls = {}
 	system_calls = {}
+	setreg_calls = {}
 	heading_props = {}
 	has_heading = true
-	executables = { tmux = true, claude = true }
+	executables = { tmux = true, claude = true, pandoc = true }
 	marks = { ["<"] = { 1, 0 }, [">"] = { 1, 5 } }
 
 	_G.vim = {
@@ -41,12 +43,18 @@ local function setup_vim_mock()
 			executable = function(name)
 				return executables[name] and 1 or 0
 			end,
-			system = function(args)
+			system = function(args, stdin)
 				table.insert(system_calls, args)
 				if type(args) == "string" and args:match("list%-panes") then
 					return "1"
 				end
+				if type(args) == "table" and args[1] == "pandoc" then
+					return "# " .. (stdin or "") .. "\n"
+				end
 				return ""
+			end,
+			setreg = function(reg, text)
+				table.insert(setreg_calls, { reg = reg, text = text })
 			end,
 		},
 		api = {
@@ -318,6 +326,78 @@ describe("plugins.orgmode.actions", function()
 		end)
 	end)
 
+	describe("copy_as_markdown", function()
+		it("errors when pandoc is not installed", function()
+			executables.pandoc = false
+			load_actions().copy_as_markdown()
+			local has_error = false
+			for _, n in ipairs(notify_calls) do
+				if n.level == _G.vim.log.levels.ERROR then
+					has_error = true
+				end
+			end
+			assert.is_true(has_error)
+		end)
+
+		it("warns when there is no visual selection (zero marks)", function()
+			marks["<"] = { 0, 0 }
+			marks[">"] = { 0, 0 }
+			load_actions().copy_as_markdown()
+			local has_warn = false
+			for _, n in ipairs(notify_calls) do
+				if n.level == _G.vim.log.levels.WARN then
+					has_warn = true
+				end
+			end
+			assert.is_true(has_warn)
+		end)
+
+		it("warns when the selected text is empty", function()
+			_G.vim.api.nvim_buf_get_text = function()
+				return { "" }
+			end
+			load_actions().copy_as_markdown()
+			local has_warn = false
+			for _, n in ipairs(notify_calls) do
+				if n.level == _G.vim.log.levels.WARN then
+					has_warn = true
+				end
+			end
+			assert.is_true(has_warn)
+		end)
+
+		it("copies pandoc output to the + register and notifies", function()
+			load_actions().copy_as_markdown()
+			assert.equals(1, #setreg_calls)
+			assert.equals("+", setreg_calls[1].reg)
+			local has_info = false
+			for _, n in ipairs(notify_calls) do
+				if n.level == _G.vim.log.levels.INFO then
+					has_info = true
+				end
+			end
+			assert.is_true(has_info)
+		end)
+
+		it("errors when pandoc conversion fails", function()
+			_G.vim.fn.system = function(args, _)
+				table.insert(system_calls, args)
+				if type(args) == "table" and args[1] == "pandoc" then
+					_G.vim.v.shell_error = 1
+				end
+				return ""
+			end
+			load_actions().copy_as_markdown()
+			local has_error = false
+			for _, n in ipairs(notify_calls) do
+				if n.level == _G.vim.log.levels.ERROR then
+					has_error = true
+				end
+			end
+			assert.is_true(has_error)
+		end)
+	end)
+
 	describe("open_terminal_pane", function()
 		it("warns when :DIR: is missing", function()
 			heading_props.DIR = nil
@@ -341,6 +421,7 @@ describe("plugins.orgmode.actions", function()
 			assert.is_function(actions.open_nvim_pane)
 			assert.is_function(actions.resume_claude_session)
 			assert.is_function(actions.send_prompt_to_claude)
+			assert.is_function(actions.copy_as_markdown)
 			assert.is_function(actions.open_terminal_pane)
 		end)
 	end)
