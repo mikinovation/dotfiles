@@ -60,6 +60,39 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
+      lintApp = pkgs.writeShellApplication {
+        name = "lint";
+        runtimeInputs = [ pkgs.lua51Packages.luacheck ];
+        text = ''
+          echo "=== Running luacheck ==="
+          luacheck .
+
+          echo ""
+          echo "=== Running secretlint ==="
+          if [ -x "./node_modules/.bin/secretlint" ]; then
+            git ls-files -z | xargs -0 ./node_modules/.bin/secretlint
+          else
+            echo "Warning: secretlint not found. Run 'npm ci' first."
+            exit 1
+          fi
+        '';
+      };
+      fmtApp = pkgs.writeShellApplication {
+        name = "fmt";
+        runtimeInputs = [ pkgs.stylua ];
+        text = ''
+          echo "=== Running stylua check ==="
+          stylua --check .
+        '';
+      };
+      testApp = pkgs.writeShellApplication {
+        name = "test";
+        runtimeInputs = [ pkgs.lua51Packages.busted ];
+        text = ''
+          echo "=== Running busted tests ==="
+          busted .
+        '';
+      };
       mkHomeConfig =
         username:
         home-manager.lib.homeManagerConfiguration {
@@ -119,6 +152,32 @@
       checks.${system} = {
         home-manager-build = self.homeConfigurations.mikinovation.activationPackage;
         nixos-build = self.nixosConfigurations.nixos.config.system.build.toplevel;
+      };
+
+      # Dev shell with all local check tools
+      devShells.${system}.default = pkgs.mkShell {
+        buildInputs = [
+          pkgs.lua51Packages.luacheck
+          pkgs.lua51Packages.busted
+          pkgs.stylua
+          pkgs.nodejs_22
+        ];
+      };
+
+      # Apps: nix run .#lint / .#fmt / .#test
+      apps.${system} = {
+        lint = {
+          type = "app";
+          program = "${lintApp}/bin/lint";
+        };
+        fmt = {
+          type = "app";
+          program = "${fmtApp}/bin/fmt";
+        };
+        test = {
+          type = "app";
+          program = "${testApp}/bin/test";
+        };
       };
     };
 }
