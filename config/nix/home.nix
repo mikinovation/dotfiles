@@ -37,6 +37,7 @@
     jq # JSON processor
     curl # HTTP client
     lsof # List open files
+    pandoc # Document format converter
     nodePkgs."agent-browser"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
