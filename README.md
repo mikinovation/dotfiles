@@ -92,18 +92,13 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 
 ## lint, format, test
 
-```bash
-# Run all checks
-nix run ./config/nix#lint   # luacheck (+ secretlint if node_modules present)
-nix run ./config/nix#fmt    # stylua --check
-nix run ./config/nix#test   # busted tests
-```
-
-secretlint requires `npm ci` first:
+`nix run ./config/nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:
 
 ```bash
 npm ci
-nix run ./config/nix#lint
+nix run ./config/nix#lint   # luacheck + secretlint
+nix run ./config/nix#fmt    # stylua --check
+nix run ./config/nix#test   # busted tests
 ```
 
 To use the dev shell:
