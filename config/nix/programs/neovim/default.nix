@@ -7,6 +7,8 @@
     viAlias = true;
     vimAlias = true;
     vimdiffAlias = true;
+    withRuby = false;
+    withPython3 = false;
 
     # Install additional packages that neovim plugins might need
     extraPackages = with pkgs; [
