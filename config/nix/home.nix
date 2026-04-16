@@ -103,9 +103,6 @@
     # Sheldon configuration
     ".config/sheldon/plugins.toml".source = ../sheldon/plugins.toml;
 
-    # WSL-specific configuration
-    "ghq/github.com/mikinovation/dotfiles/config/zsh/plugins/wsl.zsh".source = ../zsh/plugins/wsl.zsh;
-
   };
 
   xdg.configFile."nix/nix.conf".force = true;

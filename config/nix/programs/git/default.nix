@@ -4,8 +4,7 @@
   programs.git = {
     enable = true;
 
-    userName = "mikinovation";
-    userEmail = "maneuver2472@gmail.com";
+    signing.format = null;
 
     ignores = [
       # Custom tools
@@ -60,6 +59,10 @@
     ];
 
     settings = {
+      user = {
+        name = "mikinovation";
+        email = "maneuver2472@gmail.com";
+      };
       fetch = {
         prune = true;
         pruneTags = true;

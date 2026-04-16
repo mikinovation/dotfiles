@@ -138,6 +138,6 @@
 
     # Agents, CLAUDE.md
     agentsDir = ../../../claude/agents;
-    memory.source = ../../../claude/CLAUDE.md;
+    context = ../../../claude/CLAUDE.md;
   };
 }
