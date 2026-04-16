@@ -1,6 +1,6 @@
 # dotfiles
 
-このリポジトリはNix/Home-Managerを使用して、宣言的にdotfilesを管理しています。
+Dotfiles managed declaratively using Nix and Home Manager.
 
 ## prerequisite
 
@@ -23,7 +23,7 @@ Install Wezterm
 
 https://wezfurlong.org/wezterm/
 
-Windowsの場合は以下のようにweztermの設定ファイルをホストOSのWindows側にファイルをコピーする
+On Windows, copy the WezTerm config to the host OS:
 
 ```bash
 cp ~/ghq/github.com/mikinovation/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
@@ -55,8 +55,8 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 ./setup.sh
 ```
 
-- NixOS (WSL): `sudo nixos-rebuild switch` を使用してHome Managerをモジュールとして適用
-- その他Linux: standalone Home Managerを使用して適用
+- NixOS (WSL): applies Home Manager as a module via `sudo nixos-rebuild switch`
+- Other Linux: applies via standalone Home Manager
 
 ### Manual Installation
 
@@ -99,14 +99,14 @@ nix run ./config/nix#fmt    # stylua --check
 nix run ./config/nix#test   # busted tests
 ```
 
-secretlintを使うには事前に `npm ci` が必要:
+secretlint requires `npm ci` first:
 
 ```bash
 npm ci
 nix run ./config/nix#lint
 ```
 
-dev shellを使う場合:
+To use the dev shell:
 
 ```bash
 nix develop ./config/nix
