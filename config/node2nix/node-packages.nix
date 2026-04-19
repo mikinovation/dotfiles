@@ -1390,6 +1390,15 @@ let
         sha512 = "PlBfpQwiUvGViBNX84Yxwjsdhd1TUlXr6zjX7eoirtCPIr08NAmxwa+fcYBTeRQxHo9YC9wwF3m9i700sHma8g==";
       };
     };
+    "typescript-5.8.3" = {
+      name = "typescript";
+      packageName = "typescript";
+      version = "5.8.3";
+      src = fetchurl {
+        url = "https://registry.npmjs.org/typescript/-/typescript-5.8.3.tgz";
+        sha512 = "p1diW6TqL9L07nNxvRMM7hMMw4c5XOo/1ibL4aAIGmSAt9slTE1Xgw5KWuof2uTOvCg9BY7ZRi+GaF+7sfgPeQ==";
+      };
+    };
     "typescript-auto-import-cache-0.3.6" = {
       name = "typescript-auto-import-cache";
       packageName = "typescript-auto-import-cache";
@@ -1753,6 +1762,7 @@ in
       sources."semver-7.7.4"
       sources."source-map-js-1.2.1"
       sources."token-stream-1.0.0"
+      sources."typescript-5.8.3"
       sources."typescript-auto-import-cache-0.3.6"
       sources."volar-service-css-0.0.70"
       sources."volar-service-emmet-0.0.70"
