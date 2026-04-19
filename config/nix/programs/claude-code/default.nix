@@ -83,7 +83,7 @@
     # settings.json
     settings = {
       model = "sonnet";
-      effortLevel = "high";
+      effortLevel = "xhigh";
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
       hooks = {
@@ -134,6 +134,12 @@
           "Bash(git fetch *)"
         ];
       };
+    };
+
+    # Skills
+    skills = {
+      "org-flow:create-issue" = ../../../claude/skills/org-flow/create-issue;
+      "team-dev" = ../../../claude/skills/team-dev;
     };
 
     # Agents, CLAUDE.md

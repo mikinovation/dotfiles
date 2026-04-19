@@ -1,9 +1,9 @@
 ---
-name: org-log
-description: 作業内容をorg-mode形式で記録するスキル。タスク完了時・セッション終了時・コミット後・PR作成後など、何らかの作業が一段落したタイミングで必ず使用する。ユーザーが「/org-log」「ログ書いて」「orgに記録」「作業まとめ」「refile」「作業ログ」と言った場合はもちろん、CLAUDE.mdで作業完了後の実行が指示されている場合も必ずこのスキルを使用すること。セッションログとrefile.orgインデックスの2箇所に書き込む。
+name: org-flow:create-issue
+description: 作業内容をorg-mode形式で記録するスキル。タスク完了時・セッション終了時・コミット後・PR作成後など、何らかの作業が一段落したタイミングで必ず使用する。ユーザーが「/create-issue」「/org-flow:create-issue」「ログ書いて」「orgに記録」「作業まとめ」「refile」「作業ログ」と言った場合はもちろん、CLAUDE.mdで作業完了後の実行が指示されている場合も必ずこのスキルを使用すること。セッションログとrefile.orgインデックスの2箇所に書き込む。
 ---
 
-# org-log: 作業ログをorg-modeに記録
+# org-flow:create-issue: 作業ログをorg-modeに記録
 
 セッションログを **ghqと同じディレクトリ構造** で記録し、`refile.org` にはリンク付きインデックスのみ追記する。
 
