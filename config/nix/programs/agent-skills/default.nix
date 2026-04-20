@@ -32,7 +32,6 @@
       enable = [
         "find-skills"
         "skill-creator"
-        "team-dev"
         "vue-best-practices"
         "nuxt"
         "test-driven-development"
