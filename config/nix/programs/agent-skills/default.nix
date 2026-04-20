@@ -26,20 +26,15 @@
         path = inputs.obra-superpowers;
         subdir = "skills";
       };
-      local = {
-        path = ../../../claude/skills;
-      };
     };
 
     skills = {
       enable = [
         "find-skills"
         "skill-creator"
-        "team-dev"
         "vue-best-practices"
         "nuxt"
         "test-driven-development"
-        "org-flow/create-issue"
       ];
     };
 
