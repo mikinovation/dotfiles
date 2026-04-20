@@ -14,10 +14,6 @@
         path = inputs.anthropic-skills;
         subdir = "skills";
       };
-      agent-browser = {
-        path = inputs.agent-browser;
-        subdir = "skills";
-      };
       vercel-skills = {
         path = inputs.vercel-skills;
         subdir = "skills";
@@ -36,7 +32,7 @@
       enable = [
         "find-skills"
         "skill-creator"
-        "agent-browser"
+        "team-dev"
         "vue-best-practices"
         "nuxt"
         "test-driven-development"
