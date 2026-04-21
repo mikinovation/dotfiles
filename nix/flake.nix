@@ -55,7 +55,7 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
-      nodePkgs = import ../node2nix/default.nix { inherit pkgs; };
+      nodePkgs = import ./node2nix/default.nix { inherit pkgs; };
       apm = pkgs.callPackage ./pkgs/apm.nix { };
       lintApp = pkgs.writeShellApplication {
         name = "lint";

@@ -26,7 +26,7 @@ https://wezfurlong.org/wezterm/
 On Windows, copy the WezTerm config to the host OS:
 
 ```bash
-cp ~/ghq/github.com/mikinovation/dotfiles/config/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
+cp ~/ghq/github.com/mikinovation/dotfiles/nix/programs/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
 ### node2nix
@@ -35,7 +35,7 @@ To update npm packages managed by node2nix:
 
 ```bash
 # Navigate to the node2nix directory
-cd ~/ghq/github.com/mikinovation/dotfiles/config/node2nix
+cd ~/ghq/github.com/mikinovation/dotfiles/nix/node2nix
 
 # Edit node-packages.json to add/update packages
 
@@ -68,13 +68,13 @@ ghq get git@github.com:mikinovation/dotfiles.git
 
 # Setup nix.conf first
 mkdir -p ~/.config/nix
-ln -s ~/ghq/github.com/mikinovation/dotfiles/config/nix/nix.conf ~/.config/nix/nix.conf
+ln -s ~/ghq/github.com/mikinovation/dotfiles/nix/nix.conf ~/.config/nix/nix.conf
 
 # Deploy using Home Manager (standalone)
-nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotfiles/config/nix#mikinovation
+nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mikinovation
 
 # Or for NixOS
-sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/config/nix#nixos
+sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#nixos
 ```
 
 ### Update Configuration
@@ -83,7 +83,7 @@ After making changes to your configuration files:
 
 ```bash
 # Using Home Manager directly (standalone)
-home-manager switch --flake ~/ghq/github.com/mikinovation/dotfiles/config/nix#mikinovation
+home-manager switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mikinovation
 
 # Or re-run the setup script
 cd ~/ghq/github.com/mikinovation/dotfiles
@@ -92,17 +92,17 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 
 ## lint, format, test
 
-`nix run ./config/nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:
+`nix run ./nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:
 
 ```bash
 npm ci
-nix run ./config/nix#lint   # luacheck + secretlint
-nix run ./config/nix#fmt    # stylua --check
-nix run ./config/nix#test   # busted tests
+nix run ./nix#lint   # luacheck + secretlint
+nix run ./nix#fmt    # stylua --check
+nix run ./nix#test   # busted tests
 ```
 
 To use the dev shell:
 
 ```bash
-nix develop ./config/nix
+nix develop ./nix
 ```

@@ -93,7 +93,7 @@
             hooks = [
               {
                 type = "command";
-                command = "$HOME/ghq/github.com/mikinovation/dotfiles/config/claude/hooks/notify-stop.sh";
+                command = "$HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/hooks/notify-stop.sh";
               }
             ];
           }
@@ -104,7 +104,7 @@
             hooks = [
               {
                 type = "command";
-                command = "$HOME/ghq/github.com/mikinovation/dotfiles/config/claude/hooks/notify-input.sh";
+                command = "$HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/hooks/notify-input.sh";
               }
             ];
           }
@@ -112,7 +112,7 @@
       };
       statusLine = {
         type = "command";
-        command = "sh $HOME/ghq/github.com/mikinovation/dotfiles/config/claude/statusline.sh";
+        command = "sh $HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/statusline.sh";
       };
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
@@ -136,14 +136,12 @@
       };
     };
 
-    # Skills
     skills = {
-      "org-flow:create-issue" = ../../../claude/skills/org-flow/create-issue;
-      "team-dev" = ../../../claude/skills/team-dev;
+      "org-flow:create-issue" = ./skills/org-flow/create-issue;
+      "team-dev" = ./skills/team-dev;
     };
 
-    # Agents, CLAUDE.md
-    agentsDir = ../../../claude/agents;
-    context = ../../../claude/CLAUDE.md;
+    agentsDir = ./agents;
+    context = ./CLAUDE.md;
   };
 }
