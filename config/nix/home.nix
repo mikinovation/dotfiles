@@ -5,6 +5,7 @@
   nodePkgs,
   inputs,
   username,
+  apm,
   ...
 }:
 
@@ -38,6 +39,7 @@
     curl # HTTP client
     lsof # List open files
     pandoc # Document format converter
+    apm
     nodePkgs."agent-browser"
     nodePkgs."ccmanager"
     nodePkgs."@vue/language-server"
