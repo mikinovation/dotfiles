@@ -141,7 +141,6 @@
       "team-dev" = ./skills/team-dev;
     };
 
-    agentsDir = ./agents;
     context = ./CLAUDE.md;
   };
 }
