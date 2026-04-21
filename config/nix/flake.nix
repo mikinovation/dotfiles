@@ -103,7 +103,12 @@
             mcp-servers-nix.homeManagerModules.default
           ];
           extraSpecialArgs = {
-            inherit inputs nodePkgs username apm;
+            inherit
+              inputs
+              nodePkgs
+              username
+              apm
+              ;
           };
         };
       mkNixosConfig =
@@ -123,7 +128,12 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./home.nix;
               home-manager.extraSpecialArgs = {
-                inherit inputs nodePkgs username apm;
+                inherit
+                  inputs
+                  nodePkgs
+                  username
+                  apm
+                  ;
               };
               home-manager.sharedModules = [
                 agent-skills-nix.homeManagerModules.default
