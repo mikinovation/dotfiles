@@ -13,7 +13,7 @@ main() {
   fi
 
   SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-  export XDG_CONFIG_HOME="$(cd "$SCRIPT_DIR/../config" && pwd)"
+  export XDG_CONFIG_HOME="$(cd "$SCRIPT_DIR/../nix/programs/neovim" && pwd)"
 
   # Create directories referenced by config to avoid warnings
   mkdir -p "$HOME/ghq/github.com/mikinovation/org"

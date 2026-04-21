@@ -2,7 +2,7 @@
 
 set -eu
 
-FLAKE_DIR="$(cd "$(dirname "$0")/../config/nix" && pwd)"
+FLAKE_DIR="$(cd "$(dirname "$0")/../nix" && pwd)"
 
 echo "=== Running nix fmt check ==="
 cd "$FLAKE_DIR"

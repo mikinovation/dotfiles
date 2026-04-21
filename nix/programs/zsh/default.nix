@@ -4,7 +4,6 @@
   programs.zsh = {
     enable = true;
 
-    # Environment variables
     sessionVariables = {
       ZSH = "$HOME/.local/share/sheldon/repos/github.com/ohmyzsh/ohmyzsh";
       BUN_INSTALL = "$HOME/.bun";
@@ -12,7 +11,6 @@
       POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
     };
 
-    # PATH additions
     envExtra = ''
       export PATH="$HOME/.local/bin:$PATH"
       export PATH="$PATH:/opt/nvim/"
@@ -45,13 +43,13 @@
       fi
 
       # Load WSL specific configurations if on WSL
-      [[ -f "$DOTFILES_DIR/config/zsh/plugins/wsl.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/wsl.zsh"
+      [[ -f "$DOTFILES_DIR/nix/programs/zsh/plugins/wsl.zsh" ]] && source "$DOTFILES_DIR/nix/programs/zsh/plugins/wsl.zsh"
 
       # Load zsh abbreviations
-      [[ -f "$DOTFILES_DIR/config/zsh/plugins/abbr.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/abbr.zsh"
+      [[ -f "$DOTFILES_DIR/nix/programs/zsh/plugins/abbr.zsh" ]] && source "$DOTFILES_DIR/nix/programs/zsh/plugins/abbr.zsh"
 
       # Load fzf integrations
-      [[ -f "$DOTFILES_DIR/config/zsh/plugins/fzf.zsh" ]] && source "$DOTFILES_DIR/config/zsh/plugins/fzf.zsh"
+      [[ -f "$DOTFILES_DIR/nix/programs/zsh/plugins/fzf.zsh" ]] && source "$DOTFILES_DIR/nix/programs/zsh/plugins/fzf.zsh"
 
       # Load Powerlevel10k configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -60,4 +58,6 @@
       [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
     '';
   };
+
+  home.file.".p10k.zsh".source = ./plugins/.p10k.zsh;
 }

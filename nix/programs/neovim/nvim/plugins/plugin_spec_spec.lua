@@ -185,7 +185,7 @@ describe("plugin specs", function()
 
 		-- Add nvim config directory to package.path so require("plugins.xxx") works
 		-- from within plugin files that load dependencies
-		local nvim_dir = plugins_dir:match("(.*/config/nvim/)")
+		local nvim_dir = plugins_dir:match("(.*/nix/programs/neovim/nvim/)")
 		if nvim_dir then
 			package.path = nvim_dir .. "?.lua;" .. nvim_dir .. "?/init.lua;" .. package.path
 		end

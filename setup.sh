@@ -9,9 +9,9 @@ setup_nix_config() {
     mkdir -p "$NIX_CONFIG_DIR"
   fi
 
-  ln -snfv "$DOTFILES_DIR/config/nix/nix.conf" "$NIX_CONFIG_DIR/nix.conf"
-  ln -snfv "$DOTFILES_DIR/config/nix/flake.nix" "$NIX_CONFIG_DIR/flake.nix"
-  ln -snfv "$DOTFILES_DIR/config/nix/flake.lock" "$NIX_CONFIG_DIR/flake.lock"
+  ln -snfv "$DOTFILES_DIR/nix/nix.conf" "$NIX_CONFIG_DIR/nix.conf"
+  ln -snfv "$DOTFILES_DIR/nix/flake.nix" "$NIX_CONFIG_DIR/flake.nix"
+  ln -snfv "$DOTFILES_DIR/nix/flake.lock" "$NIX_CONFIG_DIR/flake.lock"
 }
 
 # Deploy NixOS system configuration
@@ -19,7 +19,7 @@ deploy_nixos() {
   local hostname
   hostname="$(hostname)"
   echo "Deploying NixOS system configuration..."
-  sudo nixos-rebuild switch --flake "$DOTFILES_DIR/config/nix#$hostname"
+  sudo nixos-rebuild switch --flake "$DOTFILES_DIR/nix#$hostname"
 }
 
 # Deploy configurations using Home Manager (standalone, for non-NixOS)
@@ -27,7 +27,7 @@ deploy_home_manager() {
   local username
   username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/config/nix#$username"
+  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/nix#$username"
 }
 
 main() {

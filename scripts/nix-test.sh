@@ -2,7 +2,7 @@
 
 set -eu
 
-FLAKE_DIR="$(cd "$(dirname "$0")/../config/nix" && pwd)"
+FLAKE_DIR="$(cd "$(dirname "$0")/../nix" && pwd)"
 
 echo "=== Running nix flake check ==="
 nix flake check "$FLAKE_DIR" --no-build

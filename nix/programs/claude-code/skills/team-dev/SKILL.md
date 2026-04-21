@@ -108,8 +108,8 @@ Task:
 
     【重要】型チェック・lint・formatterは実行しないでください。これらは監察方の責務です。
 
-    コミュニケーション規約: config/claude/skills/team-dev/references/communication-protocol.md を参照
-    完了基準: config/claude/skills/team-dev/references/completion-criteria.md を参照
+    コミュニケーション規約: nix/programs/claude-code/skills/team-dev/references/communication-protocol.md を参照
+    完了基準: nix/programs/claude-code/skills/team-dev/references/completion-criteria.md を参照
 ```
 
 - すべての隊士を並列でspawnする
@@ -144,8 +144,8 @@ Task:
 
     レビュー完了後はTaskUpdateでタスクを完了にし、SendMessageで副長に報告してください。
 
-    コミュニケーション規約: config/claude/skills/team-dev/references/communication-protocol.md を参照
-    完了基準: config/claude/skills/team-dev/references/completion-criteria.md を参照
+    コミュニケーション規約: nix/programs/claude-code/skills/team-dev/references/communication-protocol.md を参照
+    完了基準: nix/programs/claude-code/skills/team-dev/references/completion-criteria.md を参照
 ```
 
 ### 4.2 目付方をspawnする
@@ -163,8 +163,8 @@ Task:
     agent-browserを使用してブラウザベースのE2Eテストを実施してください。
     テスト完了後はTaskUpdateでタスクを完了にし、SendMessageで副長に報告してください。
 
-    コミュニケーション規約: config/claude/skills/team-dev/references/communication-protocol.md を参照
-    完了基準: config/claude/skills/team-dev/references/completion-criteria.md を参照
+    コミュニケーション規約: nix/programs/claude-code/skills/team-dev/references/communication-protocol.md を参照
+    完了基準: nix/programs/claude-code/skills/team-dev/references/completion-criteria.md を参照
 ```
 
 - 監察方と目付方は並列でspawnする

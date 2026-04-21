@@ -37,7 +37,16 @@
     ];
   };
 
-  # Session variables for neovim
+  home.file.".config/nvim".source = pkgs.lib.cleanSourceWith {
+    src = ./nvim;
+    filter =
+      path: type:
+      let
+        baseName = baseNameOf path;
+      in
+      baseName != "lazy-lock.json";
+  };
+
   home.sessionVariables = {
     EDITOR = "nvim";
     VISUAL = "nvim";
