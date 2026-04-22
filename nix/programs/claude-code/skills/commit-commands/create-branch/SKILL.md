@@ -35,9 +35,12 @@ description: ブランチを作成するスキル。feat, fix, chore等の一般
 
 ### 3. prefixを確定する
 
+確定した値を `PREFIX` 変数に格納する。
+
 - ユーザーが「custom」を選択した場合: `AskUserQuestion` で自由入力させる
   - 質問: 「カスタムprefixを入力してください（例: hotfix, spike, wip）」
-- それ以外: 選択されたprefixをそのまま使用する
+  - 入力値を `PREFIX` に格納する
+- それ以外: 選択された値を `PREFIX` に格納する
 
 ### 4. ブランチ説明を確定する
 
@@ -57,13 +60,13 @@ BRANCH_DESC=$(printf '%s' "$ENGLISH_TITLE" \
 - 「ログイン機能追加」 → `add-login-feature`
 - 「認証エラー修正」 → `fix-auth-error`
 
-ブランチ名は `{prefix}/{BRANCH_DESC}` の形式にする。
+ブランチ名は `${PREFIX}/${BRANCH_DESC}` の形式にする。
 
 ### 5. 現在のブランチを確認してブランチを作成する
 
 ```bash
 CURRENT_BRANCH=$(git branch --show-current)
-NEW_BRANCH="{prefix}/{BRANCH_DESC}"
+NEW_BRANCH="${PREFIX}/${BRANCH_DESC}"
 git checkout -b "$NEW_BRANCH"
 ```
 
