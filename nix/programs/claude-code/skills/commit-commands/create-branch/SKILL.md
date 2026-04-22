@@ -20,7 +20,7 @@ description: ブランチを作成するスキル。feat, fix, chore等の一般
 
 - 質問: 「ブランチのprefixを選択してください」
 - 選択肢 (options フィールドに配列で渡す):
-  - `feat` — 新機能
+  - `feature` — 新機能
   - `fix` — バグ修正
   - `chore` — 雑務・設定変更
   - `docs` — ドキュメント
