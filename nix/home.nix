@@ -17,7 +17,6 @@
 
   home.packages = with pkgs; [
     fnm # Fast Node Manager
-    uv # Python package manager
     zoxide # Smart cd replacement
     fzf # Fuzzy finder
     ripgrep # Fast grep alternative
@@ -49,6 +48,7 @@
     ./programs/aws
     ./programs/wezterm
     ./programs/sheldon
+    ./programs/python
   ];
 
   home.sessionVariables = { };
