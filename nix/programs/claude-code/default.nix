@@ -82,7 +82,6 @@
 
     # settings.json
     settings = {
-      model = "sonnet";
       effortLevel = "xhigh";
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
