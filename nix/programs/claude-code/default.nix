@@ -7,7 +7,6 @@
 {
   mcp-servers.programs = {
     context7.enable = true;
-    nixos.enable = true;
     terraform.enable = true;
   };
 
