@@ -1,6 +1,6 @@
 {
-  nodePkgs,
   inputs,
+  claudeCode,
   ...
 }:
 
@@ -19,7 +19,7 @@
 
   programs.claude-code = {
     enable = true;
-    package = nodePkgs."@anthropic-ai/claude-code";
+    package = claudeCode;
     enableMcpIntegration = true;
 
     # Plugins (from anthropics/claude-code repository)
