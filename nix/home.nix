@@ -6,6 +6,7 @@
   inputs,
   username,
   apm,
+  claudeCode,
   ...
 }:
 

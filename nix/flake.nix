@@ -54,9 +54,13 @@
     }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
       nodePkgs = import ./node2nix/default.nix { inherit pkgs; };
       apm = pkgs.callPackage ./pkgs/apm.nix { };
+      claudeCode = pkgs.callPackage ./pkgs/claude-code.nix { };
       lintApp = pkgs.writeShellApplication {
         name = "lint";
         runtimeInputs = [
@@ -108,6 +112,7 @@
               nodePkgs
               username
               apm
+              claudeCode
               ;
           };
         };
@@ -133,6 +138,7 @@
                   nodePkgs
                   username
                   apm
+                  claudeCode
                   ;
               };
               home-manager.sharedModules = [
