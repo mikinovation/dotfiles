@@ -145,6 +145,7 @@ local lazy_plugin_files = {
 	"oil",
 	"open-browser",
 	"org-bullets",
+	"org-roam",
 	"orgmode",
 	"package-info",
 	"pathtool",

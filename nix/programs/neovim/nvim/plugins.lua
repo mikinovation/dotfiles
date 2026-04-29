@@ -42,6 +42,7 @@ require("lazy").setup({
 	require("plugins.octo").config(),
 	require("plugins.orgmode").config(),
 	require("plugins.org-bullets").config(),
+	require("plugins.org-roam").config(),
 	require("plugins.package-info").config(),
 	require("plugins.pathtool").config(),
 	require("plugins.rest").config(),
