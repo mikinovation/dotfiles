@@ -37,6 +37,7 @@
     ./programs/git
     ./programs/zsh
     ./programs/neovim
+    ./programs/emacs
     ./programs/nodejs
     ./programs/ruby
     ./programs/rust

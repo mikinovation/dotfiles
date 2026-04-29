@@ -6,6 +6,7 @@ exclude_files = {
 	"./sandbox/**",
 	"./.luarocks/**",
 	"./result/**",
+	"./nix/result/**",
 }
 
 files["**/*_spec.lua"] = {
