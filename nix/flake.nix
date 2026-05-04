@@ -58,9 +58,10 @@
         inherit system;
         config.allowUnfree = true;
       };
-      nodePkgs = import ./node2nix/default.nix { inherit pkgs; };
       apm = pkgs.callPackage ./pkgs/apm.nix { };
       claudeCode = pkgs.callPackage ./pkgs/claude-code.nix { };
+      vueLanguageServer = pkgs.callPackage ./pkgs/vue-language-server.nix { };
+      vueTypescriptPlugin = pkgs.callPackage ./pkgs/vue-typescript-plugin.nix { };
       lintApp = pkgs.writeShellApplication {
         name = "lint";
         runtimeInputs = [
@@ -109,10 +110,11 @@
           extraSpecialArgs = {
             inherit
               inputs
-              nodePkgs
               username
               apm
               claudeCode
+              vueLanguageServer
+              vueTypescriptPlugin
               ;
           };
         };
@@ -135,10 +137,11 @@
               home-manager.extraSpecialArgs = {
                 inherit
                   inputs
-                  nodePkgs
                   username
                   apm
                   claudeCode
+                  vueLanguageServer
+                  vueTypescriptPlugin
                   ;
               };
               home-manager.sharedModules = [
