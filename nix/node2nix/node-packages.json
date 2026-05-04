@@ -1,8 +1,0 @@
-[
-	"@anthropic-ai/claude-code",
-	"@vue/language-server",
-	"@vue/typescript-plugin",
-	"agent-browser",
-	"ccmanager",
-	"vde-monitor"
-]

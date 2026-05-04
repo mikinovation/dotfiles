@@ -29,19 +29,6 @@ On Windows, copy the WezTerm config to the host OS:
 cp ~/ghq/github.com/mikinovation/dotfiles/nix/programs/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
-### node2nix
-
-To update npm packages managed by node2nix:
-
-```bash
-# Navigate to the node2nix directory
-cd ~/ghq/github.com/mikinovation/dotfiles/nix/node2nix
-
-# Edit node-packages.json to add/update packages
-
-# Run node2nix to generate Nix expressions
-nix-shell -p nodePackages.node2nix --command "node2nix -i ./node-packages.json -o node-packages.nix"
-```
 
 ## install
 

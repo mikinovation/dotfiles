@@ -2,11 +2,12 @@
   config,
   lib,
   pkgs,
-  nodePkgs,
   inputs,
   username,
   apm,
   claudeCode,
+  vueLanguageServer,
+  vueTypescriptPlugin,
   ...
 }:
 
@@ -27,10 +28,8 @@
     lsof # List open files
     pandoc # Document format converter
     apm
-    nodePkgs."agent-browser"
-    nodePkgs."ccmanager"
-    nodePkgs."@vue/language-server"
-    nodePkgs."@vue/typescript-plugin"
+    vueLanguageServer
+    vueTypescriptPlugin
   ];
 
   imports = [
