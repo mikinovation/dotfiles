@@ -158,6 +158,16 @@ function M.copy_as_markdown()
 	vim.notify("Copied as Markdown", vim.log.levels.INFO)
 end
 
+--- Insert/ensure an :ID: property on the closest org heading.
+function M.id_get_or_create()
+	local headline = require("orgmode.api").current():get_closest_headline()
+	if not headline then
+		vim.notify("No heading at cursor", vim.log.levels.WARN)
+		return
+	end
+	headline:id_get_or_create()
+end
+
 --- Open a terminal in the left tmux pane at the heading's :DIR:.
 function M.open_terminal_pane()
 	local dir = resolve_dir()

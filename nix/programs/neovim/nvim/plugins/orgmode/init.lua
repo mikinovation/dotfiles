@@ -37,6 +37,7 @@ function orgmode.config()
 					org = {
 						org_global_cycle = "<leader>zz",
 						org_open_at_point = "<CR>",
+						org_clock_in = false,
 					},
 				},
 			})
