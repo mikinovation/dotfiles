@@ -14,6 +14,7 @@ function M.setup()
 			local function bopts(desc)
 				return { buffer = ev.buf, desc = desc }
 			end
+			map("n", "<leader>oxi", actions.id_get_or_create, bopts("Insert :ID: on closest heading"))
 			map("n", "<leader>ov", actions.open_nvim_pane, bopts("Open nvim in left tmux pane at :DIR:"))
 			map("n", "<leader>oC", actions.resume_claude_session, bopts("Resume Claude session in right tmux pane"))
 			map("v", "<leader>op", actions.send_prompt_to_claude, bopts("Send selection to Claude Code"))
