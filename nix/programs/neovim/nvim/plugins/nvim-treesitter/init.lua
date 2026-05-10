@@ -17,6 +17,7 @@ function nvimTreesitter.config()
 				"markdown",
 				"markdown_inline",
 				"query",
+				"typst",
 				"vim",
 				"vimdoc",
 			}

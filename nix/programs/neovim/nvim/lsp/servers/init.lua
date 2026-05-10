@@ -11,8 +11,10 @@ require("lsp.servers.typescript")(capabilities)
 require("lsp.servers.tailwindcss")(capabilities)
 require("lsp.servers.solargraph")(capabilities)
 require("lsp.servers.nil_ls")(capabilities)
+require("lsp.servers.tinymist")(capabilities)
 
 -- Enable all configured LSP servers
-local enabled_servers = { "lua_ls", "rust_analyzer", "tsgo", "vtsls", "vue_ls", "tailwindcss", "solargraph", "nil_ls" }
+local enabled_servers =
+	{ "lua_ls", "rust_analyzer", "tsgo", "vtsls", "vue_ls", "tailwindcss", "solargraph", "nil_ls", "tinymist" }
 
 vim.lsp.enable(enabled_servers)
