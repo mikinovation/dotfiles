@@ -27,6 +27,7 @@ describe("lsp servers", function()
 			"tailwindcss",
 			"solargraph",
 			"nil_ls",
+			"tinymist",
 		}
 
 		it("has no unexpected servers", function()

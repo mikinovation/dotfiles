@@ -50,6 +50,7 @@
     ./programs/wezterm
     ./programs/sheldon
     ./programs/python
+    ./programs/typst
   ];
 
   home.sessionVariables = { };
