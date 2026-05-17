@@ -107,6 +107,17 @@
             ];
           }
         ];
+        PreCompact = [
+          {
+            matcher = "";
+            hooks = [
+              {
+                type = "command";
+                command = "$HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/hooks/pre-compact.sh";
+              }
+            ];
+          }
+        ];
       };
       statusLine = {
         type = "command";
@@ -115,7 +126,8 @@
       env = {
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
         CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR = "1";
-        DISABLE_AUTOUPDATER = "1";
+        DISABLE_UPDATES = "1";
+        CLAUDE_CODE_STOP_HOOK_BLOCK_CAP = "5";
       };
       permissions = {
         defaultMode = "bypassPermissions";
@@ -132,6 +144,18 @@
           "Bash(git fetch *)"
         ];
       };
+      autoMode.hard_deny = [
+        "Bash(rm -rf /*)"
+        "Bash(rm -rf ~*)"
+        "Bash(rm -rf $HOME*)"
+        "Bash(rm -rf .*)"
+        "Bash(git push --force*)"
+        "Bash(git push -f*)"
+        "Bash(git reset --hard*)"
+        "Bash(dd if=*)"
+        "Bash(mkfs*)"
+        "Bash(chmod -R 777*)"
+      ];
     };
 
     skills = {
