@@ -7,13 +7,13 @@
 
 let
   tgz = fetchurl {
-    url = "https://registry.npmjs.org/@vue/language-server/-/language-server-3.2.8.tgz";
-    sha512 = "gQ63+CjdXKzpT6XWJhLPflO7TFBlHI8N+my2ltk8x0l4mfNIggymrj6n7S4Sm6wslI1ae8WSHkDg0dzXbxH/zg==";
+    url = "https://registry.npmjs.org/@vue/language-server/-/language-server-3.2.9.tgz";
+    sha512 = "zC99h1wn4jVNIRzNnn6waFRzHZitlLIIqSE8+YgAwIeut6zsWtyh9fO3yWbtPGfxLM4pIMEeIWOZ6c+MjPbciQ==";
   };
 in
 buildNpmPackage {
   pname = "vue-language-server";
-  version = "3.2.8";
+  version = "3.2.9";
 
   src = runCommand "vue-language-server-src" { } ''
     mkdir -p $out
@@ -21,7 +21,7 @@ buildNpmPackage {
     cp ${./vue-language-server-lock.json} $out/package-lock.json
   '';
 
-  npmDepsHash = "sha256-2BMCvBbizjWQXbfPfQ31onNL1Q2p5CGdvSCMTzkRrEI=";
+  npmDepsHash = "sha256-JYS//m9Fg9E5VloZds5j188wvts+mmWLRRtARL1pwDc=";
 
   dontNpmBuild = true;
 
