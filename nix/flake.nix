@@ -62,6 +62,7 @@
       claudeCode = pkgs.callPackage ./pkgs/claude-code.nix { };
       vueLanguageServer = pkgs.callPackage ./pkgs/vue-language-server.nix { };
       vueTypescriptPlugin = pkgs.callPackage ./pkgs/vue-typescript-plugin.nix { };
+      difit = pkgs.callPackage ./pkgs/difit.nix { };
       lintApp = pkgs.writeShellApplication {
         name = "lint";
         runtimeInputs = [
@@ -115,6 +116,7 @@
               claudeCode
               vueLanguageServer
               vueTypescriptPlugin
+              difit
               ;
           };
         };
@@ -142,6 +144,7 @@
                   claudeCode
                   vueLanguageServer
                   vueTypescriptPlugin
+                  difit
                   ;
               };
               home-manager.sharedModules = [
