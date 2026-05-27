@@ -15,3 +15,7 @@ require("keymaps")
 
 -- Create user command for lazydocker
 vim.api.nvim_create_user_command("Lazydocker", require("actions").toggle_lazydocker, {})
+
+-- Create user commands for difit (Git diff web UI)
+vim.api.nvim_create_user_command("Difit", require("actions").open_difit, {})
+vim.api.nvim_create_user_command("DifitStop", require("actions").stop_difit, {})

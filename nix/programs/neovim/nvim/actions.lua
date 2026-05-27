@@ -33,4 +33,14 @@ function M.toggle_lazydocker()
 	require("tools.lazydocker").toggle_lazydocker()
 end
 
+--- Pick a base branch via telescope and launch difit against it.
+function M.open_difit()
+	require("tools.difit").pick_base_and_start()
+end
+
+--- Stop the difit job started by open_difit.
+function M.stop_difit()
+	require("tools.difit").stop()
+end
+
 return M

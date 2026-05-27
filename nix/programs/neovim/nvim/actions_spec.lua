@@ -17,6 +17,8 @@ end
 local nvim_dir = spec_dir()
 
 local lazydocker_calls
+local difit_pick_calls
+local difit_stop_calls
 local system_calls
 local notify_calls
 
@@ -56,12 +58,13 @@ local function setup_vim_mock()
 end
 
 describe("actions (global)", function()
-	local saved_vim, saved_path, saved_lazydocker, saved_actions
+	local saved_vim, saved_path, saved_lazydocker, saved_difit, saved_actions
 
 	setup(function()
 		saved_vim = _G.vim
 		saved_path = package.path
 		saved_lazydocker = package.loaded["tools.lazydocker"]
+		saved_difit = package.loaded["tools.difit"]
 		saved_actions = package.loaded["actions"]
 		package.path = nvim_dir .. "?.lua;" .. nvim_dir .. "?/init.lua;" .. package.path
 	end)
@@ -70,15 +73,26 @@ describe("actions (global)", function()
 		_G.vim = saved_vim
 		package.path = saved_path
 		package.loaded["tools.lazydocker"] = saved_lazydocker
+		package.loaded["tools.difit"] = saved_difit
 		package.loaded["actions"] = saved_actions
 	end)
 
 	before_each(function()
 		setup_vim_mock()
 		lazydocker_calls = 0
+		difit_pick_calls = 0
+		difit_stop_calls = 0
 		package.loaded["tools.lazydocker"] = {
 			toggle_lazydocker = function()
 				lazydocker_calls = lazydocker_calls + 1
+			end,
+		}
+		package.loaded["tools.difit"] = {
+			pick_base_and_start = function()
+				difit_pick_calls = difit_pick_calls + 1
+			end,
+			stop = function()
+				difit_stop_calls = difit_stop_calls + 1
 			end,
 		}
 		package.loaded["actions"] = nil
@@ -173,12 +187,30 @@ describe("actions (global)", function()
 		end)
 	end)
 
+	describe("open_difit", function()
+		it("delegates to tools.difit.pick_base_and_start", function()
+			local actions = dofile(nvim_dir .. "actions.lua")
+			actions.open_difit()
+			assert.equals(1, difit_pick_calls)
+		end)
+	end)
+
+	describe("stop_difit", function()
+		it("delegates to tools.difit.stop", function()
+			local actions = dofile(nvim_dir .. "actions.lua")
+			actions.stop_difit()
+			assert.equals(1, difit_stop_calls)
+		end)
+	end)
+
 	describe("module shape", function()
 		it("exports the documented public functions", function()
 			local actions = dofile(nvim_dir .. "actions.lua")
 			assert.is_function(actions.format_document)
 			assert.is_function(actions.open_in_explorer)
 			assert.is_function(actions.toggle_lazydocker)
+			assert.is_function(actions.open_difit)
+			assert.is_function(actions.stop_difit)
 		end)
 	end)
 end)

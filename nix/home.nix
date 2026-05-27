@@ -8,6 +8,7 @@
   claudeCode,
   vueLanguageServer,
   vueTypescriptPlugin,
+  difit,
   ...
 }:
 
@@ -30,6 +31,7 @@
     apm
     vueLanguageServer
     vueTypescriptPlugin
+    difit
   ];
 
   imports = [
