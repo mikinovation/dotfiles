@@ -7,13 +7,13 @@
 
 let
   tgz = fetchurl {
-    url = "https://registry.npmjs.org/difit/-/difit-5.0.1.tgz";
-    sha512 = "0KNJBKbQP4fVPBFWrwBPJro1PELLQnuKoIZV1m+mfS7mDcYZnQKSyfcVwEuUGaGEMkb5dMqXuSiQaQG1csLPvQ==";
+    url = "https://registry.npmjs.org/difit/-/difit-5.0.2.tgz";
+    sha512 = "ZcvfiNhsj3H6QQG1Bv9m5qAJhXorD65HqNZhNrChwHbKiCLFJQ2Alr4ImUDoZIbQy3CRM+PSSq7rFYGDE97Nrw==";
   };
 in
 buildNpmPackage {
   pname = "difit";
-  version = "5.0.1";
+  version = "5.0.2";
 
   src = runCommand "difit-src" { } ''
     mkdir -p $out
@@ -21,7 +21,7 @@ buildNpmPackage {
     cp ${./difit-lock.json} $out/package-lock.json
   '';
 
-  npmDepsHash = "sha256-e5E3lTUtiog6iFczC/FT7iFMxPv5yVyH/jl8eM/G8Xg=";
+  npmDepsHash = "sha256-/IONCb5/GaX6xTQnUkDYjoX1BvBUb80oNCvm7dGkgJw=";
 
   dontNpmBuild = true;
 
