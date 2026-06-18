@@ -25,6 +25,7 @@
     ripgrep # Fast grep alternative
     ghq # Git repository organizer
     jq # JSON processor
+    yq-go # YAML processor (mikefarah/yq)
     curl # HTTP client
     lsof # List open files
     pandoc # Document format converter
