@@ -1,6 +1,9 @@
 {
+  lib,
+  pkgs,
   inputs,
   claudeCode,
+  chromeDevtoolsMcp,
   ...
 }:
 
@@ -14,6 +17,15 @@
     enable = true;
     servers.deepwiki = {
       url = "https://mcp.deepwiki.com/mcp";
+    };
+    servers.chrome-devtools = {
+      command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
+      args = [
+        "--executablePath"
+        (lib.getExe pkgs.chromium)
+        "--headless"
+        "--isolated"
+      ];
     };
   };
 

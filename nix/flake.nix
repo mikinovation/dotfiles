@@ -63,6 +63,7 @@
       vueLanguageServer = pkgs.callPackage ./pkgs/vue-language-server.nix { };
       vueTypescriptPlugin = pkgs.callPackage ./pkgs/vue-typescript-plugin.nix { };
       difit = pkgs.callPackage ./pkgs/difit.nix { };
+      chromeDevtoolsMcp = pkgs.callPackage ./pkgs/chrome-devtools-mcp.nix { };
       lintApp = pkgs.writeShellApplication {
         name = "lint";
         runtimeInputs = [
@@ -117,6 +118,7 @@
               vueLanguageServer
               vueTypescriptPlugin
               difit
+              chromeDevtoolsMcp
               ;
           };
         };
@@ -145,6 +147,7 @@
                   vueLanguageServer
                   vueTypescriptPlugin
                   difit
+                  chromeDevtoolsMcp
                   ;
               };
               home-manager.sharedModules = [
