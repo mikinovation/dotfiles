@@ -150,6 +150,7 @@
                   vueTypescriptPlugin
                   difit
                   chromeDevtoolsMcp
+                  gwq
                   ;
               };
               home-manager.sharedModules = [
