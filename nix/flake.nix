@@ -64,6 +64,7 @@
       vueTypescriptPlugin = pkgs.callPackage ./pkgs/vue-typescript-plugin.nix { };
       difit = pkgs.callPackage ./pkgs/difit.nix { };
       chromeDevtoolsMcp = pkgs.callPackage ./pkgs/chrome-devtools-mcp.nix { };
+      gwq = pkgs.callPackage ./pkgs/gwq.nix { };
       lintApp = pkgs.writeShellApplication {
         name = "lint";
         runtimeInputs = [
@@ -119,6 +120,7 @@
               vueTypescriptPlugin
               difit
               chromeDevtoolsMcp
+              gwq
               ;
           };
         };
@@ -168,6 +170,11 @@
       homeConfigurations = {
         mikinovation = mkHomeConfig "mikinovation";
         nixos = mkHomeConfig "nixos";
+      };
+
+      # Custom packages (nix build .#gwq)
+      packages.${system} = {
+        inherit gwq;
       };
 
       # Nix formatter

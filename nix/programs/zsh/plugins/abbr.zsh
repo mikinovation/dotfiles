@@ -16,6 +16,13 @@ abbr -S gb="git branch"
 abbr -S gm="git merge"
 abbr -S gr="git rebase"
 
+# gwq (git worktree) abbreviations
+abbr -S gw="gwq"
+abbr -S gwa="gwq add"
+abbr -S gwl="gwq list"
+abbr -S gwcd="gwq cd"
+abbr -S gwrm="gwq remove"
+
 # Docker abbreviations
 abbr -S d="docker"
 abbr -S dc="docker compose"

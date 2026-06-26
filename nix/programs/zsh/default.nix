@@ -51,6 +51,11 @@
       # Load fzf integrations
       [[ -f "$DOTFILES_DIR/nix/programs/zsh/plugins/fzf.zsh" ]] && source "$DOTFILES_DIR/nix/programs/zsh/plugins/fzf.zsh"
 
+      # gwq shell integration (completion + cd shim for `gwq cd` / `gwq add`)
+      if command -v gwq >/dev/null 2>&1; then
+        source <(gwq completion zsh)
+      fi
+
       # Load Powerlevel10k configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

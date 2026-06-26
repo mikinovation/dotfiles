@@ -9,6 +9,7 @@
   vueLanguageServer,
   vueTypescriptPlugin,
   difit,
+  gwq,
   ...
 }:
 
@@ -24,6 +25,7 @@
     fzf # Fuzzy finder
     ripgrep # Fast grep alternative
     ghq # Git repository organizer
+    gwq # Git worktree manager (ghq-like)
     jq # JSON processor
     curl # HTTP client
     lsof # List open files
@@ -36,6 +38,7 @@
 
   imports = [
     ./programs/git
+    ./programs/gwq
     ./programs/zsh
     ./programs/neovim
     ./programs/emacs
