@@ -93,6 +93,7 @@
 
     # settings.json
     settings = {
+      model = "opus";
       effortLevel = "xhigh";
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
