@@ -173,8 +173,8 @@
     skills = {
       "org-flow:create-issue" = ./skills/org-flow/create-issue;
       "team-dev" = ./skills/team-dev;
-      "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
       "nix-npm-update" = ./skills/nix-npm-update;
+      "gwq-worktree" = ./skills/gwq-worktree;
     };
 
     context = ./CLAUDE.md;

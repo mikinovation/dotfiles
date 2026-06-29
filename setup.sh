@@ -1,6 +1,8 @@
 #!/bin/bash
 
-DOTFILES_DIR="$HOME/ghq/github.com/mikinovation/dotfiles"
+# Resolve the directory this script lives in, so `./setup.sh` deploys the
+# current checkout (e.g. a git worktree) instead of a hard-coded path.
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 NIX_CONFIG_DIR="$HOME/.config/nix"
 
 # Setup nix.conf (system-level configuration)
