@@ -42,8 +42,9 @@ main() {
   echo "Nix config setup done."
 
   # Deploy configuration
-  if [ -f /etc/nixos/hardware-configuration.nix ]; then
-    # NixOS system: use nixos-rebuild (includes Home Manager as a module)
+  if [ -f /etc/NIXOS ]; then
+    # NixOS system (including NixOS-WSL, which has no hardware-configuration.nix):
+    # use nixos-rebuild (includes Home Manager as a module)
     deploy_nixos
     echo "NixOS deployment done."
   else

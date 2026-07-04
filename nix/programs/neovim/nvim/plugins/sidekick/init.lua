@@ -97,6 +97,13 @@ function sidekick.config()
 				end,
 				desc = "Herdr: Send Buffer Path to Agent",
 			},
+			{
+				"<leader>hs",
+				function()
+					require("plugins.herdr.actions").start_claude()
+				end,
+				desc = "Herdr: Start Claude Agent Here",
+			},
 		},
 	}
 end

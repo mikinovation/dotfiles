@@ -27,6 +27,8 @@ local RESPONSES = {
 	get_ok = '{"id":"1","result":{"agent":{"pane_id":"w1:p1"}}}',
 	get_error = '{"id":"1","error":{"code":"agent_not_found","message":"agent target x not found"}}',
 	ok = '{"id":"1","result":{"type":"ok"}}',
+	start_ok = '{"id":"1","result":{"agent":{"name":"myproj","pane_id":"w1:p5"}}}',
+	start_error = '{"id":"1","error":{"code":"agent_name_taken","message":"agent name myproj is already used"}}',
 	malformed = "not json",
 }
 
@@ -40,6 +42,8 @@ local JSON_TABLES = {
 	[RESPONSES.get_ok] = { result = { agent = { pane_id = "w1:p1" } } },
 	[RESPONSES.get_error] = { error = { code = "agent_not_found", message = "agent target x not found" } },
 	[RESPONSES.ok] = { result = { type = "ok" } },
+	[RESPONSES.start_ok] = { result = { agent = { name = "myproj", pane_id = "w1:p5" } } },
+	[RESPONSES.start_error] = { error = { code = "agent_name_taken", message = "agent name myproj is already used" } },
 }
 
 local notify_calls
@@ -64,12 +68,13 @@ local function setup_vim_mock()
 	select_choice = nil
 	input_text = nil
 
-	-- Maps a command key ("agent list", "agent get", "agent send", "pane send-keys")
-	-- to the canned response string to return; defaults to a successful "ok".
+	-- Maps a command key ("agent list", "agent get", "agent send", "agent start",
+	-- "pane send-keys") to the canned response string to return; defaults to "ok".
 	responses = {
 		["agent list"] = RESPONSES.list_one,
 		["agent get"] = RESPONSES.get_ok,
 		["agent send"] = RESPONSES.ok,
+		["agent start"] = RESPONSES.start_ok,
 		["pane send-keys"] = RESPONSES.ok,
 	}
 
@@ -84,6 +89,21 @@ local function setup_vim_mock()
 				local resp = responses[key] or RESPONSES.ok
 				_G.vim.v.shell_error = 0
 				return resp
+			end,
+			expand = function(s)
+				if s == "%:p:h" then
+					return "/home/user/projects/myproj"
+				end
+				return s
+			end,
+			fnamemodify = function(path, mods)
+				if mods == ":t" then
+					return path:match("([^/]+)/?$") or path
+				end
+				return path
+			end,
+			getcwd = function()
+				return "/fallback/cwd"
 			end,
 		},
 		json = {
@@ -323,6 +343,59 @@ describe("plugins.herdr.actions", function()
 		end)
 	end)
 
+	describe("start_claude", function()
+		it("does nothing when the input is cancelled", function()
+			input_text = nil
+			load_actions().start_claude()
+			assert.equals(1, #input_calls)
+			assert.equals(0, #system_calls)
+		end)
+
+		it("prefills the input with the buffer directory's basename", function()
+			input_text = nil
+			load_actions().start_claude()
+			assert.equals("myproj", input_calls[1].default)
+		end)
+
+		it("starts a claude agent split right, focused, in the buffer's directory", function()
+			input_text = "myproj"
+			load_actions().start_claude()
+			local start_call = find_system_call({ "herdr", "agent", "start" })
+			assert.same({
+				"herdr",
+				"agent",
+				"start",
+				"myproj",
+				"--cwd",
+				"/home/user/projects/myproj",
+				"--split",
+				"right",
+				"--focus",
+				"--",
+				"claude",
+			}, start_call)
+			assert.is_true(has_level(_G.vim.log.levels.INFO))
+		end)
+
+		it("falls back to Neovim's cwd when the buffer has no directory", function()
+			_G.vim.fn.expand = function()
+				return ""
+			end
+			input_text = "myproj"
+			load_actions().start_claude()
+			local start_call = find_system_call({ "herdr", "agent", "start" })
+			assert.equals("/fallback/cwd", start_call[6])
+		end)
+
+		it("errors without a success notification when the agent name is taken", function()
+			responses["agent start"] = RESPONSES.start_error
+			input_text = "myproj"
+			load_actions().start_claude()
+			assert.is_true(has_level(_G.vim.log.levels.ERROR))
+			assert.is_false(has_level(_G.vim.log.levels.INFO))
+		end)
+	end)
+
 	describe("module shape", function()
 		it("exports the documented public functions", function()
 			local actions = load_actions()
@@ -330,6 +403,7 @@ describe("plugins.herdr.actions", function()
 			assert.is_function(actions.send_prompt)
 			assert.is_function(actions.send_current_line)
 			assert.is_function(actions.send_buffer_path)
+			assert.is_function(actions.start_claude)
 		end)
 	end)
 end)

@@ -198,4 +198,32 @@ function M.send_buffer_path()
 	end)
 end
 
+--- Start a new herdr agent running `claude`, split to the right of the
+--- current pane, cwd'd to the current buffer's directory (falling back to
+--- Neovim's cwd for unnamed buffers). Prompts for an agent name, prefilled
+--- with the directory's basename, so it shows up distinctly in `agent list`
+--- and the send_* pickers above.
+function M.start_claude()
+	if not check_herdr() then
+		return
+	end
+	local cwd = vim.fn.expand("%:p:h")
+	if cwd == "" then
+		cwd = vim.fn.getcwd()
+	end
+	local default_name = vim.fn.fnamemodify(cwd, ":t")
+	vim.ui.input({ prompt = "herdr agent name: ", default = default_name }, function(name)
+		if not name or vim.trim(name) == "" then
+			return
+		end
+		local started = run_herdr_json(
+			{ "herdr", "agent", "start", name, "--cwd", cwd, "--split", "right", "--focus", "--", "claude" },
+			"Failed to start claude agent: " .. name
+		)
+		if started then
+			vim.notify("Started claude agent: " .. name, vim.log.levels.INFO)
+		end
+	end)
+end
+
 return M

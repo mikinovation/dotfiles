@@ -23,6 +23,7 @@
     mouse_capture = true
     agent_panel_sort = "priority"
     sidebar_width = 32
+    sidebar_collapsed_mode = "hidden"
 
     [advanced]
     scrollback_limit_bytes = 10485760
