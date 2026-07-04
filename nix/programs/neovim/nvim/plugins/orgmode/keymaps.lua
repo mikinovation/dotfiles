@@ -15,11 +15,7 @@ function M.setup()
 				return { buffer = ev.buf, desc = desc }
 			end
 			map("n", "<leader>oxi", actions.id_get_or_create, bopts("Insert :ID: on closest heading"))
-			map("n", "<leader>ov", actions.open_nvim_pane, bopts("Open nvim in left tmux pane at :DIR:"))
-			map("n", "<leader>oC", actions.resume_claude_session, bopts("Resume Claude session in right tmux pane"))
-			map("v", "<leader>op", actions.send_prompt_to_claude, bopts("Send selection to Claude Code"))
 			map("v", "<leader>om", actions.copy_as_markdown, bopts("Copy selection as Markdown (via pandoc)"))
-			map("n", "<leader>oT", actions.open_terminal_pane, bopts("Open terminal in left tmux pane at :DIR:"))
 		end,
 	})
 end

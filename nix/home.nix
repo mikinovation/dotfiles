@@ -9,6 +9,7 @@
   vueLanguageServer,
   vueTypescriptPlugin,
   difit,
+  herdr,
   ...
 }:
 
@@ -32,6 +33,7 @@
     vueLanguageServer
     vueTypescriptPlugin
     difit
+    herdr
   ];
 
   imports = [
@@ -47,7 +49,7 @@
     ./programs/claude-code
     ./programs/textlint
     ./programs/agent-skills
-    ./programs/tmux
+    ./programs/herdr
     ./programs/aws
     ./programs/wezterm
     ./programs/sheldon
