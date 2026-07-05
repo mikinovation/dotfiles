@@ -1,11 +1,5 @@
 name: Build WSL release image
 
-# Rebuilds nixosConfigurations.nixos as an importable `.wsl` tarball so that if
-# the locally running NixOS-WSL install breaks, it can be restored by importing
-# this file as a new WSL distro. Always runs on a fresh GitHub-hosted runner
-# checkout of only this repository, so the resulting image cannot contain
-# anything from the local machine's ~/ghq projects or any other repository.
-
 on:
   schedule:
     # Every Sunday 18:00 UTC (Monday 03:00 JST)
@@ -35,7 +29,7 @@ jobs:
 
       - name: Build tarball builder
         run: |
-          builder=$(nix build ./nix#nixosConfigurations.nixos.config.system.build.tarballBuilder --no-link --print-out-paths)
+          builder=$(nix build ./nix#nixosConfigurations.wsl-bootstrap.config.system.build.tarballBuilder --no-link --print-out-paths)
           echo "BUILDER=$builder" >> "$GITHUB_ENV"
 
       - name: Build nixos.wsl
@@ -51,7 +45,7 @@ jobs:
           tag="wsl-release-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" nixos.wsl \
             --title "NixOS WSL release image ($tag)" \
-            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of only this repository's nix/ configuration. Contains no local machine data or other project data. Import with: wsl --import <name> <install-dir> nixos.wsl"
+            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of only this repository's nix/ configuration. Contains no local machine data or other project data. This is a minimal bootstrap image (nixosConfigurations.wsl-bootstrap) -- it does not include the Home Manager environment. Recovery steps: 1) wsl --import <name> <install-dir> nixos.wsl; 2) inside the new distro, clone this repository (e.g. git clone https://github.com/mikinovation/dotfiles.git); 3) run ./setup.sh to rebuild the full environment via nixos-rebuild."
 
       - name: Delete release assets older than 1 month
         env:

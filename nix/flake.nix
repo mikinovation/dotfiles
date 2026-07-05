@@ -162,6 +162,14 @@
       # NixOS system configuration
       nixosConfigurations = {
         nixos = mkNixosConfig "nixos" "nixos";
+
+        wsl-bootstrap = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            nixos-wsl.nixosModules.wsl
+            ./nixos/wsl-bootstrap.nix
+          ];
+        };
       };
 
       # Home Manager configuration (standalone)
