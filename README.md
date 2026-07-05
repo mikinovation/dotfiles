@@ -77,6 +77,24 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 ./setup.sh
 ```
 
+### Setting up from a WSL release image
+
+[Build WSL release image](.github/workflows/build-wsl-release.yml) builds a minimal NixOS-WSL image weekly (and on demand via `workflow_dispatch`) and publishes it as a GitHub Release asset. It embeds a copy of this repository, so a broken WSL install can be restored without network access to GitHub:
+
+```powershell
+# On Windows: download nixos.wsl from the latest release, then
+wsl --import nixos <install-dir> nixos.wsl
+wsl -d nixos
+```
+
+```bash
+# Inside the imported distro
+cd ~/ghq/github.com/mikinovation/dotfiles
+./setup.sh
+```
+
+`./setup.sh` runs `nixos-rebuild switch` to rebuild the full Home Manager environment from the embedded repository.
+
 ## lint, format, test
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:
