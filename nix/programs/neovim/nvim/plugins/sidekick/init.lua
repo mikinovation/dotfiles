@@ -104,6 +104,13 @@ function sidekick.config()
 				end,
 				desc = "Herdr: Start Claude Agent Here",
 			},
+			{
+				"<leader>hw",
+				function()
+					require("plugins.herdr.actions").switch_workspace()
+				end,
+				desc = "Herdr: Switch Workspace",
+			},
 		},
 	}
 end

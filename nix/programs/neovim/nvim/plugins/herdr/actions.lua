@@ -5,7 +5,8 @@
 -- herdr CLI subcommands used here all print a single JSON line on stdout:
 --   {"id": "...", "result": {...}}          on success
 --   {"id": "...", "error": {"code": "..."}} on failure
--- Verified against herdr 0.7.1 (`herdr agent list|get|send`, `herdr pane send-keys`).
+-- Verified against herdr 0.7.1 (`herdr agent list|get|send`, `herdr pane send-keys`,
+-- `herdr agent start`, `herdr workspace list|focus`).
 -- `agent send` types literal text but does NOT submit it; submitting requires
 -- pressing Enter via `pane send-keys <pane_id> enter`, which needs the pane_id
 -- resolved from `agent get <target>` (pane-level commands don't accept names).
@@ -222,6 +223,56 @@ function M.start_claude()
 		)
 		if started then
 			vim.notify("Started claude agent: " .. name, vim.log.levels.INFO)
+		end
+	end)
+end
+
+--- List running workspaces as an array of selectable target strings (the
+--- workspace label, falling back to workspace_id when unlabeled), plus a
+--- lookup from target back to workspace_id for `workspace focus`.
+local function list_workspaces()
+	local result = run_herdr_json({ "herdr", "workspace", "list" }, "Failed to list herdr workspaces")
+	if not result or not result.workspaces then
+		return {}, {}
+	end
+	local targets = {}
+	local ids = {}
+	for _, workspace in ipairs(result.workspaces) do
+		local target = workspace.label or workspace.workspace_id
+		if target then
+			table.insert(targets, target)
+			ids[target] = workspace.workspace_id
+		end
+	end
+	return targets, ids
+end
+
+--- Switch herdr's focused workspace, picked by label (falling back to
+--- workspace_id). Prompts with vim.ui.select when there's more than one.
+function M.switch_workspace()
+	if not check_herdr() then
+		return
+	end
+	local targets, ids = list_workspaces()
+	if #targets == 0 then
+		vim.notify("No herdr workspaces found", vim.log.levels.WARN)
+		return
+	end
+	local function focus(target)
+		if
+			not run_herdr_json({ "herdr", "workspace", "focus", ids[target] }, "Failed to focus workspace: " .. target)
+		then
+			return
+		end
+		vim.notify("Focused workspace: " .. target, vim.log.levels.INFO)
+	end
+	if #targets == 1 then
+		focus(targets[1])
+		return
+	end
+	vim.ui.select(targets, { prompt = "Switch to herdr workspace:" }, function(choice)
+		if choice then
+			focus(choice)
 		end
 	end)
 end

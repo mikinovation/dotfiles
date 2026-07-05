@@ -29,6 +29,12 @@ local RESPONSES = {
 	ok = '{"id":"1","result":{"type":"ok"}}',
 	start_ok = '{"id":"1","result":{"agent":{"name":"myproj","pane_id":"w1:p5"}}}',
 	start_error = '{"id":"1","error":{"code":"agent_name_taken","message":"agent name myproj is already used"}}',
+	workspace_list_empty = '{"id":"1","result":{"workspaces":[]}}',
+	workspace_list_one = '{"id":"1","result":{"workspaces":[{"label":"dotfiles","workspace_id":"w4"}]}}',
+	workspace_list_two = '{"id":"1","result":{"workspaces":['
+		.. '{"label":"dotfiles","workspace_id":"w4"},{"label":"scratch","workspace_id":"w7"}]}}',
+	workspace_list_nolabel = '{"id":"1","result":{"workspaces":[{"label":null,"workspace_id":"w9"}]}}',
+	workspace_focus_error = '{"id":"1","error":{"code":"workspace_not_found","message":"workspace w4 not found"}}',
 	malformed = "not json",
 }
 
@@ -44,6 +50,15 @@ local JSON_TABLES = {
 	[RESPONSES.ok] = { result = { type = "ok" } },
 	[RESPONSES.start_ok] = { result = { agent = { name = "myproj", pane_id = "w1:p5" } } },
 	[RESPONSES.start_error] = { error = { code = "agent_name_taken", message = "agent name myproj is already used" } },
+	[RESPONSES.workspace_list_empty] = { result = { workspaces = {} } },
+	[RESPONSES.workspace_list_one] = { result = { workspaces = { { label = "dotfiles", workspace_id = "w4" } } } },
+	[RESPONSES.workspace_list_two] = {
+		result = {
+			workspaces = { { label = "dotfiles", workspace_id = "w4" }, { label = "scratch", workspace_id = "w7" } },
+		},
+	},
+	[RESPONSES.workspace_list_nolabel] = { result = { workspaces = { { workspace_id = "w9" } } } },
+	[RESPONSES.workspace_focus_error] = { error = { code = "workspace_not_found", message = "workspace w4 not found" } },
 }
 
 local notify_calls
@@ -396,6 +411,57 @@ describe("plugins.herdr.actions", function()
 		end)
 	end)
 
+	describe("switch_workspace", function()
+		it("warns when no workspaces are found", function()
+			responses["workspace list"] = RESPONSES.workspace_list_empty
+			load_actions().switch_workspace()
+			assert.is_nil(find_system_call({ "herdr", "workspace", "focus" }))
+			assert.is_true(has_level(_G.vim.log.levels.WARN))
+		end)
+
+		it("auto-focuses the sole workspace", function()
+			responses["workspace list"] = RESPONSES.workspace_list_one
+			load_actions().switch_workspace()
+			local focus_call = find_system_call({ "herdr", "workspace", "focus" })
+			assert.is_not_nil(focus_call)
+			assert.equals("w4", focus_call[4])
+			assert.equals(0, #select_calls)
+			assert.is_true(has_level(_G.vim.log.levels.INFO))
+		end)
+
+		it("prompts with vim.ui.select when multiple workspaces are running", function()
+			responses["workspace list"] = RESPONSES.workspace_list_two
+			select_choice = "scratch"
+			load_actions().switch_workspace()
+			assert.equals(1, #select_calls)
+			assert.same({ "dotfiles", "scratch" }, select_calls[1].items)
+			local focus_call = find_system_call({ "herdr", "workspace", "focus" })
+			assert.equals("w7", focus_call[4])
+		end)
+
+		it("falls back to workspace_id when unlabeled", function()
+			responses["workspace list"] = RESPONSES.workspace_list_nolabel
+			load_actions().switch_workspace()
+			local focus_call = find_system_call({ "herdr", "workspace", "focus" })
+			assert.equals("w9", focus_call[4])
+		end)
+
+		it("does not focus when the user cancels the picker", function()
+			responses["workspace list"] = RESPONSES.workspace_list_two
+			select_choice = nil
+			load_actions().switch_workspace()
+			assert.is_nil(find_system_call({ "herdr", "workspace", "focus" }))
+		end)
+
+		it("errors without a success notification when focus fails", function()
+			responses["workspace list"] = RESPONSES.workspace_list_one
+			responses["workspace focus"] = RESPONSES.workspace_focus_error
+			load_actions().switch_workspace()
+			assert.is_true(has_level(_G.vim.log.levels.ERROR))
+			assert.is_false(has_level(_G.vim.log.levels.INFO))
+		end)
+	end)
+
 	describe("module shape", function()
 		it("exports the documented public functions", function()
 			local actions = load_actions()
@@ -404,6 +470,7 @@ describe("plugins.herdr.actions", function()
 			assert.is_function(actions.send_current_line)
 			assert.is_function(actions.send_buffer_path)
 			assert.is_function(actions.start_claude)
+			assert.is_function(actions.switch_workspace)
 		end)
 	end)
 end)

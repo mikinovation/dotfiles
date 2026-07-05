@@ -18,9 +18,16 @@
     focus_pane_up = "prefix+k"
     focus_pane_right = "prefix+l"
     new_tab = "prefix+c"
+    previous_tab = "prefix+p"
+    next_tab = "prefix+n"
+
+    # Workspaces group tabs per project/repo
+    new_workspace = "prefix+shift+n"
+    previous_workspace = "prefix+shift+left"
+    next_workspace = "prefix+shift+right"
 
     [ui]
-    mouse_capture = true
+    mouse_capture = false
     agent_panel_sort = "priority"
     sidebar_width = 32
     sidebar_collapsed_mode = "hidden"
