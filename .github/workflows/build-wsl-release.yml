@@ -1,0 +1,71 @@
+name: Build WSL release image
+
+# Rebuilds nixosConfigurations.nixos as an importable `.wsl` tarball so that if
+# the locally running NixOS-WSL install breaks, it can be restored by importing
+# this file as a new WSL distro. Always runs on a fresh GitHub-hosted runner
+# checkout of only this repository, so the resulting image cannot contain
+# anything from the local machine's ~/ghq projects or any other repository.
+
+on:
+  schedule:
+    # Every Sunday 18:00 UTC (Monday 03:00 JST)
+    - cron: "0 18 * * 0"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-wsl-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc \
+            /opt/hostedtoolcache || true
+          sudo docker image prune --all --force || true
+          df -h /
+
+      - uses: cachix/install-nix-action@8aa03977d8d733052d78f4e008a241fd1dbf36b3 # v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      - name: Build tarball builder
+        run: |
+          builder=$(nix build ./nix#nixosConfigurations.nixos.config.system.build.tarballBuilder --no-link --print-out-paths)
+          echo "BUILDER=$builder" >> "$GITHUB_ENV"
+
+      - name: Build nixos.wsl
+        run: |
+          sudo "$BUILDER/bin/nixos-wsl-tarball-builder" nixos.wsl
+          ls -lh nixos.wsl
+          df -h /
+
+      - name: Publish to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="wsl-release-$(date -u +%Y%m%d-%H%M%S)"
+          gh release create "$tag" nixos.wsl \
+            --title "NixOS WSL release image ($tag)" \
+            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of only this repository's nix/ configuration. Contains no local machine data or other project data. Import with: wsl --import <name> <install-dir> nixos.wsl"
+
+      - name: Delete release assets older than 1 month
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Keeps the release/tag itself (history), only removes the large
+          # nixos.wsl binary from releases older than 30 days.
+          cutoff=$(date -u -d '30 days ago' +%s)
+          gh release list --limit 200 --json tagName,createdAt \
+            --jq '.[] | select(.tagName | startswith("wsl-release-")) | [.tagName, .createdAt] | @tsv' |
+            while IFS=$'\t' read -r tag created; do
+              created_epoch=$(date -u -d "$created" +%s)
+              if [ "$created_epoch" -lt "$cutoff" ]; then
+                echo "Deleting asset from old release: $tag (created $created)"
+                gh release delete-asset "$tag" nixos.wsl --yes || true
+              fi
+            done
