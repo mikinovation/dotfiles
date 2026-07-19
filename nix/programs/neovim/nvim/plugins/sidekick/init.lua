@@ -6,9 +6,12 @@ function sidekick.config()
 		event = "VeryLazy",
 		opts = {
 			cli = {
+				-- herdr is not a supported mux backend (only tmux/zellij are), so run
+				-- the CLI agent inside a Neovim terminal window instead of a persistent
+				-- mux pane. Direct-to-agent sending into herdr panes is handled by
+				-- plugins.herdr.actions (see the <leader>h* keymaps below).
 				mux = {
-					backend = "tmux",
-					enabled = true,
+					enabled = false,
 				},
 			},
 		},
@@ -63,6 +66,50 @@ function sidekick.config()
 				end,
 				mode = { "n", "x" },
 				desc = "Sidekick Select Prompt",
+			},
+			{
+				"<leader>hv",
+				function()
+					require("plugins.herdr.actions").send_selection()
+				end,
+				mode = { "x" },
+				desc = "Herdr: Send Selection to Agent",
+			},
+			{
+				"<leader>hp",
+				function()
+					require("plugins.herdr.actions").send_prompt()
+				end,
+				mode = { "n", "x" },
+				desc = "Herdr: Send Prompt to Agent",
+			},
+			{
+				"<leader>hl",
+				function()
+					require("plugins.herdr.actions").send_current_line()
+				end,
+				desc = "Herdr: Send Current Line to Agent",
+			},
+			{
+				"<leader>hf",
+				function()
+					require("plugins.herdr.actions").send_buffer_path()
+				end,
+				desc = "Herdr: Send Buffer Path to Agent",
+			},
+			{
+				"<leader>hs",
+				function()
+					require("plugins.herdr.actions").start_claude()
+				end,
+				desc = "Herdr: Start Claude Agent Here",
+			},
+			{
+				"<leader>hw",
+				function()
+					require("plugins.herdr.actions").switch_workspace()
+				end,
+				desc = "Herdr: Switch Workspace",
 			},
 		},
 	}

@@ -40,6 +40,10 @@
       url = "github:anthropics/claude-code";
       flake = false;
     };
+    herdr = {
+      url = "github:ogulcancelik/herdr";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -64,6 +68,7 @@
       vueTypescriptPlugin = pkgs.callPackage ./pkgs/vue-typescript-plugin.nix { };
       difit = pkgs.callPackage ./pkgs/difit.nix { };
       chromeDevtoolsMcp = pkgs.callPackage ./pkgs/chrome-devtools-mcp.nix { };
+      herdr = inputs.herdr.packages.${system}.default;
       lintApp = pkgs.writeShellApplication {
         name = "lint";
         runtimeInputs = [
@@ -119,6 +124,7 @@
               vueTypescriptPlugin
               difit
               chromeDevtoolsMcp
+              herdr
               ;
           };
         };
@@ -148,6 +154,7 @@
                   vueTypescriptPlugin
                   difit
                   chromeDevtoolsMcp
+                  herdr
                   ;
               };
               home-manager.sharedModules = [

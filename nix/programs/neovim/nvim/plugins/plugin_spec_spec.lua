@@ -282,7 +282,9 @@ describe("plugin specs", function()
 end)
 
 describe("plugin file coverage", function()
-	local excluded = { clipboard = true }
+	-- herdr has no init.lua / lazy.nvim spec: it's a plain helper module
+	-- (like clipboard) required directly from plugins/sidekick's keymaps.
+	local excluded = { clipboard = true, herdr = true }
 
 	it("all plugin directories are covered by the test list", function()
 		local covered = {}
