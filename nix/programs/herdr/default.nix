@@ -27,7 +27,7 @@
     next_workspace = "prefix+shift+right"
 
     [ui]
-    mouse_capture = false
+    mouse_capture = true
     agent_panel_sort = "priority"
     sidebar_width = 32
     sidebar_collapsed_mode = "hidden"
