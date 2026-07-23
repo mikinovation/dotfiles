@@ -34,11 +34,8 @@
     package = claudeCode;
     enableMcpIntegration = true;
 
-    # Slash commands from the commit-commands plugin (anthropics/claude-code):
-    # /commit, /commit-push-pr, /clean_gone. Deployed as user commands instead
-    # of `plugins` because skills-dir personal plugins do not expose their
-    # commands in Claude Code 2.1.218. Note: `commands` attr values that are
-    # strings are written as literal text (lib.isPath), hence commandsDir.
+    # skills-dir personal plugins do not expose their commands in Claude Code
+    # 2.1.218, so deploy the commit-commands plugin as user commands instead
     commandsDir = "${inputs.claude-code-plugins}/plugins/commit-commands/commands";
 
     # LSP servers
