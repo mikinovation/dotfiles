@@ -14,7 +14,6 @@
     typescript-language-server
     eslint
     prettier
-    typescript-go # Go implementation of TypeScript
   ];
 
   # Create .npmrc configuration

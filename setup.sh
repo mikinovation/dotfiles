@@ -1,4 +1,5 @@
 #!/bin/bash
+set -euo pipefail
 
 DOTFILES_DIR="$HOME/ghq/github.com/mikinovation/dotfiles"
 NIX_CONFIG_DIR="$HOME/.config/nix"
