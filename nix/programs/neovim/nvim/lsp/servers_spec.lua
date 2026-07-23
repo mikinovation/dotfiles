@@ -72,6 +72,31 @@ describe("lsp servers", function()
 			end)
 		end
 
+		describe("vue typescript plugin location", function()
+			local function plugin_location()
+				local config = helper.captured.lsp_config_store.vtsls
+				return config.settings.vtsls.tsserver.globalPlugins[1].location
+			end
+
+			it("derives the package path from the vue-language-server executable", function()
+				assert.equals("/test-prefix/lib/node_modules/@vue/language-server", plugin_location())
+			end)
+
+			it("prefers VUE_LANGUAGE_SERVER_PATH when set", function()
+				vim.env.VUE_LANGUAGE_SERVER_PATH = "/custom/path"
+				helper.load_lsp()
+				assert.equals("/custom/path", plugin_location())
+			end)
+
+			it("falls back to the nix profile path when the executable is missing", function()
+				vim.fn.exepath = function()
+					return ""
+				end
+				helper.load_lsp()
+				assert.equals("/home/testuser/.nix-profile/lib/node_modules/@vue/language-server", plugin_location())
+			end)
+		end)
+
 		it("enables tsgo with vtsls for Vue support", function()
 			local enabled_set = {}
 			for _, name in ipairs(helper.captured.lsp_servers_enabled) do

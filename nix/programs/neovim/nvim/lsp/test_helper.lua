@@ -109,8 +109,16 @@ function M.setup_vim_mock()
 			executable = function()
 				return 1
 			end,
+			exepath = function(name)
+				return "/test-prefix/bin/" .. name
+			end,
 			sign_define = function(name, opts)
 				M.captured.signs_defined[name] = opts
+			end,
+		},
+		fs = {
+			dirname = function(path)
+				return path:match("(.*)/[^/]*$") or "."
 			end,
 		},
 		g = { mapleader = " ", maplocalleader = " " },
