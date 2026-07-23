@@ -1,18 +1,18 @@
 {
 	"name": "@vue/language-server",
-	"version": "3.3.6",
+	"version": "3.3.8",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
 		"": {
 			"name": "@vue/language-server",
-			"version": "3.3.6",
+			"version": "3.3.8",
 			"license": "MIT",
 			"dependencies": {
 				"@volar/language-server": "2.4.28",
-				"@vue/language-core": "3.3.6",
-				"@vue/language-service": "3.3.6",
-				"@vue/typescript-plugin": "3.3.6",
+				"@vue/language-core": "3.3.8",
+				"@vue/language-service": "3.3.8",
+				"@vue/typescript-plugin": "3.3.8",
 				"vscode-uri": "^3.1.0"
 			},
 			"bin": {
@@ -20,7 +20,8 @@
 			},
 			"devDependencies": {
 				"@typescript/server-harness": "latest",
-				"@volar/test-utils": "2.4.28"
+				"@volar/test-utils": "2.4.28",
+				"typescript": "npm:@typescript/typescript6@^6.0.2"
 			},
 			"peerDependencies": {
 				"typescript": "*"
@@ -133,6 +134,21 @@
 			"integrity": "sha512-qqNS/YD0Nck5wtQLCPHAfGVgWbbGafxSPjNh0ekYPFSNNqnDH2kamnduzYly8IiADmeVx/MfAE1njMEjVeHTMA==",
 			"license": "MIT"
 		},
+		"node_modules/@typescript/old": {
+			"name": "typescript",
+			"version": "6.0.3",
+			"resolved": "https://registry.npmjs.org/typescript/-/typescript-6.0.3.tgz",
+			"integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+			"devOptional": true,
+			"license": "Apache-2.0",
+			"bin": {
+				"tsc": "bin/tsc",
+				"tsserver": "bin/tsserver"
+			},
+			"engines": {
+				"node": ">=14.17"
+			}
+		},
 		"node_modules/@typescript/server-harness": {
 			"version": "0.3.6",
 			"resolved": "https://registry.npmjs.org/@typescript/server-harness/-/server-harness-0.3.6.tgz",
@@ -228,38 +244,38 @@
 			"license": "MIT"
 		},
 		"node_modules/@vue/compiler-core": {
-			"version": "3.5.39",
-			"resolved": "https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.5.39.tgz",
-			"integrity": "sha512-16KBTEXAJCpDr0mwlw+AZyhu8iyC7R3S2vBwsI7QnWJU6X3WKc9VKeNEZpiMdZ569qWhz9574L3vV55qRL0Vtw==",
+			"version": "3.5.40",
+			"resolved": "https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.5.40.tgz",
+			"integrity": "sha512-39E8IgOhTbVDnoJFMKc2DvYnypcZwUqgUhQkccva/0m6FUwtIKSGV7n1hpVmYcFaoRAwf9pBcwnKlCEsN63ZEQ==",
 			"license": "MIT",
 			"dependencies": {
 				"@babel/parser": "^7.29.7",
-				"@vue/shared": "3.5.39",
+				"@vue/shared": "3.5.40",
 				"entities": "^7.0.1",
 				"estree-walker": "^2.0.2",
 				"source-map-js": "^1.2.1"
 			}
 		},
 		"node_modules/@vue/compiler-dom": {
-			"version": "3.5.39",
-			"resolved": "https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.5.39.tgz",
-			"integrity": "sha512-oQPigALqYbNxTNPvNgSOe+czwVExfbVF02lz8jP0S3AXJiu3jxYDygNUiqSep4ezzW8XgnubqH63My2A7JR/vg==",
+			"version": "3.5.40",
+			"resolved": "https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.5.40.tgz",
+			"integrity": "sha512-pwkx4vqlqOspFstrcmzwkKLePVMD3PT65imRzLhanU2V1Fj4K13g6OXjanOyzw3aTAuRk84BOmY8f3rEHqPaVA==",
 			"license": "MIT",
 			"dependencies": {
-				"@vue/compiler-core": "3.5.39",
-				"@vue/shared": "3.5.39"
+				"@vue/compiler-core": "3.5.40",
+				"@vue/shared": "3.5.40"
 			}
 		},
 		"node_modules/@vue/language-core": {
-			"version": "3.3.6",
-			"resolved": "https://registry.npmjs.org/@vue/language-core/-/language-core-3.3.6.tgz",
-			"integrity": "sha512-LgBMZAy2sR3cQWknpyaxnI6yBkqDfLBPkbdhwRhQCvzfNJRQXPilgQIrdI/v4ytJ0sAq9bWhaPsjqBqneomJ3Q==",
+			"version": "3.3.8",
+			"resolved": "https://registry.npmjs.org/@vue/language-core/-/language-core-3.3.8.tgz",
+			"integrity": "sha512-ieGT8jJdhhy0mGzStZhsg/qPw5bQZJg5yF+3+XU6saf4sM7yo9ZXy3h+nCwrm2+b4qS/SypkNdR2jAF3uei9tA==",
 			"license": "MIT",
 			"dependencies": {
 				"@volar/language-core": "2.4.28",
 				"@vue/compiler-dom": "^3.5.0",
 				"@vue/shared": "^3.5.0",
-				"alien-signals": "^3.2.0",
+				"alien-signals": "^3.2.1",
 				"muggle-string": "^0.4.1",
 				"path-browserify": "^1.0.1",
 				"picomatch": "^4.0.4"
@@ -279,13 +295,13 @@
 			}
 		},
 		"node_modules/@vue/language-service": {
-			"version": "3.3.6",
-			"resolved": "https://registry.npmjs.org/@vue/language-service/-/language-service-3.3.6.tgz",
-			"integrity": "sha512-9OYuFCdmKkrle74pzOx0u5nuwVX67vsnA/1FXb1xYBPl5XEKG9XDC2RUaIs7WJ/g/mRnXJAnDbYWi43U+VMmng==",
+			"version": "3.3.8",
+			"resolved": "https://registry.npmjs.org/@vue/language-service/-/language-service-3.3.8.tgz",
+			"integrity": "sha512-ewoXtojJrVia8uZUC2BY1vPgTSVHH2/AnJ5uDQACAgOKH9wsP87bqgghPKtjfhdTZ3QtgncL5lrNsivC+amlIg==",
 			"license": "MIT",
 			"dependencies": {
 				"@volar/language-service": "2.4.28",
-				"@vue/language-core": "3.3.6",
+				"@vue/language-core": "3.3.8",
 				"@vue/shared": "^3.5.0",
 				"path-browserify": "^1.0.1",
 				"volar-service-css": "0.0.71",
@@ -300,22 +316,22 @@
 			}
 		},
 		"node_modules/@vue/shared": {
-			"version": "3.5.39",
-			"resolved": "https://registry.npmjs.org/@vue/shared/-/shared-3.5.39.tgz",
-			"integrity": "sha512-l1rrBtBfTnmxvtsvdQDXltUUy8S1Y+ZaqdfUzmAnJkTd8Z8rv5v/ytW+TKiqEOWyHPoqtPlNFSs0lhRmYVSHVA==",
+			"version": "3.5.40",
+			"resolved": "https://registry.npmjs.org/@vue/shared/-/shared-3.5.40.tgz",
+			"integrity": "sha512-WxnBtruIqOoV3rA4jeKDWzrYI5h7Cp4+pjwDi8kWGHz+IslhiN+wguLVVhtv2l8VoU02rzDCVfDjgCl1lNpZVg==",
 			"license": "MIT"
 		},
 		"node_modules/@vue/typescript-plugin": {
-			"version": "3.3.6",
-			"resolved": "https://registry.npmjs.org/@vue/typescript-plugin/-/typescript-plugin-3.3.6.tgz",
-			"integrity": "sha512-3jubnULC27+N2DYw2gLWMeQMdQuS5lUjeR6yzvDh76tx35zYO2c4z+LNLenJqncAOXdhqkCRLzuBgDSkTEJCqg==",
+			"version": "3.3.8",
+			"resolved": "https://registry.npmjs.org/@vue/typescript-plugin/-/typescript-plugin-3.3.8.tgz",
+			"integrity": "sha512-0GOhAdbMAt5KjGDsPXgcXkLWYBFwoEowPn1AYOUAYuxNup7CVbFJzup8yFGa9KZBtz/juk4FXS/Zirx3WWjLJw==",
 			"license": "MIT",
 			"dependencies": {
 				"@volar/typescript": "2.4.28",
-				"@vue/language-core": "3.3.6",
+				"@vue/language-core": "3.3.8",
 				"@vue/shared": "^3.5.0",
 				"path-browserify": "^1.0.1",
-				"vue-component-meta": "3.3.6"
+				"vue-component-meta": "3.3.8"
 			}
 		},
 		"node_modules/acorn": {
@@ -614,9 +630,9 @@
 			"license": "MIT"
 		},
 		"node_modules/picomatch": {
-			"version": "4.0.4",
-			"resolved": "https://registry.npmjs.org/picomatch/-/picomatch-4.0.4.tgz",
-			"integrity": "sha512-QP88BAKvMam/3NxH6vj2o21R6MjxZUAd6nlwAS/pnGvN9IVLocLHxGYIzFhg6fUQ+5th6P4dv4eW9jX3DSIj7A==",
+			"version": "4.0.5",
+			"resolved": "https://registry.npmjs.org/picomatch/-/picomatch-4.0.5.tgz",
+			"integrity": "sha512-RvwwcruNjI1ncT5xRakeyS9Lf8lcItv34KD+aif+VH9kduAyfYBipGh12274xtenIPZ119/R9BdTBa8gAwSh0A==",
 			"license": "MIT",
 			"engines": {
 				"node": ">=12"
@@ -686,17 +702,17 @@
 			"license": "MIT"
 		},
 		"node_modules/typescript": {
-			"version": "6.0.3",
-			"resolved": "https://registry.npmjs.org/typescript/-/typescript-6.0.3.tgz",
-			"integrity": "sha512-y2TvuxSZPDyQakkFRPZHKFm+KKVqIisdg9/CZwm9ftvKXLP8NRWj38/ODjNbr43SsoXqNuAisEf1GdCxqWcdBw==",
+			"name": "@typescript/typescript6",
+			"version": "6.0.2",
+			"resolved": "https://registry.npmjs.org/@typescript/typescript6/-/typescript6-6.0.2.tgz",
+			"integrity": "sha512-mbCddXd+jm7hfx7w2YU64/Av4/NqqeG3GoRZgxPcgoTxYjhrcfJRw9ULch71SS4G+Q3bOXFhRvPqjguN0Hyp5w==",
+			"devOptional": true,
 			"license": "Apache-2.0",
-			"peer": true,
-			"bin": {
-				"tsc": "bin/tsc",
-				"tsserver": "bin/tsserver"
+			"dependencies": {
+				"@typescript/old": "npm:typescript@^6"
 			},
-			"engines": {
-				"node": ">=14.17"
+			"bin": {
+				"tsc6": "bin/tsc6"
 			}
 		},
 		"node_modules/typescript-auto-import-cache": {
@@ -966,13 +982,13 @@
 			"license": "MIT"
 		},
 		"node_modules/vue-component-meta": {
-			"version": "3.3.6",
-			"resolved": "https://registry.npmjs.org/vue-component-meta/-/vue-component-meta-3.3.6.tgz",
-			"integrity": "sha512-kPNTwuLzqYDvsE2CiDPSbt89aypZwYoCRxtbUfbkfOgy3DV130G3Z1jJuRBct64vxB2Lii6fcih8FJba8dLoXQ==",
+			"version": "3.3.8",
+			"resolved": "https://registry.npmjs.org/vue-component-meta/-/vue-component-meta-3.3.8.tgz",
+			"integrity": "sha512-ISPs6028bEvf1Hn44kFZ+uOiDomEkZCvfUgcdA83sVOYJ9g6EkH1M8yCmJP0ewLyf/0M+sF41bjgIg7jPw4MmA==",
 			"license": "MIT",
 			"dependencies": {
 				"@volar/typescript": "2.4.28",
-				"@vue/language-core": "3.3.6",
+				"@vue/language-core": "3.3.8",
 				"path-browserify": "^1.0.1"
 			},
 			"peerDependencies": {
