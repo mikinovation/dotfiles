@@ -34,10 +34,9 @@
     package = claudeCode;
     enableMcpIntegration = true;
 
-    # Plugins (from anthropics/claude-code repository)
-    plugins = [
-      "${inputs.claude-code-plugins}/plugins/commit-commands"
-    ];
+    # skills-dir personal plugins do not expose their commands in Claude Code
+    # 2.1.218, so deploy the commit-commands plugin as user commands instead
+    commandsDir = "${inputs.claude-code-plugins}/plugins/commit-commands/commands";
 
     # LSP servers
     lspServers = {
@@ -174,8 +173,6 @@
     };
 
     skills = {
-      "org-flow:create-issue" = ./skills/org-flow/create-issue;
-      "team-dev" = ./skills/team-dev;
       "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
       "nix-npm-update" = ./skills/nix-npm-update;
     };

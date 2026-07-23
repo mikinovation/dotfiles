@@ -2,8 +2,17 @@
 -- TypeScript, JavaScript, Vue related LSP servers (tsgo, vtsls, vue_ls)
 
 return function(capabilities)
+	-- tsserver loads @vue/typescript-plugin from <location>/node_modules,
+	-- so the path must exist on disk
 	local vue_language_server_path = vim.env.VUE_LANGUAGE_SERVER_PATH
-		or (vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server")
+	if not vue_language_server_path then
+		local bin = vim.fn.exepath("vue-language-server")
+		if bin ~= "" then
+			vue_language_server_path = vim.fs.dirname(vim.fs.dirname(bin)) .. "/lib/node_modules/@vue/language-server"
+		else
+			vue_language_server_path = vim.env.HOME .. "/.nix-profile/lib/node_modules/@vue/language-server"
+		end
+	end
 	local vue_plugin = {
 		name = "@vue/typescript-plugin",
 		location = vue_language_server_path,
