@@ -175,6 +175,8 @@
     skills = {
       "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
       "nix-npm-update" = ./skills/nix-npm-update;
+      "grill-me" = ./skills/grill-me;
+      "grilling" = ./skills/grilling;
     };
 
     context = ./CLAUDE.md;
