@@ -13,7 +13,6 @@ function orgRoam.config()
 				directory = "~/ghq/github.com/mikinovation/org/roam",
 				org_files = {
 					"~/ghq/github.com/mikinovation/org",
-					"~/ghq/github.com/mikinovation/mikinovation/wiki/data",
 				},
 			})
 		end,
