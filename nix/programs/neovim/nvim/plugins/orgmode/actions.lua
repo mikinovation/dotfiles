@@ -44,27 +44,4 @@ function M.id_get_or_create()
 	headline:id_get_or_create()
 end
 
---- Prompt for and set simplified OKF-style properties (:TYPE:, :DESCRIPTION:,
---- :STATUS:) on the closest org heading. Blank answers are skipped.
-function M.set_okf_properties()
-	local headline = require("orgmode.api").current():get_closest_headline()
-	if not headline then
-		vim.notify("No heading at cursor", vim.log.levels.WARN)
-		return
-	end
-
-	local fields = {
-		{ key = "TYPE", prompt = "TYPE: " },
-		{ key = "DESCRIPTION", prompt = "DESCRIPTION: " },
-		{ key = "STATUS", prompt = "STATUS (draft/stable/deprecated): " },
-	}
-
-	for _, field in ipairs(fields) do
-		local value = vim.fn.input(field.prompt)
-		if vim.trim(value) ~= "" then
-			headline:set_property(field.key, value)
-		end
-	end
-end
-
 return M

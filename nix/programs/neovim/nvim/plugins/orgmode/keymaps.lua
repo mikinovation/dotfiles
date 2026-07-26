@@ -15,12 +15,6 @@ function M.setup()
 				return { buffer = ev.buf, desc = desc }
 			end
 			map("n", "<leader>oxi", actions.id_get_or_create, bopts("Insert :ID: on closest heading"))
-			map(
-				"n",
-				"<leader>oxp",
-				actions.set_okf_properties,
-				bopts("Insert OKF properties (TYPE/DESCRIPTION/STATUS) on closest heading")
-			)
 			map("v", "<leader>om", actions.copy_as_markdown, bopts("Copy selection as Markdown (via pandoc)"))
 		end,
 	})

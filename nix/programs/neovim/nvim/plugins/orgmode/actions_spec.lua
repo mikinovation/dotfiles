@@ -21,8 +21,6 @@ local setreg_calls
 local has_heading
 local executables
 local marks
-local input_responses
-local set_property_calls
 
 local function setup_vim_mock()
 	notify_calls = {}
@@ -31,8 +29,6 @@ local function setup_vim_mock()
 	has_heading = true
 	executables = { pandoc = true }
 	marks = { ["<"] = { 1, 0 }, [">"] = { 1, 5 } }
-	input_responses = {}
-	set_property_calls = {}
 
 	_G.vim = {
 		fn = {
@@ -49,9 +45,6 @@ local function setup_vim_mock()
 			setreg = function(reg, text)
 				table.insert(setreg_calls, { reg = reg, text = text })
 			end,
-			input = function(_)
-				return table.remove(input_responses, 1) or ""
-			end,
 		},
 		api = {
 			nvim_buf_get_mark = function(_, mark)
@@ -66,9 +59,6 @@ local function setup_vim_mock()
 		notify = function(msg, level)
 			table.insert(notify_calls, { msg = msg, level = level })
 		end,
-		trim = function(s)
-			return (s or ""):gsub("^%s+", ""):gsub("%s+$", "")
-		end,
 	}
 
 	package.loaded["orgmode.api"] = {
@@ -80,9 +70,6 @@ local function setup_vim_mock()
 					end
 					return {
 						id_get_or_create = function() end,
-						set_property = function(_, key, value)
-							table.insert(set_property_calls, { key = key, value = value })
-						end,
 					}
 				end,
 			}
@@ -205,44 +192,11 @@ describe("plugins.orgmode.actions", function()
 		end)
 	end)
 
-	describe("set_okf_properties", function()
-		it("warns when there is no heading at cursor", function()
-			has_heading = false
-			load_actions().set_okf_properties()
-			local has_warn = false
-			for _, n in ipairs(notify_calls) do
-				if n.level == _G.vim.log.levels.WARN then
-					has_warn = true
-				end
-			end
-			assert.is_true(has_warn)
-		end)
-
-		it("sets TYPE/DESCRIPTION/STATUS properties from input", function()
-			input_responses = { "note", "a description", "draft" }
-			load_actions().set_okf_properties()
-			assert.equals(3, #set_property_calls)
-			assert.equals("TYPE", set_property_calls[1].key)
-			assert.equals("note", set_property_calls[1].value)
-			assert.equals("DESCRIPTION", set_property_calls[2].key)
-			assert.equals("a description", set_property_calls[2].value)
-			assert.equals("STATUS", set_property_calls[3].key)
-			assert.equals("draft", set_property_calls[3].value)
-		end)
-
-		it("skips blank answers", function()
-			input_responses = { "", "   ", "" }
-			load_actions().set_okf_properties()
-			assert.equals(0, #set_property_calls)
-		end)
-	end)
-
 	describe("module shape", function()
 		it("exports the documented public functions", function()
 			local actions = load_actions()
 			assert.is_function(actions.copy_as_markdown)
 			assert.is_function(actions.id_get_or_create)
-			assert.is_function(actions.set_okf_properties)
 		end)
 	end)
 end)
