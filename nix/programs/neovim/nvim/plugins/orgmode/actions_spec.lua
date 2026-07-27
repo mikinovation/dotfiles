@@ -59,9 +59,6 @@ local function setup_vim_mock()
 		notify = function(msg, level)
 			table.insert(notify_calls, { msg = msg, level = level })
 		end,
-		trim = function(s)
-			return (s or ""):gsub("^%s+", ""):gsub("%s+$", "")
-		end,
 	}
 
 	package.loaded["orgmode.api"] = {

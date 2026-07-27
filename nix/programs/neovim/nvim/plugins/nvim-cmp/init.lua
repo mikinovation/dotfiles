@@ -20,6 +20,7 @@ function nvimCmp.config()
 			local lspkind = require("lspkind")
 
 			require("luasnip.loaders.from_vscode").lazy_load()
+			require("plugins.org-roam.okf_completion").register()
 
 			local has_words_before = function()
 				if vim.api.nvim_buf_get_option(0, "buftype") == "prompt" then
@@ -74,6 +75,7 @@ function nvimCmp.config()
 
 				sources = {
 					{ name = "orgmode", group_index = 2 },
+					{ name = "okf", group_index = 2 },
 					{ name = "copilot", group_index = 2 },
 					{ name = "nvim_lsp", group_index = 2 },
 					{ name = "luasnip", group_index = 2 },
