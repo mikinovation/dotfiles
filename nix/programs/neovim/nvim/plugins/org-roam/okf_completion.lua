@@ -37,18 +37,23 @@ end
 
 M.__index = M
 
+---@return table
 function M.new()
 	return setmetatable({}, M)
 end
 
+---@return boolean
 function M.enabled(_)
 	return vim.bo.filetype == "org"
 end
 
+---@return string[]
 function M.get_trigger_characters(_)
 	return { ":" }
 end
 
+---@param context table
+---@param callback fun(response: table)
 function M.get_completions(_, context, callback)
 	local cursor_before_line = context.line:sub(1, context.cursor[2])
 	if not M.is_type_line(cursor_before_line) then
