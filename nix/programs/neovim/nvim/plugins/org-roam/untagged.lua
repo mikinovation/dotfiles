@@ -16,14 +16,35 @@ function M.parse_tags(content)
 		return nil
 	end
 
-	local tags_line = yaml_block:match("tags:%s*%[(.-)%]")
-	if not tags_line then
-		return nil
+	local inline_tags = yaml_block:match("tags:%s*%[(.-)%]")
+	if inline_tags then
+		local tags = {}
+		for tag in inline_tags:gmatch("[^,%s]+") do
+			table.insert(tags, tag)
+		end
+		return tags
 	end
 
+	-- Block-style sequence, e.g. "tags:\n  - issue\n  - decision".
 	local tags = {}
-	for tag in tags_line:gmatch("[^,%s]+") do
-		table.insert(tags, tag)
+	local found_tags_key = false
+	local in_block = false
+	for line in (yaml_block .. "\n"):gmatch("(.-)\n") do
+		if in_block then
+			local item = line:match("^%s*%-%s*(.-)%s*$")
+			if item then
+				table.insert(tags, item)
+			else
+				in_block = false
+			end
+		elseif line:match("^tags:%s*$") then
+			found_tags_key = true
+			in_block = true
+		end
+	end
+
+	if not found_tags_key then
+		return nil
 	end
 	return tags
 end
