@@ -29,7 +29,7 @@ end
 function M.save_state()
 	M._saved = {
 		vim = _G.vim,
-		cmp_nvim_lsp = package.loaded["cmp_nvim_lsp"],
+		blink_cmp = package.loaded["blink.cmp"],
 		telescope_builtin = package.loaded["telescope.builtin"],
 	}
 end
@@ -38,7 +38,7 @@ end
 function M.restore_state()
 	if M._saved then
 		_G.vim = M._saved.vim
-		package.loaded["cmp_nvim_lsp"] = M._saved.cmp_nvim_lsp
+		package.loaded["blink.cmp"] = M._saved.blink_cmp
 		package.loaded["telescope.builtin"] = M._saved.telescope_builtin
 		M._saved = nil
 	end
@@ -76,8 +76,8 @@ function M.setup_vim_mock()
 	}
 
 	-- Mock require for external dependencies
-	package.loaded["cmp_nvim_lsp"] = {
-		default_capabilities = function(caps)
+	package.loaded["blink.cmp"] = {
+		get_lsp_capabilities = function(caps)
 			return caps or {}
 		end,
 	}

@@ -7,7 +7,7 @@ function copilot.config()
 		event = "InsertEnter",
 		config = function()
 			require("copilot").setup({
-				suggestion = { enabled = false },
+				suggestion = { enabled = true, auto_trigger = true, hide_during_completion = true },
 				panel = { enabled = false },
 			})
 		end,

@@ -13,6 +13,7 @@ vim.opt.rtp:prepend(lazypath)
 require("plugins.clipboard").config()
 
 require("lazy").setup({
+	require("plugins.blink-cmp").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
 	require("plugins.dropbar").config(),
@@ -29,7 +30,6 @@ require("lazy").setup({
 	require("plugins.none-ls").config(),
 	require("plugins.nvim-autopairs").config(),
 	require("plugins.nvim-bqf").config(),
-	require("plugins.nvim-cmp").config(),
 	require("plugins.nvim-colorizer").config(),
 	require("plugins.nvim-context-vt").config(),
 	require("plugins.nvim-dap").config(),
