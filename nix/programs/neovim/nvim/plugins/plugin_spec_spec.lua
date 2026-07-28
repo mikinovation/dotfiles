@@ -94,14 +94,9 @@ end
 
 -- All plugin files (excluding this test and clipboard which has a different pattern)
 local lazy_plugin_files = {
-	"cmp-buffer",
-	"cmp-cmdline",
-	"cmp-luasnip",
-	"cmp-nvim-lsp",
-	"cmp-path",
+	"blink-cmp",
 	"comment",
 	"copilot",
-	"copilot-cmp",
 	"diffview",
 	"dropbar",
 	"fidget",
@@ -112,7 +107,6 @@ local lazy_plugin_files = {
 	"gitsigns",
 	"indent-blankline",
 	"lazydev",
-	"lspkind",
 	"lualine",
 	"luasnip",
 	"markdown-preview",
@@ -125,7 +119,6 @@ local lazy_plugin_files = {
 	"nui",
 	"nvim-autopairs",
 	"nvim-bqf",
-	"nvim-cmp",
 	"nvim-colorizer",
 	"nvim-context-vt",
 	"nvim-dap",

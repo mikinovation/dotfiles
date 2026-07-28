@@ -1,5 +1,5 @@
 -- plugins/org-roam/okf_completion.lua
--- Lightweight nvim-cmp source that completes OKF `type:` values inside the
+-- Lightweight blink.cmp source that completes OKF `type:` values inside the
 -- YAML block org-roam captures embed. OKF itself defines no controlled
 -- vocabulary for `type`; this is a personal shortlist for org-roam notes.
 
@@ -35,35 +35,31 @@ function M.complete_items()
 	return items
 end
 
---- Register the "okf" completion source with nvim-cmp, if it is loaded.
-function M.register()
-	local ok, cmp = pcall(require, "cmp")
-	if not ok then
+M.__index = M
+
+function M.new()
+	return setmetatable({}, M)
+end
+
+function M.enabled(_)
+	return vim.bo.filetype == "org"
+end
+
+function M.get_trigger_characters(_)
+	return { ":" }
+end
+
+function M.get_completions(_, context, callback)
+	local cursor_before_line = context.line:sub(1, context.cursor[2])
+	if not M.is_type_line(cursor_before_line) then
+		callback({ items = {}, is_incomplete_backward = false, is_incomplete_forward = false })
 		return
 	end
-
-	local source = {}
-
-	function source.is_available(_)
-		return vim.bo.filetype == "org"
-	end
-
-	function source.get_debug_name(_)
-		return "okf"
-	end
-
-	function source.get_trigger_characters(_)
-		return { ":" }
-	end
-
-	function source.complete(_, params, callback)
-		if not M.is_type_line(params.context.cursor_before_line) then
-			return callback({ items = {}, isIncomplete = false })
-		end
-		callback({ items = M.complete_items(), isIncomplete = false })
-	end
-
-	cmp.register_source("okf", source)
+	callback({
+		items = M.complete_items(),
+		is_incomplete_backward = false,
+		is_incomplete_forward = false,
+	})
 end
 
 return M

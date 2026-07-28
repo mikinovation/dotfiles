@@ -291,8 +291,8 @@ describe("keymap conflict detection", function()
 		package.path = nvim_dir .. "?.lua;" .. nvim_dir .. "?/init.lua;" .. package.path
 
 		-- Mock external plugin dependencies
-		package.loaded["cmp_nvim_lsp"] = {
-			default_capabilities = function(caps)
+		package.loaded["blink.cmp"] = {
+			get_lsp_capabilities = function(caps)
 				return caps or {}
 			end,
 		}

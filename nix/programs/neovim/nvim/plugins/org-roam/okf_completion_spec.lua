@@ -74,60 +74,41 @@ describe("plugins.org-roam.okf_completion", function()
 		end)
 	end)
 
-	describe("register", function()
+	describe("blink.cmp provider", function()
 		local saved_vim
-		local registered_name
-		local registered_source
 
 		before_each(function()
 			saved_vim = _G.vim
-			registered_name = nil
-			registered_source = nil
 			_G.vim = { bo = { filetype = "org" } }
-			package.loaded["cmp"] = {
-				register_source = function(name, source)
-					registered_name = name
-					registered_source = source
-				end,
-			}
 		end)
 
 		after_each(function()
-			package.loaded["cmp"] = nil
 			_G.vim = saved_vim
 		end)
 
-		it("registers an okf source with cmp", function()
-			load_module().register()
-			assert.equals("okf", registered_name)
-			assert.is_function(registered_source.complete)
+		it("exposes trigger characters", function()
+			local source = load_module().new()
+			assert.same({ ":" }, source:get_trigger_characters())
 		end)
 
-		it("does nothing when cmp is not installed", function()
-			package.loaded["cmp"] = nil
-			assert.has_no.errors(function()
-				load_module().register()
-			end)
-		end)
-
-		it("is only available in org buffers", function()
-			load_module().register()
+		it("is only enabled in org buffers", function()
+			local source = load_module().new()
 			_G.vim.bo.filetype = "org"
-			assert.is_true(registered_source:is_available())
+			assert.is_true(source:enabled())
 			_G.vim.bo.filetype = "markdown"
-			assert.is_false(registered_source:is_available())
+			assert.is_false(source:enabled())
 		end)
 
 		it("completes only when on a type: line", function()
-			load_module().register()
+			local source = load_module().new()
 
 			local result
-			registered_source:complete({ context = { cursor_before_line = "type: " } }, function(res)
+			source:get_completions({ line = "type: ", cursor = { 1, 6 } }, function(res)
 				result = res
 			end)
 			assert.equals(6, #result.items)
 
-			registered_source:complete({ context = { cursor_before_line = "description: " } }, function(res)
+			source:get_completions({ line = "description: ", cursor = { 1, 13 } }, function(res)
 				result = res
 			end)
 			assert.equals(0, #result.items)
