@@ -4,6 +4,7 @@ input=$(cat)
 # Parse all needed fields in a single jq invocation
 eval "$(echo "$input" | jq -r '
   "workspace_dir=" + (.workspace.current_dir // .cwd // "" | @sh) +
+  " model_name=" + (.model.display_name // .model.id // "" | @sh) +
   " five_pct=" + (.rate_limits.five_hour.used_percentage // "" | tostring | @sh) +
   " week_pct=" + (.rate_limits.seven_day.used_percentage // "" | tostring | @sh)
 ')"
@@ -43,6 +44,14 @@ if [ -n "$branch" ]; then
     parts="${parts}(${branch})"
   else
     parts="(${branch})"
+  fi
+fi
+
+if [ -n "$model_name" ]; then
+  if [ -n "$parts" ]; then
+    parts="${parts} | ${model_name}"
+  else
+    parts="${model_name}"
   fi
 fi
 
