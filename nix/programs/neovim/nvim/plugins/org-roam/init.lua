@@ -1,5 +1,7 @@
 local orgRoam = {}
 
+local ROAM_DIRECTORY = "~/ghq/github.com/mikinovation/mikinovation/roam"
+
 function orgRoam.config()
 	return {
 		"chipsenkbeil/org-roam.nvim",
@@ -10,7 +12,7 @@ function orgRoam.config()
 		event = "VeryLazy",
 		config = function()
 			require("org-roam").setup({
-				directory = "~/ghq/github.com/mikinovation/mikinovation/roam",
+				directory = ROAM_DIRECTORY,
 				org_files = {
 					"~/ghq/github.com/mikinovation/org",
 				},
@@ -31,6 +33,7 @@ function orgRoam.config()
 					},
 				},
 			})
+			require("plugins.org-roam.keymaps").setup(ROAM_DIRECTORY)
 		end,
 	}
 end
