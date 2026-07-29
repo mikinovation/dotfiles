@@ -1,5 +1,5 @@
 -- lsp/servers/typescript.lua
--- TypeScript, JavaScript, Vue related LSP servers (tsgo, vtsls, vue_ls)
+-- TypeScript, JavaScript, Vue related LSP servers (vtsls, vue_ls)
 
 return function(capabilities)
 	-- tsserver loads @vue/typescript-plugin from <location>/node_modules,
@@ -63,33 +63,18 @@ return function(capabilities)
 		end,
 	}
 
-	-- tsgo (TypeScript Go-based LSP)
-	vim.lsp.config.tsgo = {
-		cmd = { "tsgo", "--lsp", "--stdio" },
+	-- vtsls (TypeScript/JavaScript, plus tsserver request forwarding for vue_ls)
+	vim.lsp.config.vtsls = {
+		cmd = { "vtsls", "--stdio" },
 		filetypes = {
 			"typescript",
 			"javascript",
 			"javascriptreact",
 			"typescriptreact",
+			"vue",
 		},
-		root_markers = {
-			"package-lock.json",
-			"yarn.lock",
-			"pnpm-lock.yaml",
-			"bun.lockb",
-			"bun.lock",
-			".git",
-		},
-		capabilities = capabilities,
-	}
-
-	-- vtsls (Vue support only - tsserver request forwarding for vue_ls)
-	vim.lsp.config.vtsls = vim.tbl_deep_extend("force", {
-		cmd = { "vtsls", "--stdio" },
-		filetypes = { "vue" },
 		root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
 		capabilities = capabilities,
-	}, {
 		settings = {
 			vtsls = {
 				tsserver = {
@@ -99,8 +84,7 @@ return function(capabilities)
 				},
 			},
 		},
-		filetypes = { "vue" },
-	})
+	}
 
 	-- Vue Language Server
 	vim.lsp.config.vue_ls = vim.tbl_deep_extend("force", {

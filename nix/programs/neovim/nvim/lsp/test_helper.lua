@@ -71,8 +71,8 @@ function M.setup_vim_mock()
 	M.captured = {
 		autocmds = {},
 		diagnostic_config = nil,
-		signs_defined = {},
 		lsp_servers_enabled = {},
+		linked_editing_range = nil,
 	}
 
 	-- Mock require for external dependencies
@@ -112,9 +112,6 @@ function M.setup_vim_mock()
 			exepath = function(name)
 				return "/test-prefix/bin/" .. name
 			end,
-			sign_define = function(name, opts)
-				M.captured.signs_defined[name] = opts
-			end,
 		},
 		fs = {
 			dirname = function(path)
@@ -128,6 +125,27 @@ function M.setup_vim_mock()
 				return {}
 			end,
 		}),
+		-- Window-local options, keyed as vim.wo[win][bufnr] (see :h vim.wo).
+		-- Backed by real tables (via rawset) so assignments persist and can be asserted.
+		wo = setmetatable({}, {
+			__index = function(t, win)
+				local sub = rawget(t, win)
+				if not sub then
+					sub = setmetatable({}, {
+						__index = function(tt, key)
+							local leaf = rawget(tt, key)
+							if not leaf then
+								leaf = {}
+								rawset(tt, key, leaf)
+							end
+							return leaf
+						end,
+					})
+					rawset(t, win, sub)
+				end
+				return sub
+			end,
+		}),
 		opt = {},
 		env = { HOME = "/home/testuser" },
 		api = {
@@ -139,6 +157,9 @@ function M.setup_vim_mock()
 			end,
 			nvim_get_runtime_file = function()
 				return {}
+			end,
+			nvim_get_current_win = function()
+				return 1000
 			end,
 		},
 		keymap = {
@@ -178,6 +199,12 @@ function M.setup_vim_mock()
 			get_clients = function()
 				return {}
 			end,
+			linked_editing_range = {
+				enable = function(enable, opts)
+					M.captured.linked_editing_range = { enable = enable, opts = opts }
+				end,
+			},
+			foldexpr = function() end,
 		},
 		tbl_deep_extend = function(_, base, override)
 			return deep_merge(base, override)

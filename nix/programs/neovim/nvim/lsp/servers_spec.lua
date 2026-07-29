@@ -21,7 +21,6 @@ describe("lsp servers", function()
 		local expected_servers = {
 			"lua_ls",
 			"rust_analyzer",
-			"tsgo",
 			"vtsls",
 			"vue_ls",
 			"tailwindcss",
@@ -97,13 +96,14 @@ describe("lsp servers", function()
 			end)
 		end)
 
-		it("enables tsgo with vtsls for Vue support", function()
-			local enabled_set = {}
-			for _, name in ipairs(helper.captured.lsp_servers_enabled) do
-				enabled_set[name] = true
+		it("handles TypeScript and Vue with a single vtsls client", function()
+			local filetype_set = {}
+			for _, ft in ipairs(helper.captured.lsp_config_store.vtsls.filetypes) do
+				filetype_set[ft] = true
 			end
-			assert.is_truthy(enabled_set["tsgo"])
-			assert.is_truthy(enabled_set["vtsls"])
+			for _, ft in ipairs({ "typescript", "javascript", "typescriptreact", "javascriptreact", "vue" }) do
+				assert.is_truthy(filetype_set[ft], "vtsls should handle " .. ft)
+			end
 		end)
 	end)
 

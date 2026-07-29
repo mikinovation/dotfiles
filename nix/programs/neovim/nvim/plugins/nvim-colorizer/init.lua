@@ -2,10 +2,15 @@ local nvimColorizer = {}
 
 function nvimColorizer.config()
 	return {
-		"norcalli/nvim-colorizer.lua",
-		config = function()
-			require("colorizer").setup()
-		end,
+		"catgoose/nvim-colorizer.lua",
+		event = "BufReadPre",
+		opts = {
+			options = {
+				parsers = {
+					tailwind = { enable = true, lsp = true },
+				},
+			},
+		},
 	}
 end
 

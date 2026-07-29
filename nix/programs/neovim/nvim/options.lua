@@ -1,27 +1,29 @@
-vim.opt.number = true
-vim.opt.mouse = "a"
-vim.opt.showmode = false
+vim.o.number = true
+vim.o.mouse = "a"
+vim.o.showmode = false
 vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
+	vim.o.clipboard = "unnamedplus"
 end)
-vim.opt.breakindent = true
-vim.opt.undofile = true
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-vim.opt.signcolumn = "yes"
-vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
-vim.opt.splitright = true
-vim.opt.splitbelow = true
-vim.opt.list = true
+vim.o.breakindent = true
+vim.o.undofile = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.o.signcolumn = "yes"
+vim.o.updatetime = 250
+vim.o.timeoutlen = 300
+vim.o.splitright = true
+vim.o.splitbelow = true
+vim.o.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
-vim.opt.inccommand = "split"
-vim.opt.cursorline = true
-vim.opt.scrolloff = 10
-vim.opt.termguicolors = true
-vim.opt.winblend = 10
-vim.opt.pumblend = 10
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+vim.o.inccommand = "split"
+vim.o.cursorline = true
+vim.o.scrolloff = 10
+vim.o.termguicolors = true
+vim.o.winblend = 10
+vim.o.pumblend = 10
+vim.o.winborder = "rounded"
+vim.o.foldmethod = "expr"
+vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+vim.o.foldlevelstart = 99
 local zsh_path = vim.fn.exepath("zsh")
-vim.opt.shell = zsh_path ~= "" and zsh_path or "zsh"
+vim.o.shell = zsh_path ~= "" and zsh_path or "zsh"
