@@ -32,7 +32,8 @@ describe("lsp diagnostics", function()
 		it("has float settings", function()
 			local float = helper.captured.diagnostic_config.float
 			assert.is_table(float, "float should be configured")
-			assert.is_string(float.border, "float.border should be a string")
+			assert.is_false(float.focusable, "float.focusable should be false")
+			assert.are.equal("if_many", float.source, "float.source should be 'if_many'")
 		end)
 
 		it("has severity_sort enabled", function()
@@ -41,20 +42,31 @@ describe("lsp diagnostics", function()
 	end)
 
 	describe("diagnostic signs", function()
-		local expected_signs = {
-			DiagnosticSignError = " ",
-			DiagnosticSignWarn = " ",
-			DiagnosticSignHint = " ",
-			DiagnosticSignInfo = " ",
-		}
+		it("defines sign text per severity", function()
+			local signs = helper.captured.diagnostic_config.signs
+			assert.is_table(signs, "signs should be configured as a table")
+			assert.is_table(signs.text, "signs.text should be a table")
+			assert.are.equal(" ", signs.text[vim.diagnostic.severity.ERROR])
+			assert.are.equal(" ", signs.text[vim.diagnostic.severity.WARN])
+			assert.are.equal(" ", signs.text[vim.diagnostic.severity.HINT])
+			assert.are.equal(" ", signs.text[vim.diagnostic.severity.INFO])
+		end)
 
-		for sign_name, expected_icon in pairs(expected_signs) do
-			it("defines " .. sign_name, function()
-				local sign = helper.captured.signs_defined[sign_name]
-				assert.is_not_nil(sign, sign_name .. " should be defined")
-				assert.are.equal(expected_icon, sign.text, sign_name .. " should have correct icon")
-				assert.are.equal(sign_name, sign.texthl, sign_name .. " should have correct texthl")
-			end)
-		end
+		it("defines sign numhl per severity", function()
+			local signs = helper.captured.diagnostic_config.signs
+			assert.is_table(signs.numhl, "signs.numhl should be a table")
+			assert.are.equal("DiagnosticSignError", signs.numhl[vim.diagnostic.severity.ERROR])
+			assert.are.equal("DiagnosticSignWarn", signs.numhl[vim.diagnostic.severity.WARN])
+			assert.are.equal("DiagnosticSignHint", signs.numhl[vim.diagnostic.severity.HINT])
+			assert.are.equal("DiagnosticSignInfo", signs.numhl[vim.diagnostic.severity.INFO])
+		end)
+	end)
+
+	describe("diagnostic virtual_lines", function()
+		it("shows virtual lines for the current line only", function()
+			local vl = helper.captured.diagnostic_config.virtual_lines
+			assert.is_table(vl, "virtual_lines should be configured")
+			assert.is_true(vl.current_line)
+		end)
 	end)
 end)

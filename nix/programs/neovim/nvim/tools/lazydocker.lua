@@ -16,8 +16,8 @@ end
 -- Function to create a floating terminal window
 local function create_floating_window()
 	-- Get editor size
-	local width = vim.api.nvim_get_option("columns")
-	local height = vim.api.nvim_get_option("lines")
+	local width = vim.o.columns
+	local height = vim.o.lines
 
 	-- Calculate float size (80% of editor size)
 	local win_width = math.ceil(width * 0.8)
@@ -27,7 +27,7 @@ local function create_floating_window()
 	local row = math.ceil((height - win_height) / 2)
 	local col = math.ceil((width - win_width) / 2)
 
-	-- Set window options
+	-- Set window options (border comes from the global 'winborder' option)
 	local opts = {
 		relative = "editor",
 		width = win_width,
@@ -35,7 +35,6 @@ local function create_floating_window()
 		row = row,
 		col = col,
 		style = "minimal",
-		border = "rounded",
 	}
 
 	-- Create buffer
@@ -67,7 +66,8 @@ function M.open_lazydocker()
 	vim.api.nvim_buf_set_name(buf, "lazydocker")
 
 	-- Open terminal with lazydocker
-	vim.fn.termopen("lazydocker", {
+	vim.fn.jobstart({ "lazydocker" }, {
+		term = true,
 		on_exit = function()
 			-- Close buffer when lazydocker exits
 			if vim.api.nvim_buf_is_valid(buf) then

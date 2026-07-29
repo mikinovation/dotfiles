@@ -20,7 +20,6 @@ function nvimTree.config()
 
 						return {
 							relative = "editor",
-							border = "rounded",
 							width = width,
 							height = height,
 							row = top,

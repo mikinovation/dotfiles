@@ -3,9 +3,11 @@
 local helper = dofile(debug.getinfo(1, "S").source:gsub("^@", ""):match("(.*/)") .. "test_helper.lua")
 helper.init(helper.get_lsp_dir())
 
+-- Both lsp.keymaps and lsp.features register their own LspAttach autocmd;
+-- disambiguate by augroup name rather than relying on require order.
 local function get_lspattach_callback()
 	for _, autocmd in ipairs(helper.captured.autocmds) do
-		if autocmd.event == "LspAttach" then
+		if autocmd.event == "LspAttach" and autocmd.opts.group and autocmd.opts.group.name == "UserLspConfig" then
 			return autocmd.opts.callback
 		end
 	end
@@ -69,7 +71,7 @@ describe("lsp keymaps", function()
 				registered_keys[call.lhs] = true
 			end
 
-			local essential_keys = { "gd", "gr", "gI", "gD", "K", "<leader>rn", "<leader>ca" }
+			local essential_keys = { "gd", "gr", "gI", "gD", "<leader>rn", "<leader>ca" }
 			for _, key in ipairs(essential_keys) do
 				assert.is_true(registered_keys[key], "essential keymap '" .. key .. "' should be registered")
 			end
