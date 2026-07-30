@@ -92,8 +92,8 @@
 
     # settings.json
     settings = {
-      model = "opusplan";
-      effortLevel = "xhigh";
+      model = "opus";
+      effortLevel = "high";
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
       hooks = {
