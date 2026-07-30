@@ -69,10 +69,10 @@ fi
 
 if [ -n "$rate_info" ]; then
   if [ -n "$parts" ]; then
-    parts="${parts} | ${rate_info}"
+    parts="${parts}\n${rate_info}"
   else
     parts="${rate_info}"
   fi
 fi
 
-printf '%s' "$parts"
+printf '%b' "$parts"
