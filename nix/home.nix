@@ -29,6 +29,7 @@
     curl # HTTP client
     lsof # List open files
     pandoc # Document format converter
+    wl-clipboard # Wayland clipboard (WSLg bridges it to the Windows clipboard)
     apm
     vueLanguageServer
     vueTypescriptPlugin
@@ -37,6 +38,7 @@
   ];
 
   imports = [
+    ./programs/clipboard
     ./programs/git
     ./programs/zsh
     ./programs/neovim

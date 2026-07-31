@@ -43,6 +43,16 @@
       ++ [
         vueLanguageServer # Vue (volar) — local build to avoid nixpkgs pnpm dep
       ];
+
+    # sqlite.lua loads libsqlite3 by ffi and only probes FHS paths such as
+    # /usr/lib/libsqlite3.so, none of which exist on NixOS. Hand it the store
+    # path instead; plugins/sqlite/init.lua turns this into vim.g.sqlite_clib_path.
+    # Without it yanky's ring storage and telescope-frecency both fail.
+    extraWrapperArgs = [
+      "--set"
+      "NVIM_SQLITE_CLIB_PATH"
+      "${pkgs.sqlite.out}/lib/libsqlite3.so"
+    ];
   };
 
   home.file.".config/nvim".source = pkgs.lib.cleanSourceWith {

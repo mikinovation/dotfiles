@@ -29,6 +29,24 @@ On Windows, copy the WezTerm config to the host OS:
 cp ~/ghq/github.com/mikinovation/dotfiles/nix/programs/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
 
+### Windows clipboard history (WSL)
+
+Turn on Settings > System > Clipboard > "Clipboard history" to paste from
+history with `Win+V` on the Windows side. This is an OS feature and cannot be
+managed from these dotfiles.
+
+The WSL side has its own history, kept by the `clipboard-history` systemd user
+service and shared between neovim and zsh:
+
+- neovim: `p` pastes as usual, then `<C-n>` walks back through older entries in
+  place (`<C-p>` goes the other way), and `<leader>P` opens a Telescope picker
+  over the whole history
+- zsh: `Ctrl-Y` opens an fzf picker over the clipboard history
+
+Both directions are covered: yanks made in neovim reach the Windows clipboard
+(`clipboard=unnamedplus`), and text copied on the Windows side is pulled into
+neovim's yank ring when the terminal regains focus.
+
 
 ## install
 

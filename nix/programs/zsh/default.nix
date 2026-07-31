@@ -51,6 +51,9 @@
       # Load fzf integrations
       [[ -f "$DOTFILES_DIR/nix/programs/zsh/plugins/fzf.zsh" ]] && source "$DOTFILES_DIR/nix/programs/zsh/plugins/fzf.zsh"
 
+      # Load clipboard history integration
+      [[ -f "$DOTFILES_DIR/nix/programs/zsh/plugins/clipboard.zsh" ]] && source "$DOTFILES_DIR/nix/programs/zsh/plugins/clipboard.zsh"
+
       # Load Powerlevel10k configuration
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 

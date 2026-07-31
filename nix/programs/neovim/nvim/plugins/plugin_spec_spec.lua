@@ -49,7 +49,11 @@ local function setup_vim_mock()
 			input = function()
 				return ""
 			end,
+			executable = function()
+				return 0
+			end,
 		},
+		env = {},
 		g = { mapleader = " ", maplocalleader = " ", have_nerd_font = false },
 		o = {},
 		opt = {
@@ -310,10 +314,17 @@ describe("clipboard plugin", function()
 	setup(function()
 		original_vim = _G.vim
 		setup_vim_mock()
+
+		-- config() requires plugins.clipboard.provider
+		local nvim_dir = plugins_dir:match("(.*/nix/programs/neovim/nvim/)")
+		if nvim_dir then
+			package.path = nvim_dir .. "?.lua;" .. nvim_dir .. "?/init.lua;" .. package.path
+		end
 	end)
 
 	teardown(function()
 		_G.vim = original_vim
+		package.loaded["plugins.clipboard.provider"] = nil
 	end)
 
 	it("returns a table with a config function", function()

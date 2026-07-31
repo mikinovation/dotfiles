@@ -217,6 +217,7 @@ local plugins_with_keymaps = {
 	"git-conflict",
 	"gitlinker",
 	"org-roam",
+	"yanky",
 }
 
 -- Scan filesystem for plugins that have keymaps.lua
