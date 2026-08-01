@@ -55,6 +55,9 @@
     ./programs/sheldon
     ./programs/python
     ./programs/typst
+    ./programs/terraform
+    ./programs/direnv
+    ./programs/onepassword
   ];
 
   home.sessionVariables = { };
