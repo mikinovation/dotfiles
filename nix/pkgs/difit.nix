@@ -8,13 +8,13 @@
 
 let
   tgz = fetchurl {
-    url = "https://registry.npmjs.org/difit/-/difit-5.0.8.tgz";
-    sha512 = "4wraDkhacN6VFdFm57GP+0qtimu0vnxgZ3hyVjgVEoU6r4xkH2B/vZoLa0XePYzbIhyZ/xPHYFn6WmVk8OVPCw==";
+    url = "https://registry.npmjs.org/difit/-/difit-5.0.10.tgz";
+    sha512 = "1A3XmDmOYZ0eRYvm3MN7YuyjCRSmrl+sbPt0xZ4d5ESoMXMYwmOeHGgaJYfZcKwus/TJdOBPxZ5Eg5WhKsnUSw==";
   };
 in
 buildNpmPackage {
   pname = "difit";
-  version = "5.0.8";
+  version = "5.0.10";
 
   # devDependencies (oxlint/oxlint-tsgolint) declare a broken peer range
   # upstream; they're unused at runtime since dontNpmBuild = true ships the
@@ -32,7 +32,7 @@ buildNpmPackage {
     '
   '';
 
-  npmDepsHash = "sha256-kpHSTPTqGHezE8UqP6F8O9HPhad90ikSDKbudPs/i8k=";
+  npmDepsHash = "sha256-WYo6GaWLroh8SLYat5C6PHEHN7XEw2inDBD4f8DCkaU=";
 
   dontNpmBuild = true;
 
