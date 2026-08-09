@@ -65,7 +65,11 @@ require("lazy").setup({
 	require("plugins.open-browser").config(),
 	require("plugins.oil").config(),
 }, {
-	lockfile = os.getenv("HOME") .. "/dotfiles/nix/programs/neovim/nvim/lazy-lock.json",
+	-- ~/.config/nvim is a read-only Nix store path, so the lockfile is written
+	-- back to the checkout. NVIM_LAZY_LOCKFILE overrides the path for CI and
+	-- for clones that do not live at ~/dotfiles.
+	lockfile = os.getenv("NVIM_LAZY_LOCKFILE")
+		or (os.getenv("HOME") .. "/dotfiles/nix/programs/neovim/nvim/lazy-lock.json"),
 	performance = {
 		rtp = {
 			-- Built-in runtime plugins that are never used

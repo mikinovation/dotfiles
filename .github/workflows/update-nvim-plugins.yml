@@ -1,0 +1,82 @@
+name: Update Neovim plugins
+
+on:
+  schedule:
+    # Every Monday 04:00 UTC, matching renovate's "before 5am on monday".
+    - cron: "0 4 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-lazy-lock:
+    runs-on: ubuntu-latest
+    env:
+      # ~/.config/nvim is read-only in the real setup, so plugins.lua writes the
+      # lockfile back to a checkout path given by this variable.
+      NVIM_LAZY_LOCKFILE: ${{ github.workspace }}/nix/programs/neovim/nvim/lazy-lock.json
+      XDG_CONFIG_HOME: ${{ github.workspace }}/nix/programs/neovim
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ secrets.AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Install Neovim
+        uses: rhysd/action-setup-vim@febef33995d6649302e9d88dda81e071b68f16a7 # v1.6.1
+        with:
+          neovim: true
+          version: v0.11.6
+
+      - name: Install luarocks and build dependencies
+        run: |
+          sudo apt-get update && sudo apt-get install -y luarocks lua5.1 liblua5.1-0-dev
+          sudo luarocks install luarocks-build-treesitter-parser
+          npm install -g tree-sitter-cli
+
+      - name: Update plugins
+        timeout-minutes: 20
+        run: |
+          # Directories referenced by the config, to avoid startup warnings.
+          mkdir -p "$HOME/ghq/github.com/mikinovation/org"
+          nvim --headless "+Lazy! install" +qa 2>&1 || true
+          nvim --headless "+Lazy! restore" +qa 2>&1 || true
+          nvim --headless "+Lazy! update" +qa 2>&1
+
+      - name: Verify Neovim starts cleanly
+        run: |
+          if error_output=$(nvim --headless -c 'quit' 2>&1) && [ -z "$error_output" ]; then
+            echo "Neovim starts cleanly with the updated lockfile."
+          else
+            echo "Neovim failed to start with the updated lockfile:"
+            [ -n "$error_output" ] && echo "$error_output"
+            exit 1
+          fi
+
+      - name: Build pull request body
+        run: |
+          {
+            echo "Weekly \`lazy.nvim\` plugin update (\`Lazy! update\`)."
+            echo
+            echo '<details><summary>Lockfile diff</summary>'
+            echo
+            echo '```diff'
+            git diff -- nix/programs/neovim/nvim/lazy-lock.json
+            echo '```'
+            echo
+            echo '</details>'
+          } > "$RUNNER_TEMP/pr-body.md"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
+          add-paths: nix/programs/neovim/nvim/lazy-lock.json
+          branch: automation/nvim-lazy-lock
+          delete-branch: true
+          commit-message: "chore(deps): update neovim plugins"
+          title: "chore(deps): update neovim plugins"
+          body-path: ${{ runner.temp }}/pr-body.md
+          labels: dependencies
+          assignees: mikinovation

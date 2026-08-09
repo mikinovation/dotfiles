@@ -188,6 +188,17 @@
       # Nix formatter
       formatter.${system} = pkgs.nixfmt-rfc-style;
 
+      # Locally packaged npm tools, exposed so the weekly update workflow can
+      # build just the package it changed instead of the whole home-manager
+      # activation package.
+      packages.${system} = {
+        claude-code = claudeCode;
+        vue-language-server = vueLanguageServer;
+        vue-typescript-plugin = vueTypescriptPlugin;
+        difit = difit;
+        chrome-devtools-mcp = chromeDevtoolsMcp;
+      };
+
       # Nix flake checks
       checks.${system} = {
         home-manager-build = self.homeConfigurations.mikinovation.activationPackage;

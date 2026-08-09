@@ -1,0 +1,79 @@
+name: Update nix npm packages
+
+on:
+  schedule:
+    # Every Monday 04:00 UTC, matching renovate's "before 5am on monday".
+    - cron: "0 4 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-nix-npm:
+    runs-on: ubuntu-latest
+    env:
+      SUMMARY_FILE: ${{ runner.temp }}/summary.txt
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          token: ${{ secrets.AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - uses: cachix/install-nix-action@630ae543ea3a38a9a4166f03376c02c50f408342 # v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
+      # Pinned to the same major as the devShell's nodejs_22 so regenerated
+      # lockfiles keep the same lockfileVersion.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 22
+
+      - name: Update packages
+        timeout-minutes: 20
+        run: sh ./scripts/nix-npm-update.sh
+
+      - name: Build updated packages
+        timeout-minutes: 30
+        run: |
+          changed=""
+          for pkg in claude-code vue-language-server vue-typescript-plugin difit chrome-devtools-mcp; do
+            if ! git diff --quiet -- "nix/pkgs/$pkg.nix" "nix/pkgs/$pkg-lock.json"; then
+              changed="$changed $pkg"
+            fi
+          done
+          if [ -z "$changed" ]; then
+            echo "No package changed."
+            exit 0
+          fi
+          for pkg in $changed; do
+            echo "=== Building $pkg ==="
+            nix build --no-link "./nix#$pkg"
+          done
+
+      - name: Build pull request body
+        run: |
+          {
+            echo "Weekly update of the npm packages vendored under \`nix/pkgs/\`."
+            echo
+            echo '```'
+            cat "$SUMMARY_FILE"
+            echo '```'
+            echo
+            echo "Each changed package was built with \`nix build ./nix#<pkg>\` to validate its \`sha512\` and \`npmDepsHash\`."
+          } > "$RUNNER_TEMP/pr-body.md"
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8.1.1
+        with:
+          token: ${{ secrets.AUTOMATION_TOKEN || secrets.GITHUB_TOKEN }}
+          add-paths: nix/pkgs
+          branch: automation/nix-npm-packages
+          delete-branch: true
+          commit-message: "chore(deps): update nix npm packages"
+          title: "chore(deps): update nix npm packages"
+          body-path: ${{ runner.temp }}/pr-body.md
+          labels: dependencies
+          assignees: mikinovation
