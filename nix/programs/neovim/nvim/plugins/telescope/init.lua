@@ -3,7 +3,33 @@ local telescope = {}
 function telescope.config()
 	return { -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
-		event = "VimEnter",
+		cmd = "Telescope",
+		-- Lazy-load triggers. Keep in sync with plugins/telescope/keymaps.lua,
+		-- which registers the real mappings once the plugin is loaded.
+		keys = {
+			{ "<leader>ff", desc = "[F]ind [F]iles" },
+			{ "<leader>fw", desc = "[F]ind Current [W]ord" },
+			{ "<leader>fg", desc = "[F]ind by [G]rep" },
+			{ "<leader>fr", desc = "[F]ind [R]esume" },
+			{ "<leader>f.", desc = '[F]ind Recent Files ("." for repeat)' },
+			{ "<leader>fB", desc = "[F]ind [B]uffers" },
+			{ "<leader>f/", desc = "[F]ind [/] Fuzzily in Current Buffer" },
+			{ "<leader>s/", desc = "[S]earch [/] in Open Files" },
+			{ "<leader>fn", desc = "[F]ind [N]eovim Files" },
+			{ "<leader>fb", desc = "[F]ile [B]rowser" },
+			{ "<leader>fH", desc = "[F]ile Browser - [H]ome Directory" },
+			{ "<leader>fM", desc = "[F]ind [M]edia Files" },
+			{ "<leader>sf", desc = "[S]earch [F]requent Files" },
+			{ "<leader>gC", desc = "[G]it [C]ommits (Telescope)" },
+			{ "<leader>fp", desc = "[F]ind [P]roject Files" },
+			{ "<leader>sw", desc = "[S]earch Current [W]ord" },
+			{ "<leader>sw", mode = "v", desc = "[S]earch Selected [W]ord" },
+			{ "<leader>sr", desc = "[S]earch and [R]eplace" },
+			{ "<leader>fyg", desc = "[F]ind [Y]anked Text (Grep)" },
+			{ "<leader>fyf", desc = "[F]ind [Y]anked Text (Files)" },
+			{ "<leader>fcf", desc = "[F]ind Files in [C]urrent Directory" },
+			{ "<leader>fcg", desc = "[F]ind by [G]rep in [C]urrent Directory" },
+		},
 		dependencies = {
 			require("plugins.plenary").config(),
 			require("plugins.telescope-fzf-native").config(),
@@ -106,7 +132,10 @@ function telescope.config()
 					},
 					project = {
 						base_dirs = {
-							{ "~/ghq", max_depth = 5 },
+							-- ghq layout is <host>/<user>/<repo>/.git, so depth 4 is the
+							-- minimum that still finds every repo. Deeper values make
+							-- the startup scan descend into repository contents.
+							{ "~/ghq", max_depth = 4 },
 						},
 						hidden_files = true,
 						sync_with_nvim_tree = true,

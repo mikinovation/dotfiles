@@ -3,6 +3,7 @@ local yanky = {}
 function yanky.config()
 	return {
 		"gbprod/yanky.nvim",
+		event = "VeryLazy",
 		opts = {},
 		config = function()
 			require("yanky").setup({

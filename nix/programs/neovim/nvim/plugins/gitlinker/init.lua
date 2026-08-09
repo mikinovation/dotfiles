@@ -3,6 +3,10 @@ local gitlinker = {}
 function gitlinker.config()
 	return {
 		"ruifm/gitlinker.nvim",
+		-- Keep in sync with plugins/gitlinker/keymaps.lua
+		keys = {
+			{ "<leader>gy", desc = "Copy git link to clipboard" },
+		},
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require("gitlinker").setup({
