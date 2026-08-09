@@ -15,7 +15,7 @@ function orgmode.config()
 				mappings = {
 					org = {
 						-- Replaced by plugins.orgmode.actions.pick_todo_state; cycling
-						-- through 13 states one key press at a time is not usable.
+						-- through 11 states one key press at a time is not usable.
 						org_todo = false,
 						org_todo_prev = false,
 					},

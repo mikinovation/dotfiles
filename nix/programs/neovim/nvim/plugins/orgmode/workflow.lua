@@ -10,10 +10,13 @@ local M = {}
 M.ORG_DIR = "~/ghq/github.com/mikinovation/org"
 
 -- 未着手 → ISSUE作成 → 設計 → テストケース作成 → 実装 → セルフレビュー →
--- レビュー → QA中 → QA完了 → 受け入れ中 → 受け入れ完了
+-- レビュー → QA中 → QA完了 → 受け入れ中 → 完了
 --
--- `DONE` stays on the finished side purely for the ~440 existing day-to-day
--- headlines that already use it; tickets finish at `ACCEPTED`.
+-- A single finished state. Accepted tickets, finished day-to-day chores and
+-- abandoned work all land on `DONE`: the distinction stopped earning its
+-- keyword once the ball was no longer with anyone. `DONE` is the survivor
+-- rather than `ACCEPTED` because ~440 existing headlines already use it, and
+-- dropping it would strip them of their keyword.
 --
 -- No `(x)` fast access keys: `cit` is remapped to a fuzzy picker in
 -- plugins.orgmode.actions, and insert-mode completion offers these values via
@@ -30,9 +33,7 @@ M.todo_keywords = {
 	"QADONE",
 	"ACCEPTING",
 	"|",
-	"ACCEPTED",
 	"DONE",
-	"CANCELLED",
 }
 
 M.labels = {
@@ -46,9 +47,7 @@ M.labels = {
 	QA = "QA中",
 	QADONE = "QA完了",
 	ACCEPTING = "受け入れ中",
-	ACCEPTED = "受け入れ完了",
 	DONE = "完了",
-	CANCELLED = "中止",
 }
 
 --- Keywords in sequence order, with `"|"` dropped.
@@ -76,14 +75,22 @@ M.keyword_set = (function()
 	return set
 end)()
 
--- Colored by who holds the ball, not by which step it is: with 13 states the
+-- Colored by who holds the ball, not by which step it is: with 11 states the
 -- step-by-step hue would be unreadable, and "is this on me or on someone else"
 -- is the question actually asked when scanning a file.
-local NOT_STARTED = ":foreground #f7768e :weight bold"
-local MINE = ":foreground #e0af68 :weight bold"
-local THEIRS = ":foreground #7aa2f7 :weight bold"
-local FINISHED = ":foreground #9ece6a :weight bold"
-local ABANDONED = ":foreground #565f89 :slant italic"
+--
+-- The open states are drawn as filled badges rather than colored text. Headline
+-- text already spends every hue tokyonight has -- orgmode links levels 1..8 to
+-- Title/Constant/Identifier/Statement/PreProc/Type/Special/String, which resolve
+-- to blue/orange/magenta/magenta/cyan/blue1/blue1/green -- so a foreground-only
+-- state is indistinguishable from the heading it sits in front of. A background
+-- separates them at any level. The finished state stays unfilled so that only
+-- what is still moving draws the eye.
+local BADGE_FG = "#1a1b26"
+local NOT_STARTED = ":foreground " .. BADGE_FG .. " :background #f7768e :weight bold"
+local MINE = ":foreground " .. BADGE_FG .. " :background #e0af68 :weight bold"
+local THEIRS = ":foreground " .. BADGE_FG .. " :background #7aa2f7 :weight bold"
+local FINISHED = ":foreground #565f89"
 
 M.todo_keyword_faces = {
 	TODO = NOT_STARTED,
@@ -96,9 +103,7 @@ M.todo_keyword_faces = {
 	QA = THEIRS,
 	QADONE = THEIRS,
 	ACCEPTING = THEIRS,
-	ACCEPTED = FINISHED,
 	DONE = FINISHED,
-	CANCELLED = ABANDONED,
 }
 
 -- `journal/**` is excluded on purpose: it holds Claude session logs whose

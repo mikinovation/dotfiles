@@ -75,7 +75,7 @@ end
 
 --- Pick a TODO state for the closest org heading from a filterable list.
 --- Replaces orgmode's own `cit`, which cycles through all states one key press
---- at a time; with 13 of them that is unusable, and their fast access letters
+--- at a time; with 11 of them that is unusable, and their fast access letters
 --- are not worth memorizing.
 function M.pick_todo_state()
 	local workflow = require("plugins.orgmode.workflow")

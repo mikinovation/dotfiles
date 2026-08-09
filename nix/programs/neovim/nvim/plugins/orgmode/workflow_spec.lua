@@ -58,7 +58,7 @@ describe("plugins.orgmode.workflow", function()
 			end
 		end)
 
-		it("finishes tickets at ACCEPTED and keeps DONE for existing headlines", function()
+		it("finishes on DONE alone, the keyword existing headlines already use", function()
 			local separator_index
 			for index, keyword in ipairs(workflow.todo_keywords) do
 				if keyword == "|" then
@@ -67,11 +67,9 @@ describe("plugins.orgmode.workflow", function()
 			end
 			local done_side = {}
 			for index = separator_index + 1, #workflow.todo_keywords do
-				done_side[workflow.todo_keywords[index]] = true
+				table.insert(done_side, workflow.todo_keywords[index])
 			end
-			assert.is_true(done_side.ACCEPTED)
-			assert.is_true(done_side.DONE)
-			assert.is_true(done_side.CANCELLED)
+			assert.same({ "DONE" }, done_side)
 		end)
 	end)
 
@@ -86,7 +84,7 @@ describe("plugins.orgmode.workflow", function()
 
 		it("preserves sequence order", function()
 			assert.equals("TODO", workflow.keywords()[1])
-			assert.equals("CANCELLED", workflow.keywords()[#workflow.keywords()])
+			assert.equals("DONE", workflow.keywords()[#workflow.keywords()])
 		end)
 	end)
 
