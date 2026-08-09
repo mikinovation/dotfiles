@@ -11,6 +11,7 @@ function pathtool.config()
 			{ "<leader>pr", desc = "Copy relative path" },
 			{ "<leader>pp", desc = "Copy project-relative path" },
 			{ "<leader>pf", desc = "Copy filename" },
+			{ "<leader>pn", desc = "Copy filename without extension" },
 			{ "<leader>pd", desc = "Copy directory path" },
 			{ "<leader>pc", desc = "Convert path style" },
 			{ "<leader>pu", desc = "Convert to file URL" },
