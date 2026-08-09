@@ -3,6 +3,11 @@ local nvimDbee = {}
 function nvimDbee.config()
 	return {
 		"kndndrj/nvim-dbee",
+		cmd = "Dbee",
+		-- Keep in sync with plugins/nvim-dbee/keymaps.lua
+		keys = {
+			{ "<leader>db", desc = "Toggle DBee" },
+		},
 		dependencies = {
 			"MunifTanjim/nui.nvim",
 		},

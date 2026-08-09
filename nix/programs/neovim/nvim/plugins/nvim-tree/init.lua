@@ -3,6 +3,12 @@ local nvimTree = {}
 function nvimTree.config()
 	return {
 		"nvim-tree/nvim-tree.lua",
+		cmd = { "NvimTreeToggle", "NvimTreeOpen", "NvimTreeFindFile", "NvimTreeCollapse" },
+		-- Keep in sync with plugins/nvim-tree/keymaps.lua
+		keys = {
+			{ "<leader>e", desc = "Toggle file explorer" },
+			{ "<leader>ec", desc = "Reveal current file in tree" },
+		},
 		dependencies = {
 			require("plugins.nvim-web-devicons").config(),
 		},

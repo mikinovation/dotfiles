@@ -4,6 +4,11 @@ function toggleterm.config()
 	return {
 		"akinsho/toggleterm.nvim",
 		version = "*",
+		cmd = { "ToggleTerm", "ToggleTermToggleAll" },
+		-- Keep in sync with plugins/toggleterm/keymaps.lua
+		keys = {
+			{ "<leader>tt", desc = "Toggle terminal" },
+		},
 		config = function()
 			require("toggleterm").setup({
 				direction = "float",

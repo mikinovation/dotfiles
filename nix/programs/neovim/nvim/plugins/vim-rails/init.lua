@@ -4,6 +4,7 @@ local vimRails = {}
 function vimRails.config()
 	return {
 		"tpope/vim-rails",
+		ft = { "ruby", "eruby", "haml", "slim" },
 	}
 end
 

@@ -3,6 +3,7 @@ local neogit = {}
 function neogit.config()
 	return {
 		"NeogitOrg/neogit",
+		cmd = { "Neogit", "NeogitResetState" },
 		dependencies = {
 			require("plugins.plenary").config(),
 			require("plugins.diffview").config(),

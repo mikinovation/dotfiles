@@ -3,6 +3,7 @@ local quickScope = {}
 function quickScope.config()
 	return {
 		"unblevable/quick-scope",
+		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			-- Set highlight colors that match with tokyonight theme
 			vim.cmd([[

@@ -66,6 +66,20 @@ require("lazy").setup({
 	require("plugins.oil").config(),
 }, {
 	lockfile = os.getenv("HOME") .. "/dotfiles/nix/programs/neovim/nvim/lazy-lock.json",
+	performance = {
+		rtp = {
+			-- Built-in runtime plugins that are never used
+			disabled_plugins = {
+				"gzip",
+				"tarPlugin",
+				"zipPlugin",
+				"tohtml",
+				"tutor",
+				"rplugin",
+				"netrwPlugin",
+			},
+		},
+	},
 	ui = {
 		icons = vim.g.have_nerd_font and {} or {
 			cmd = "⌘",

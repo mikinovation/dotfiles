@@ -3,6 +3,12 @@ local neotest = {}
 function neotest.config()
 	return {
 		"nvim-neotest/neotest",
+		-- Keep in sync with plugins/neotest/keymaps.lua
+		keys = {
+			{ "<leader>tn", desc = "Run test nearest" },
+			{ "<leader>tD", desc = "Debug test nearest (DAP)" },
+			{ "<leader>tf", desc = "Run test file" },
+		},
 		dependencies = {
 			require("plugins.nvim-nio").config(),
 			require("plugins.plenary").config(),

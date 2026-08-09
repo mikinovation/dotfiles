@@ -3,6 +3,11 @@ local comment = {}
 function comment.config()
 	return {
 		"numToStr/Comment.nvim",
+		event = { "BufReadPost", "BufNewFile" },
+		-- pre_hook needs ts_context_commentstring loaded first
+		dependencies = {
+			require("plugins.nvim-ts-context-commentstring").config(),
+		},
 		config = function()
 			require("Comment").setup({
 				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),

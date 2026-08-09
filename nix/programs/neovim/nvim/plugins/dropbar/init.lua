@@ -3,6 +3,7 @@ local dropbar = {}
 function dropbar.config()
 	return {
 		"Bekaboo/dropbar.nvim",
+		event = "VeryLazy",
 		-- optional, but required for fuzzy finder support
 		dependencies = {
 			require("plugins.telescope-fzf-native").config(),
