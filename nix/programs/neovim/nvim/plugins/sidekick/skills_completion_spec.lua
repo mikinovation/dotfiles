@@ -20,16 +20,62 @@ local function load_module()
 	return dofile(module_dir .. "skills_completion.lua")
 end
 
---- Create a skill directory holding `contents` as its SKILL.md.
---- Returns the directory path; the caller removes it.
-local function make_skill_dir(contents)
+--- Create an empty temporary directory; the caller removes it.
+local function make_dir()
 	local dir = os.tmpname()
 	os.remove(dir)
 	os.execute("mkdir -p " .. dir)
-	local file = assert(io.open(dir .. "/SKILL.md", "w"))
+	return dir
+end
+
+local function write_file(path, contents)
+	local file = assert(io.open(path, "w"))
 	file:write(contents)
 	file:close()
+end
+
+--- Create a skill directory holding `contents` as its SKILL.md.
+--- Returns the directory path; the caller removes it.
+local function make_skill_dir(contents)
+	local dir = make_dir()
+	write_file(dir .. "/SKILL.md", contents)
 	return dir
+end
+
+--- A `vim.loop` good enough for M.cache_key and M.scan, backed by the real
+--- filesystem through LuaFileSystem (busted runs without luv). lfs reports
+--- mtimes in whole seconds, so the tests below assert on paths appearing and
+--- disappearing from the key rather than on mtime resolution.
+local function real_loop()
+	local lfs = require("lfs")
+	return {
+		fs_stat = function(path)
+			local attrs = lfs.attributes(path)
+			if not attrs then
+				return nil
+			end
+			return { mtime = { sec = attrs.modification, nsec = 0 } }
+		end,
+		fs_scandir = function(path)
+			if lfs.attributes(path, "mode") ~= "directory" then
+				return nil
+			end
+			local iterator, state = lfs.dir(path)
+			return { iterator = iterator, state = state, path = path }
+		end,
+		fs_scandir_next = function(handle)
+			while true do
+				local name = handle.iterator(handle.state)
+				if not name then
+					return nil
+				end
+				if name ~= "." and name ~= ".." then
+					local mode = lfs.attributes(handle.path .. "/" .. name, "mode")
+					return name, mode == "directory" and "directory" or "file"
+				end
+			end
+		end,
+	}
 end
 
 describe("plugins.sidekick.skills_completion", function()
@@ -175,6 +221,9 @@ describe("plugins.sidekick.skills_completion", function()
 					fs_stat = function(path)
 						return stats[path]
 					end,
+					fs_scandir = function()
+						return nil
+					end,
 				},
 			}
 		end)
@@ -200,6 +249,57 @@ describe("plugins.sidekick.skills_completion", function()
 		it("tolerates a missing root", function()
 			local skills = load_module()
 			assert.equals("/gone@0.0", skills.cache_key({ "/gone" }))
+		end)
+	end)
+
+	describe("cache_key on a real filesystem", function()
+		local saved_vim
+		local root
+
+		before_each(function()
+			saved_vim = _G.vim
+			_G.vim = { loop = real_loop() }
+			root = make_dir()
+		end)
+
+		after_each(function()
+			_G.vim = saved_vim
+			os.execute("rm -rf " .. root)
+		end)
+
+		it("is stable while nothing changes", function()
+			local skills = load_module()
+			os.execute("mkdir -p " .. root .. "/alpha")
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\n---\n")
+			assert.equals(skills.cache_key({ root }), skills.cache_key({ root }))
+		end)
+
+		it("changes when SKILL.md appears in an existing directory", function()
+			local skills = load_module()
+			os.execute("mkdir -p " .. root .. "/alpha")
+			local before = skills.cache_key({ root })
+
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\n---\n")
+			assert.are_not.equals(before, skills.cache_key({ root }))
+		end)
+
+		it("changes when SKILL.md appears in an existing nested directory", function()
+			local skills = load_module()
+			os.execute("mkdir -p " .. root .. "/plugin/nested")
+			local before = skills.cache_key({ root })
+
+			write_file(root .. "/plugin/nested/SKILL.md", "---\nname: nested\n---\n")
+			assert.are_not.equals(before, skills.cache_key({ root }))
+		end)
+
+		it("changes when a skill is removed", function()
+			local skills = load_module()
+			os.execute("mkdir -p " .. root .. "/alpha")
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\n---\n")
+			local before = skills.cache_key({ root })
+
+			os.remove(root .. "/alpha/SKILL.md")
+			assert.are_not.equals(before, skills.cache_key({ root }))
 		end)
 	end)
 
@@ -254,6 +354,92 @@ describe("plugins.sidekick.skills_completion", function()
 			key = "second"
 			skills.discover()
 			assert.equals(2, scans.count)
+		end)
+	end)
+
+	describe("discover on a real filesystem", function()
+		local saved_vim
+		local root
+
+		before_each(function()
+			saved_vim = _G.vim
+			_G.vim = { loop = real_loop() }
+			root = make_dir()
+		end)
+
+		after_each(function()
+			_G.vim = saved_vim
+			os.execute("rm -rf " .. root)
+		end)
+
+		local function names(skills)
+			local found = {}
+			for _, skill in ipairs(skills) do
+				table.insert(found, skill.name)
+			end
+			return found
+		end
+
+		--- Point the module at the temporary root only, leaving discovery itself
+		--- (scan, cache key, cache) untouched.
+		local function load_rooted()
+			local skills = load_module()
+			skills.roots = function()
+				return { root }
+			end
+			return skills
+		end
+
+		it("sees a skill added to a directory that already existed", function()
+			local skills = load_rooted()
+			os.execute("mkdir -p " .. root .. "/alpha " .. root .. "/beta")
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\n---\n")
+			assert.same({ "alpha" }, names(skills.discover()))
+
+			write_file(root .. "/beta/SKILL.md", "---\nname: beta\n---\n")
+			assert.same({ "alpha", "beta" }, names(skills.discover()))
+		end)
+
+		it("sees a skill added below a plugin directory that already existed", function()
+			local skills = load_rooted()
+			os.execute("mkdir -p " .. root .. "/plugin/nested")
+			assert.same({}, names(skills.discover()))
+
+			write_file(root .. "/plugin/nested/SKILL.md", "---\nname: plugin:nested\n---\n")
+			assert.same({ "plugin:nested" }, names(skills.discover()))
+		end)
+
+		it("sees a skill removed", function()
+			local skills = load_rooted()
+			os.execute("mkdir -p " .. root .. "/alpha")
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\n---\n")
+			assert.same({ "alpha" }, names(skills.discover()))
+
+			os.execute("rm -rf " .. root .. "/alpha")
+			assert.same({}, names(skills.discover()))
+		end)
+
+		it("sees a nested skill removed", function()
+			local skills = load_rooted()
+			os.execute("mkdir -p " .. root .. "/plugin/nested")
+			write_file(root .. "/plugin/nested/SKILL.md", "---\nname: plugin:nested\n---\n")
+			assert.same({ "plugin:nested" }, names(skills.discover()))
+
+			os.remove(root .. "/plugin/nested/SKILL.md")
+			assert.same({}, names(skills.discover()))
+		end)
+
+		it("sees a description edited inside an existing skill", function()
+			local skills = load_rooted()
+			os.execute("mkdir -p " .. root .. "/alpha")
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\ndescription: first\n---\n")
+			assert.equals("first", skills.discover()[1].description)
+
+			write_file(root .. "/alpha/SKILL.md", "---\nname: alpha\ndescription: second\n---\n")
+			-- Neovim's fs_stat reports nanoseconds, so a rewrite always moves the
+			-- mtime; lfs rounds to whole seconds, hence the explicit bump here.
+			require("lfs").touch(root .. "/alpha/SKILL.md", os.time() + 1)
+			assert.equals("second", skills.discover()[1].description)
 		end)
 	end)
 

@@ -178,27 +178,62 @@ function M.roots()
 	return { global_root, project_root }
 end
 
---- Cache key built from the roots' mtimes, so adding or removing a skill is
---- picked up without restarting Neovim. Nanoseconds are part of the key because
---- whole seconds are too coarse to notice a skill added moments after the first
---- completion. Edits *inside* an existing skill do not bump the parent mtime,
---- but only name and description are cached here.
+--- Append `path@sec.nsec` for everything below `path` that decides which skills
+--- exist: every directory down to the depth `M.scan` reads, plus the `SKILL.md`
+--- files themselves. Other files are skipped so the walk stays cheap.
+---
+--- Both the paths and their mtimes matter. A root's mtime alone is not enough:
+--- writing `<root>/skill/SKILL.md` into a directory that already exists leaves
+--- the root untouched, so that file has to be part of the key itself.
+---@param path string
+---@param depth integer
+---@param parts string[]
+local function collect_mtimes(path, depth, parts)
+	local stat = vim.loop.fs_stat(path)
+	local mtime = stat and stat.mtime or { sec = 0, nsec = 0 }
+	table.insert(parts, ("%s@%d.%d"):format(path, mtime.sec, mtime.nsec or 0))
+
+	-- A skill sits at depth 1 or 2, so its SKILL.md sits at depth 2 or 3 and the
+	-- directory holding it is the deepest one worth listing.
+	if depth > M.MAX_DEPTH then
+		return
+	end
+	local handle = vim.loop.fs_scandir(path)
+	if not handle then
+		return
+	end
+
+	while true do
+		local name, entry_type = vim.loop.fs_scandir_next(handle)
+		if not name then
+			break
+		end
+		if entry_type ~= "file" or name == "SKILL.md" then
+			collect_mtimes(path .. "/" .. name, depth + 1, parts)
+		end
+	end
+end
+
+--- Cache key covering the roots and their skill directories, so adding, removing
+--- or editing a skill is picked up without restarting Neovim. Nanoseconds are
+--- part of the key because whole seconds are too coarse to notice a skill added
+--- moments after the first completion. Parts are sorted so directory iteration
+--- order cannot change the key on its own.
 ---@param roots string[]
 ---@return string
 function M.cache_key(roots)
 	local parts = {}
 	for _, root in ipairs(roots) do
-		local stat = vim.loop.fs_stat(root)
-		local mtime = stat and stat.mtime or { sec = 0, nsec = 0 }
-		table.insert(parts, ("%s@%d.%d"):format(root, mtime.sec, mtime.nsec or 0))
+		collect_mtimes(root, 0, parts)
 	end
+	table.sort(parts)
 	return table.concat(parts, ",")
 end
 
 M._cache = nil
 M._cache_key = nil
 
---- All available skills, cached until a root directory changes.
+--- All available skills, cached until something below a root changes.
 ---@return table[]
 function M.discover()
 	local roots = M.roots()
