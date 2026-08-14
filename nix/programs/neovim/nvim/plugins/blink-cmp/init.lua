@@ -32,7 +32,8 @@ function blinkCmp.config()
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "lazydev" },
 				per_filetype = {
-					org = { inherit_defaults = true, "orgmode", "okf" },
+					org = { inherit_defaults = true, "orgmode", "okf", "claude_skills" },
+					markdown = { inherit_defaults = true, "claude_skills" },
 				},
 				providers = {
 					lazydev = {
@@ -48,6 +49,10 @@ function blinkCmp.config()
 					okf = {
 						name = "OKF",
 						module = "plugins.org-roam.okf_completion",
+					},
+					claude_skills = {
+						name = "Skills",
+						module = "plugins.sidekick.skills_completion",
 					},
 				},
 			},
