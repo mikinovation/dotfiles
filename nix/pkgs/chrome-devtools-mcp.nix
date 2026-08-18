@@ -9,13 +9,13 @@
 
 let
   tgz = fetchurl {
-    url = "https://registry.npmjs.org/chrome-devtools-mcp/-/chrome-devtools-mcp-1.6.0.tgz";
-    sha512 = "VZX6f/OjQSYhy2BGGRs+y3LsrsAQAz/HwZCWKBLVyST/4r/3zjVEjjVW7gMCVbRDuspnVdcp5hQDPrQ5UFrdZw==";
+    url = "https://registry.npmjs.org/chrome-devtools-mcp/-/chrome-devtools-mcp-1.7.0.tgz";
+    sha512 = "6xFW7oiUxTxZuHcfyYBkKQtmttjCbfifKZMSEk5CV8H2FucvKweYiJr8CblddYHtYjA4C14K9VAs1r49906RBA==";
   };
 in
 buildNpmPackage {
   pname = "chrome-devtools-mcp";
-  version = "1.6.0";
+  version = "1.7.0";
 
   # nodejs >=20.19 required by the package engines field.
   inherit nodejs;
@@ -40,7 +40,7 @@ buildNpmPackage {
   # The published tarball ships a prebuilt bundle (build/) with all
   # dependencies inlined, so there is nothing to fetch, install, or build.
   forceEmptyCache = true;
-  npmDepsHash = "sha256-4PR8CelDmanmUw7htH9cJLYb6ZjWfYf36UpwF0s7hEA=";
+  npmDepsHash = "sha256-tow/ir6++u8kDSYp4wDYZ9fvK9Z0nw9/QzqVN6uPIfs=";
 
   dontNpmBuild = true;
 

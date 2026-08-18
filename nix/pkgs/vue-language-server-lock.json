@@ -1,18 +1,18 @@
 {
   "name": "@vue/language-server",
-  "version": "3.3.9",
+  "version": "3.3.10",
   "lockfileVersion": 3,
   "requires": true,
   "packages": {
     "": {
       "name": "@vue/language-server",
-      "version": "3.3.9",
+      "version": "3.3.10",
       "license": "MIT",
       "dependencies": {
         "@volar/language-server": "2.4.28",
-        "@vue/language-core": "3.3.9",
-        "@vue/language-service": "3.3.9",
-        "@vue/typescript-plugin": "3.3.9",
+        "@vue/language-core": "3.3.10",
+        "@vue/language-service": "3.3.10",
+        "@vue/typescript-plugin": "3.3.10",
         "typescript": "^5.9.3",
         "vscode-uri": "^3.1.0"
       },
@@ -228,9 +228,9 @@
       }
     },
     "node_modules/@vue/language-core": {
-      "version": "3.3.9",
-      "resolved": "https://registry.npmjs.org/@vue/language-core/-/language-core-3.3.9.tgz",
-      "integrity": "sha512-in/68oAa4BCtVY6n/nkuhLIkV8DHYd2UivedJ6cMZ6UYtlq9jaoaSNUBHYCVO44z3nKg7MdE5OBoHKt5SxeBKQ==",
+      "version": "3.3.10",
+      "resolved": "https://registry.npmjs.org/@vue/language-core/-/language-core-3.3.10.tgz",
+      "integrity": "sha512-CR7ByBbgPHqhxrioKPOcZBqttaozzLNwtkCzXQ+uF8gLPHnUe03srPnGpdtHD3zp+bq5iyVkZ1WNx7W564RPwg==",
       "license": "MIT",
       "dependencies": {
         "@volar/language-core": "2.4.28",
@@ -256,13 +256,13 @@
       }
     },
     "node_modules/@vue/language-service": {
-      "version": "3.3.9",
-      "resolved": "https://registry.npmjs.org/@vue/language-service/-/language-service-3.3.9.tgz",
-      "integrity": "sha512-LFk21u8dImkmYBvNM1D/3PxnsP1A/GE3zihvcNu+0iEu/MOGMz7VQI0Vr+9VafgdH9btX9cENuu4LnXOrS3+nA==",
+      "version": "3.3.10",
+      "resolved": "https://registry.npmjs.org/@vue/language-service/-/language-service-3.3.10.tgz",
+      "integrity": "sha512-0V+3GxCvnk1GPhgnkK0oUdnasm1rdQmZA9o92pQws6+K8DT6GZzfAkkFrAaX6hBVtQWzz1QVHJi6NjUUPlzGwg==",
       "license": "MIT",
       "dependencies": {
         "@volar/language-service": "2.4.28",
-        "@vue/language-core": "3.3.9",
+        "@vue/language-core": "3.3.10",
         "@vue/shared": "^3.5.0",
         "path-browserify": "^1.0.1",
         "volar-service-css": "0.0.71",
@@ -283,16 +283,16 @@
       "license": "MIT"
     },
     "node_modules/@vue/typescript-plugin": {
-      "version": "3.3.9",
-      "resolved": "https://registry.npmjs.org/@vue/typescript-plugin/-/typescript-plugin-3.3.9.tgz",
-      "integrity": "sha512-lU5YLNiuaClZX1U9XwRaGZMeIFFvCin8SrESm5/azzfw/RvYvYj42sspy5/+XfSIZHHPn8Kdc2nm5qZ9C4OFfw==",
+      "version": "3.3.10",
+      "resolved": "https://registry.npmjs.org/@vue/typescript-plugin/-/typescript-plugin-3.3.10.tgz",
+      "integrity": "sha512-1IzVHNgSrueIsQNETp9I+emLwuhnuw8iV1s9i6wKtfoYPEtg6ZXAgDQKPupedDZ+IQbkm9CSUc3NKODPpJByHg==",
       "license": "MIT",
       "dependencies": {
         "@volar/typescript": "2.4.28",
-        "@vue/language-core": "3.3.9",
+        "@vue/language-core": "3.3.10",
         "@vue/shared": "^3.5.0",
         "path-browserify": "^1.0.1",
-        "vue-component-meta": "3.3.9"
+        "vue-component-meta": "3.3.10"
       }
     },
     "node_modules/acorn": {
@@ -942,13 +942,13 @@
       "license": "MIT"
     },
     "node_modules/vue-component-meta": {
-      "version": "3.3.9",
-      "resolved": "https://registry.npmjs.org/vue-component-meta/-/vue-component-meta-3.3.9.tgz",
-      "integrity": "sha512-4u1VmMVjqs9BbKaISBZD7b+dNdqFteh5BYN8xVaXkjjJ66no1sRtDnS6aSs5/P5AzQQGPw10snHTf/z3HpBn2w==",
+      "version": "3.3.10",
+      "resolved": "https://registry.npmjs.org/vue-component-meta/-/vue-component-meta-3.3.10.tgz",
+      "integrity": "sha512-9iZ4hYcaB3k59wmcrUIeX0W5wzdsCHEa1b3pyH6atq3FwCcz+V1a/kRbekZihTZ2Hm/l9dyvjszsMUvnc01tpw==",
       "license": "MIT",
       "dependencies": {
         "@volar/typescript": "2.4.28",
-        "@vue/language-core": "3.3.9",
+        "@vue/language-core": "3.3.10",
         "path-browserify": "^1.0.1"
       },
       "peerDependencies": {

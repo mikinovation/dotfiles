@@ -6,17 +6,17 @@
 
 let
   mainTgz = fetchurl {
-    url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-2.1.226.tgz";
-    sha512 = "mUkA81SbzATHFsHNz/rPy3Itw0D0S9kQMsIUJ3qPGwpNJMqPePyDP6xnWHI0jfFlspVjs8r/GfolMUyiy8P1FQ==";
+    url = "https://registry.npmjs.org/@anthropic-ai/claude-code/-/claude-code-2.1.234.tgz";
+    sha512 = "Q53mRcFLqPAWfkvqn7vOzTtMHprzwKdKGRW4OS/Kgr/Tsa+2pyVwVetLb7DRZxhBkYsYld2l8Eo4SX76YoNOOA==";
   };
   nativeTgz = fetchurl {
-    url = "https://registry.npmjs.org/@anthropic-ai/claude-code-linux-x64/-/claude-code-linux-x64-2.1.226.tgz";
-    sha512 = "zDdtV2tzCfngxKXJLj5/UYHtCVa/yA/L0vF5dBx3w1dx5tcA8+AlyRp3qcsd/gYU7hbI/gS5OoA7C8XqJR9YtA==";
+    url = "https://registry.npmjs.org/@anthropic-ai/claude-code-linux-x64/-/claude-code-linux-x64-2.1.234.tgz";
+    sha512 = "dB5vN+njWgjNLUmlviXQ2vCupBahNVjSn9gtR9Cc5D/zn2AZrq2FisbOpnx7WVWVj3GA1YqJ+xAgDsObq0JIuA==";
   };
 in
 stdenv.mkDerivation {
   pname = "claude-code";
-  version = "2.1.226";
+  version = "2.1.234";
 
   dontUnpack = true;
   # Node.js SEA binaries embed the JS application in a custom ELF section.
