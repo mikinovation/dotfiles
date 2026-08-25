@@ -16,6 +16,24 @@
       export PATH="$PATH:/opt/nvim/"
       export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
       export PATH="$BUN_INSTALL/bin:$PATH"
+
+      # fnm configuration
+      # 非インタラクティブシェル（スクリプト・エディタ・AI エージェント経由の実行）でも
+      # fnm 管理の Node.js を使うため .zshrc ではなく .zshenv 側で設定する
+      FNM_PATH="$HOME/.local/share/fnm"
+      if [ -d "$FNM_PATH" ]; then
+        export PATH="$FNM_PATH:$PATH"
+      fi
+      if command -v fnm > /dev/null 2>&1; then
+        # XDG_RUNTIME_DIR のディレクトリが存在しないと fnm の multishell シンボリックリンク作成に失敗し、
+        # PATH が更新されず nix 側の nodejs にフォールバックしてしまうためフォールバック先を用意する
+        if [ -n "$XDG_RUNTIME_DIR" ] && [ ! -d "$XDG_RUNTIME_DIR" ]; then
+          export XDG_RUNTIME_DIR="/tmp/runtime-$UID"
+          mkdir -p "$XDG_RUNTIME_DIR"
+          chmod 700 "$XDG_RUNTIME_DIR"
+        fi
+        eval "$(fnm env --use-on-cd --shell zsh)"
+      fi
     '';
 
     initContent = ''
@@ -26,14 +44,6 @@
 
       # Load sheldon plugins
       eval "$(sheldon source)"
-
-      # fnm configuration
-      FNM_PATH="$HOME/.local/share/fnm"
-      if [ -d "$FNM_PATH" ]; then
-        export PATH="$FNM_PATH:$PATH"
-        eval "`fnm env`"
-      fi
-      eval "$(fnm env --use-on-cd --shell zsh)"
 
       # zoxide configuration (to avoid conflicts with claude code)
       if [[ $- == *i* ]]; then

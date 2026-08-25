@@ -8,6 +8,8 @@
 }:
 
 {
+  home.packages = [ pkgs.rtk ];
+
   mcp-servers.programs = {
     context7.enable = true;
     terraform.enable = true;
@@ -97,6 +99,17 @@
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
       hooks = {
+        PreToolUse = [
+          {
+            matcher = "Bash";
+            hooks = [
+              {
+                type = "command";
+                command = "${lib.getExe pkgs.rtk} hook claude";
+              }
+            ];
+          }
+        ];
         Stop = [
           {
             matcher = "";
