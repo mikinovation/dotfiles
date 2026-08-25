@@ -9,9 +9,18 @@ function M.format_document()
 	vim.lsp.buf.format({ async = true })
 end
 
---- Open the directory of the current file in Windows Explorer (WSL).
+--- Open the directory of the current file in the OS file manager
+--- (Finder on macOS, Windows Explorer on WSL).
 function M.open_in_explorer()
 	local dir = vim.fn.expand("%:p:h")
+
+	if vim.fn.has("mac") == 1 then
+		vim.fn.system({ "open", dir })
+		if vim.v.shell_error ~= 0 then
+			vim.notify("Failed to open Finder at: " .. dir, vim.log.levels.ERROR)
+		end
+		return
+	end
 
 	local win_dir = vim.fn.system({ "wslpath", "-w", dir })
 	if vim.v.shell_error ~= 0 then

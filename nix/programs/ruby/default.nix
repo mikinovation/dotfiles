@@ -6,7 +6,7 @@
     ruby_3_4
 
     # Build dependencies for native extensions
-    gcc
+    (if stdenv.hostPlatform.isDarwin then clang else gcc)
     gnumake
 
     # Development tools

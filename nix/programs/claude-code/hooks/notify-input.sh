@@ -1,9 +1,15 @@
 #!/bin/bash
-# Claude Code awaiting input notification to Windows
+# Claude Code notification: Windows toast on WSL, Notification Center on macOS
 
+TITLE="⏸️ Claude Code"
 MESSAGE="Awaiting your input"
 
-# Send Windows toast notification via PowerShell
+case "$(uname -s)" in
+  Darwin)
+    osascript -e "display notification \"$MESSAGE\" with title \"$TITLE\" sound name \"Glass\"" 2>/dev/null
+    ;;
+  *)
+# PowerShell here-string の終端 "@ は行頭になければならないためインデントしない
 powershell.exe -Command "
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.UI.Notifications.ToastNotification, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
@@ -27,5 +33,7 @@ powershell.exe -Command "
 \$toast = New-Object Windows.UI.Notifications.ToastNotification \$xml
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(\$APP_ID).Show(\$toast)
 " 2>/dev/null
+    ;;
+esac
 
 exit 0
