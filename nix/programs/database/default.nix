@@ -65,7 +65,7 @@ in
   ];
 
   # Prisma engine environment variables (Linux only, binaries are debian-openssl-3.0.x)
-  home.sessionVariables = lib.mkIf pkgs.stdenv.isLinux {
+  home.sessionVariables = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
     PRISMA_QUERY_ENGINE_LIBRARY = "${prismaQueryEngineLib}/lib/libquery_engine.so.node";
     PRISMA_SCHEMA_ENGINE_BINARY = "${prismaSchemaEngine}/bin/schema-engine";
   };
