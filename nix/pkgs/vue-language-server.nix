@@ -8,13 +8,13 @@
 
 let
   tgz = fetchurl {
-    url = "https://registry.npmjs.org/@vue/language-server/-/language-server-3.3.10.tgz";
-    sha512 = "I/vPIpINg81p+2NyqR8PQrOxs0tr5ynrOBCgq1uCXphRAgJvsLyxAkrj+PCij2p8ZvVZ2zvqypg7EXVhHauU6w==";
+    url = "https://registry.npmjs.org/@vue/language-server/-/language-server-3.3.11.tgz";
+    sha512 = "5QvJ3bkUTyuRE7R4l0R+6Xl7Cq7INd95Hxm6bz3J0k9v+TjwKJKlnVeaW9X0fxTVrkcVBpSIKLQpAMlIOXeI9w==";
   };
 in
 buildNpmPackage {
   pname = "vue-language-server";
-  version = "3.3.10";
+  version = "3.3.11";
 
   # index.js does `require('typescript')` and uses the classic JS API
   # (ts.server.protocol). Upstream declares typescript as `*` / `latest`, which
@@ -37,7 +37,7 @@ buildNpmPackage {
     ' $out
   '';
 
-  npmDepsHash = "sha256-qnjMsIPfORCTitXPx2TrX33wHPqEvltByUhxXbZx4Rw=";
+  npmDepsHash = "sha256-F6yZmx0FKFbf4NSQSCJgBeg/RwHnuaoarzOfTRNUbYM=";
 
   dontNpmBuild = true;
 
