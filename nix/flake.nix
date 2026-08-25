@@ -68,6 +68,7 @@
       vueTypescriptPlugin = pkgs.callPackage ./pkgs/vue-typescript-plugin.nix { };
       difit = pkgs.callPackage ./pkgs/difit.nix { };
       chromeDevtoolsMcp = pkgs.callPackage ./pkgs/chrome-devtools-mcp.nix { };
+      headroom = pkgs.callPackage ./pkgs/headroom.nix { };
       herdr = inputs.herdr.packages.${system}.default;
       lintApp = pkgs.writeShellApplication {
         name = "lint";
@@ -124,6 +125,7 @@
               vueTypescriptPlugin
               difit
               chromeDevtoolsMcp
+              headroom
               herdr
               ;
           };
@@ -154,6 +156,7 @@
                   vueTypescriptPlugin
                   difit
                   chromeDevtoolsMcp
+                  headroom
                   herdr
                   ;
               };
