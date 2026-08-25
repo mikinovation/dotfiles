@@ -6,7 +6,7 @@
     rustup
 
     # Build dependencies
-    gcc
+    (if stdenv.hostPlatform.isDarwin then clang else gcc)
     gnumake
     pkg-config
     openssl

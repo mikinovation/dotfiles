@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
   programs.zsh = {
@@ -13,8 +18,15 @@
 
     envExtra = ''
       export PATH="$HOME/.local/bin:$PATH"
+    ''
+    + lib.optionalString pkgs.stdenv.hostPlatform.isLinux ''
       export PATH="$PATH:/opt/nvim/"
       export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
+    ''
+    + lib.optionalString pkgs.stdenv.hostPlatform.isDarwin ''
+      export PATH="/opt/homebrew/bin:$PATH"
+    ''
+    + ''
       export PATH="$BUN_INSTALL/bin:$PATH"
 
       # fnm configuration

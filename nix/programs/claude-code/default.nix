@@ -13,17 +13,36 @@
 
   # headroom は claude が起動するたびにプロキシを手動で立ち上げるのを避けるため
   # ユーザーサービスとして常駐させ、ANTHROPIC_BASE_URL で常時経由させる
-  systemd.user.services.headroom-proxy = {
-    Unit = {
-      Description = "Headroom context compression proxy";
-      After = [ "network.target" ];
+  # Linux は systemd user unit、macOS は launchd agent で同じ常駐を行う
+  systemd.user.services = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    headroom-proxy = {
+      Unit = {
+        Description = "Headroom context compression proxy";
+        After = [ "network.target" ];
+      };
+      Service = {
+        ExecStart = "${lib.getExe headroom} proxy --port 8787";
+        Restart = "always";
+        RestartSec = 5;
+      };
+      Install.WantedBy = [ "default.target" ];
     };
-    Service = {
-      ExecStart = "${lib.getExe headroom} proxy --port 8787";
-      Restart = "always";
-      RestartSec = 5;
+  };
+
+  launchd.agents = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+    headroom-proxy = {
+      enable = true;
+      config = {
+        ProgramArguments = [
+          (lib.getExe headroom)
+          "proxy"
+          "--port"
+          "8787"
+        ];
+        KeepAlive = true;
+        RunAtLoad = true;
+      };
     };
-    Install.WantedBy = [ "default.target" ];
   };
 
   home.sessionVariables = {
@@ -44,7 +63,14 @@
       command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
       args = [
         "--executablePath"
-        (lib.getExe pkgs.chromium)
+        # nixpkgs の chromium は Linux 専用のため、macOS では
+        # 手動インストールした Google Chrome の実体を指す
+        (
+          if pkgs.stdenv.hostPlatform.isDarwin then
+            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+          else
+            (lib.getExe pkgs.chromium)
+        )
         "--headless"
         "--isolated"
       ];

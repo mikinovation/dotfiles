@@ -1,5 +1,5 @@
 # WSL2 clipboard configuration
-if grep -q microsoft /proc/version; then
+if [[ -r /proc/version ]] && grep -q microsoft /proc/version; then
   # Using win32yank from ~/.local/bin
   # Alternative method using PowerShell
   alias pbcopy="iconv -f UTF-8 -t UTF-16LE | clip.exe"

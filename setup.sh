@@ -23,6 +23,16 @@ deploy_nixos() {
   sudo nixos-rebuild switch --flake "$DOTFILES_DIR/nix#$hostname"
 }
 
+# Deploy nix-darwin system configuration (macOS)
+deploy_darwin() {
+  echo "Deploying nix-darwin system configuration..."
+  if command -v darwin-rebuild >/dev/null 2>&1; then
+    sudo darwin-rebuild switch --flake "$DOTFILES_DIR/nix#mac"
+  else
+    sudo nix run nix-darwin -- switch --flake "$DOTFILES_DIR/nix#mac"
+  fi
+}
+
 # Deploy configurations using Home Manager (standalone, for non-NixOS)
 deploy_home_manager() {
   local username
@@ -43,7 +53,13 @@ main() {
   echo "Nix config setup done."
 
   # Deploy configuration
-  if [ -f /etc/NIXOS ]; then
+  if [ "$(uname -s)" = "Darwin" ]; then
+    # macOS: use darwin-rebuild (includes Home Manager as a module).
+    # hostname can resolve to "<name>.local" on macOS, so the flake attribute
+    # is fixed to "mac" instead of being derived from the hostname.
+    deploy_darwin
+    echo "nix-darwin deployment done."
+  elif [ -f /etc/NIXOS ]; then
     # NixOS system (including NixOS-WSL, which has no hardware-configuration.nix):
     # use nixos-rebuild (includes Home Manager as a module)
     deploy_nixos

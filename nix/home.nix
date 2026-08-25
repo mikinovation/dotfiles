@@ -15,7 +15,8 @@
 
 {
   home.username = username;
-  home.homeDirectory = "/home/${username}";
+  home.homeDirectory =
+    if pkgs.stdenv.hostPlatform.isDarwin then "/Users/${username}" else "/home/${username}";
 
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
@@ -64,27 +65,31 @@
 
   xdg.configFile."nix/nix.conf".force = true;
 
-  home.activation.make-zsh-default-shell = config.lib.dag.entryAfter [ "writeBoundary" ] ''
-    PATH="/run/current-system/sw/bin:/usr/bin:/bin:$PATH"
-    ZSH_PATH="${config.home.homeDirectory}/.nix-profile/bin/zsh"
+  # macOS では nix-darwin の users.users.<name>.shell が既定シェルを管理するため、
+  # getent / chsh に依存するこのスクリプトは Linux 限定にする
+  home.activation = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+    make-zsh-default-shell = config.lib.dag.entryAfter [ "writeBoundary" ] ''
+      PATH="/run/current-system/sw/bin:/usr/bin:/bin:$PATH"
+      ZSH_PATH="${config.home.homeDirectory}/.nix-profile/bin/zsh"
 
-    if [ -e /etc/NIXOS ]; then
-      echo "NixOS detected, skipping shell change (managed by NixOS config)"
-    elif [[ $(getent passwd ${config.home.username}) != *"$ZSH_PATH" ]]; then
-      echo "Setting zsh as default shell (using chsh). Password might be necessary."
+      if [ -e /etc/NIXOS ]; then
+        echo "NixOS detected, skipping shell change (managed by NixOS config)"
+      elif [[ $(getent passwd ${config.home.username}) != *"$ZSH_PATH" ]]; then
+        echo "Setting zsh as default shell (using chsh). Password might be necessary."
 
-      if ! grep -q "$ZSH_PATH" /etc/shells; then
-        echo "Adding zsh to /etc/shells"
-        $DRY_RUN_CMD echo "$ZSH_PATH" | sudo tee -a /etc/shells
+        if ! grep -q "$ZSH_PATH" /etc/shells; then
+          echo "Adding zsh to /etc/shells"
+          $DRY_RUN_CMD echo "$ZSH_PATH" | sudo tee -a /etc/shells
+        fi
+
+        echo "Running chsh to make zsh the default shell"
+        $DRY_RUN_CMD chsh -s "$ZSH_PATH" ${config.home.username}
+        echo "Zsh is now set as default shell!"
+      else
+        echo "Zsh is already the default shell"
       fi
-
-      echo "Running chsh to make zsh the default shell"
-      $DRY_RUN_CMD chsh -s "$ZSH_PATH" ${config.home.username}
-      echo "Zsh is now set as default shell!"
-    else
-      echo "Zsh is already the default shell"
-    fi
-  '';
+    '';
+  };
 
   programs.home-manager.enable = true;
 

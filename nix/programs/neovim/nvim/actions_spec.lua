@@ -40,6 +40,9 @@ local function setup_vim_mock()
 				end
 				return ""
 			end,
+			has = function(feature)
+				return _G.vim._features and _G.vim._features[feature] or 0
+			end,
 		},
 		v = { shell_error = 0 },
 		log = { levels = { WARN = 2, ERROR = 4, INFO = 1 } },
@@ -108,6 +111,32 @@ describe("actions (global)", function()
 	end)
 
 	describe("open_in_explorer", function()
+		it("opens the buffer's directory with the open command on macOS", function()
+			_G.vim._features = { mac = 1 }
+			local actions = dofile(nvim_dir .. "actions.lua")
+			actions.open_in_explorer()
+
+			assert.equals(1, #system_calls, "should invoke open only")
+			assert.same({ "open", "/home/u/project/src" }, system_calls[1])
+			assert.equals(0, #notify_calls, "happy path should not notify")
+		end)
+
+		it("notifies when the open command fails on macOS", function()
+			_G.vim._features = { mac = 1 }
+			_G.vim.fn.system = function(args)
+				table.insert(system_calls, args)
+				_G.vim.v.shell_error = 1
+				return ""
+			end
+			local actions = dofile(nvim_dir .. "actions.lua")
+			actions.open_in_explorer()
+
+			assert.equals(1, #system_calls)
+			assert.equals(1, #notify_calls)
+			assert.equals(_G.vim.log.levels.ERROR, notify_calls[1].level)
+			assert.truthy(notify_calls[1].msg:find("Finder"))
+		end)
+
 		it("translates the buffer's directory via wslpath then opens explorer.exe", function()
 			local actions = dofile(nvim_dir .. "actions.lua")
 			actions.open_in_explorer()

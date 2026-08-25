@@ -17,17 +17,35 @@ mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
+### nix-darwin (macOS only)
+
+On macOS the system layer is managed by [nix-darwin](https://github.com/nix-darwin/nix-darwin).
+No manual install is needed: `./setup.sh` bootstraps it via `nix run nix-darwin`.
+Homebrew is not required, but `/opt/homebrew/bin` is added to `PATH` if it exists.
+
+If you use the Determinate Nix installer, add `nix.enable = false;` to
+`nix/darwin/configuration.nix`, since that installer owns `/etc/nix`.
+
 ### Terminal
 
 Install Wezterm
 
 https://wezfurlong.org/wezterm/
 
-On Windows, copy the WezTerm config to the host OS:
+On macOS, WezTerm is installed by Home Manager and reads `~/.wezterm.lua` directly,
+so no extra step is required.
+
+On WSL, WezTerm runs on the Windows host, so copy the config over:
 
 ```bash
 cp ~/ghq/github.com/mikinovation/dotfiles/nix/programs/wezterm/.wezterm.lua /mnt/c/Users/[UserName]/
 ```
+
+### Google Chrome (macOS only)
+
+The `chrome-devtools` MCP server uses `pkgs.chromium` on Linux, which is not
+available on macOS. Install Google Chrome to `/Applications` so the server can
+find it.
 
 
 ## install
@@ -43,6 +61,7 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 ```
 
 - NixOS (WSL): applies Home Manager as a module via `sudo nixos-rebuild switch`
+- macOS: applies Home Manager as a module via `sudo darwin-rebuild switch`
 - Other Linux: applies via standalone Home Manager
 
 ### Manual Installation
@@ -62,6 +81,9 @@ nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotf
 
 # Or for NixOS
 sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#nixos
+
+# Or for macOS
+sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mac
 ```
 
 ### Update Configuration
@@ -71,6 +93,9 @@ After making changes to your configuration files:
 ```bash
 # Using Home Manager directly (standalone)
 home-manager switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mikinovation
+
+# Or on macOS
+sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mac
 
 # Or re-run the setup script
 cd ~/ghq/github.com/mikinovation/dotfiles

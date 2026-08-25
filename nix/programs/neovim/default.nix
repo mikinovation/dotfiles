@@ -29,7 +29,7 @@
 
         # Tree-sitter parser build tools
         tree-sitter
-        gcc
+        (if stdenv.hostPlatform.isDarwin then clang else gcc)
 
         # Lua runtime and package manager (required for luarocks plugin deps)
         lua5_1
