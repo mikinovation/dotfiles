@@ -16,6 +16,7 @@ require("lazy").setup({
 	require("plugins.blink-cmp").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
+	require("plugins.diffview").config(),
 	require("plugins.dropbar").config(),
 	require("plugins.git-conflict").config(),
 	require("plugins.gitlinker").config(),

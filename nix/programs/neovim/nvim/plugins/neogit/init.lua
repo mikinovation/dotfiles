@@ -6,8 +6,6 @@ function neogit.config()
 		cmd = { "Neogit", "NeogitResetState" },
 		dependencies = {
 			require("plugins.plenary").config(),
-			require("plugins.diffview").config(),
-			require("plugins.telescope").config(),
 		},
 		config = true,
 	}
