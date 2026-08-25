@@ -4,11 +4,31 @@
   inputs,
   claudeCode,
   chromeDevtoolsMcp,
+  headroom,
   ...
 }:
 
 {
-  home.packages = [ pkgs.rtk ];
+  home.packages = [ headroom ];
+
+  # headroom は claude が起動するたびにプロキシを手動で立ち上げるのを避けるため
+  # ユーザーサービスとして常駐させ、ANTHROPIC_BASE_URL で常時経由させる
+  systemd.user.services.headroom-proxy = {
+    Unit = {
+      Description = "Headroom context compression proxy";
+      After = [ "network.target" ];
+    };
+    Service = {
+      ExecStart = "${lib.getExe headroom} proxy --port 8787";
+      Restart = "always";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "default.target" ];
+  };
+
+  home.sessionVariables = {
+    ANTHROPIC_BASE_URL = "http://127.0.0.1:8787";
+  };
 
   mcp-servers.programs = {
     context7.enable = true;
@@ -99,17 +119,6 @@
       includeCoAuthoredBy = false;
       teammateMode = "in-process";
       hooks = {
-        PreToolUse = [
-          {
-            matcher = "Bash";
-            hooks = [
-              {
-                type = "command";
-                command = "${lib.getExe pkgs.rtk} hook claude";
-              }
-            ];
-          }
-        ];
         Stop = [
           {
             matcher = "";
