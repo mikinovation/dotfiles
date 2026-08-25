@@ -31,6 +31,10 @@
       "docker"
     ];
     shell = pkgs.zsh;
+
+    # WSL では logind のセッションが作られず XDG_RUNTIME_DIR (/run/user/$UID) が存在しないため、
+    # linger を有効にして systemd の user インスタンス経由で作成させる（fnm の multishell が依存している）
+    linger = true;
   };
 
   # Enable zsh system-wide
