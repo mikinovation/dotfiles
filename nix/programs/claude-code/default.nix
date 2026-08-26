@@ -184,6 +184,10 @@
         command = "sh $HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/statusline.sh";
       };
       env = {
+        # ANTHROPIC_BASE_URL が api.anthropic.com 以外だと Claude Code が
+        # first-party ではないと判定してコンテキスト窓を 1M から 200k に落とすため、
+        # headroom プロキシ経由でも 1M を維持できるようにフラグで打ち消す
+        _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL = "1";
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
         CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR = "1";
         DISABLE_UPDATES = "1";
