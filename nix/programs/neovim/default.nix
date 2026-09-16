@@ -1,10 +1,15 @@
 {
   config,
+  lib,
   pkgs,
+  profile,
   vueLanguageServer,
   ...
 }:
 
+let
+  isFull = profile == "full";
+in
 {
   programs.neovim = {
     enable = true;
@@ -20,16 +25,12 @@
       (with pkgs; [
         # Language servers
         lua-language-server
-        rust-analyzer
-        vtsls
-        tailwindcss-language-server
-        vscode-langservers-extracted # HTML, CSS, JSON, ESLint
         nil # Nix
-        solargraph # Ruby
 
         # Tree-sitter parser build tools
         tree-sitter
         (if stdenv.hostPlatform.isDarwin then clang else gcc)
+        gnumake
 
         # Lua runtime and package manager (required for luarocks plugin deps)
         lua5_1
@@ -40,7 +41,12 @@
         luajitPackages.luacheck # Lua linter
         luajitPackages.busted # Lua testing framework
       ])
-      ++ [
+      ++ lib.optionals isFull [
+        pkgs.rust-analyzer
+        pkgs.vtsls
+        pkgs.tailwindcss-language-server
+        pkgs.vscode-langservers-extracted # HTML, CSS, JSON, ESLint
+        pkgs.solargraph # Ruby
         vueLanguageServer # Vue (volar) — local build to avoid nixpkgs pnpm dep
       ];
   };

@@ -1,10 +1,14 @@
+local profile = require("profile")
+
 local blinkCmp = {}
 
 function blinkCmp.config()
+	local is_full = profile.is_full()
+
 	return {
 		"saghen/blink.cmp",
 		version = "1.*",
-		build = "cargo build --release",
+		build = is_full and "cargo build --release" or nil,
 		event = { "InsertEnter", "CmdlineEnter" },
 		dependencies = {
 			require("plugins.luasnip").config(),
@@ -28,7 +32,7 @@ function blinkCmp.config()
 				accept = { auto_brackets = { enabled = true } },
 			},
 			signature = { enabled = true },
-			fuzzy = { implementation = "prefer_rust_with_warning" },
+			fuzzy = { implementation = is_full and "prefer_rust_with_warning" or "lua" },
 			sources = {
 				default = { "lsp", "path", "snippets", "buffer", "lazydev" },
 				per_filetype = {

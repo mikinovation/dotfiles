@@ -120,6 +120,60 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 
 `./setup.sh` runs `nixos-rebuild switch` to rebuild the full Home Manager environment from the embedded repository.
 
+## profiles
+
+Each configuration is built with a `profile` (`full` or `light`), passed from `nix/flake.nix`
+through `specialArgs` / `extraSpecialArgs`. Modules branch on it via `isFull = profile == "full"`.
+
+| profile | used by | contents |
+| --- | --- | --- |
+| `full` | `darwinConfigurations.mac`, `nixosConfigurations.nixos`, `homeConfigurations.mikinovation`, `homeConfigurations.nixos` | everything |
+| `light` | `homeConfigurations.ubuntu` | text editing, documentation and agent work only |
+
+`light` is for an Ubuntu (WSL) box used only for writing, design and requirements work: it never
+runs or builds application code, and the WSL virtual disk does not shrink on its own once the Nix
+store has grown. It is deployed with standalone Home Manager, so it only touches `$HOME` - the
+Ubuntu system itself is not managed here.
+
+```bash
+nix run home-manager/master -- switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#ubuntu
+```
+
+`./setup.sh` picks `homeConfigurations.$(id -un)` on a non-NixOS Linux, so it selects this
+configuration automatically when the Ubuntu user is named `ubuntu`. For a different user name,
+add another `mkHomeConfig` entry with `profile = "light"` in `nix/flake.nix`.
+
+Compared to `full`, `light` drops:
+
+- Language toolchains: Rust, Ruby, Python (+ uv), and the Node dev tools (`pnpm`, `typescript`,
+  `typescript-language-server`, `eslint`). `nodejs`, `yarn` and `prettier` stay.
+- Language servers for those languages, in both Neovim and Claude Code
+- `emacs`, `awscli2`, `terraform`, `_1password-cli`, PostgreSQL / SQLite / Prisma engines
+- `playwright-driver.browsers` and the `chrome-devtools` MCP server (which pulls in `chromium`)
+- `headroom` and its `ANTHROPIC_BASE_URL` proxy. It depends on `onnxruntime` and `transformers`,
+  so its closure is large, and context compression only pays off on long coding sessions.
+  Claude Code talks to `api.anthropic.com` directly instead, which keeps the 1M context window
+  without `_CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL`.
+
+`pandoc`, `typst` (with `tinymist`), `textlint`, `nodejs`, `prettier` and the whole Claude Code /
+agent-skills setup are kept in both profiles. A C compiler, `gnumake` and `tree-sitter` are also
+kept, because markdown and typst highlighting compile their tree-sitter parsers locally.
+
+Neovim reads the profile from the `DOTFILES_PROFILE` environment variable (`nvim/profile.lua`)
+and skips the test, debug, DB and language-specific plugins under `light`. When the variable is
+unset - in CI, for example - it falls back to `full`.
+
+Because `light` runs on a plain Ubuntu host, there is no NixOS-level garbage collector, so
+`home.nix` enables Home Manager's own `nix.gc` (weekly, `--delete-older-than 14d`) for that
+profile. The NixOS configuration has the equivalent `nix.gc` and `nix.optimise.automatic`.
+Note that garbage collection alone does not return space to Windows: the WSL virtual disk has to
+be compacted afterwards, from an administrator PowerShell prompt.
+
+```powershell
+wsl --shutdown
+wsl --manage Ubuntu --set-sparse true
+```
+
 ## lint, format, test
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:

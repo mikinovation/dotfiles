@@ -4,6 +4,7 @@
   pkgs,
   inputs,
   username,
+  profile,
   apm,
   claudeCode,
   vueLanguageServer,
@@ -13,6 +14,9 @@
   ...
 }:
 
+let
+  isFull = profile == "full";
+in
 {
   home.username = username;
   home.homeDirectory =
@@ -20,48 +24,56 @@
 
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
-  home.packages = with pkgs; [
-    fnm # Fast Node Manager
-    zoxide # Smart cd replacement
-    fzf # Fuzzy finder
-    ripgrep # Fast grep alternative
-    ghq # Git repository organizer
-    jq # JSON processor
-    curl # HTTP client
-    lsof # List open files
-    pandoc # Document format converter
-    apm
-    vueLanguageServer
-    vueTypescriptPlugin
-    difit
-    herdr
-  ];
+  home.packages =
+    with pkgs;
+    [
+      fnm # Fast Node Manager
+      zoxide # Smart cd replacement
+      fzf # Fuzzy finder
+      ripgrep # Fast grep alternative
+      ghq # Git repository organizer
+      jq # JSON processor
+      curl # HTTP client
+      lsof # List open files
+      pandoc # Document format converter
+      apm # Agent Package Manager
+      difit # Git diff web UI (nvim の :Difit から使う)
+      herdr
+    ]
+    ++ lib.optionals isFull [
+      vueLanguageServer
+      vueTypescriptPlugin
+    ];
 
   imports = [
     ./programs/git
     ./programs/zsh
     ./programs/neovim
-    ./programs/emacs
     ./programs/nodejs
-    ./programs/ruby
-    ./programs/rust
-    ./programs/database
-    ./programs/agent-browser
     ./programs/claude-code
     ./programs/textlint
     ./programs/agent-skills
     ./programs/herdr
-    ./programs/aws
     ./programs/wezterm
     ./programs/sheldon
-    ./programs/python
     ./programs/typst
-    ./programs/terraform
     ./programs/direnv
+  ]
+  ++ lib.optionals isFull [
+    ./programs/emacs
+    ./programs/ruby
+    ./programs/rust
+    ./programs/database
+    ./programs/agent-browser
+    ./programs/aws
+    ./programs/python
+    ./programs/terraform
     ./programs/onepassword
   ];
 
-  home.sessionVariables = { };
+  home.sessionVariables = {
+    DOTFILES_PROFILE = profile;
+  };
 
   xdg.configFile."nix/nix.conf".force = true;
 
@@ -100,6 +112,12 @@
         "nix-command"
         "flakes"
       ];
+    };
+
+    gc = lib.mkIf (!isFull) {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
     };
   };
 }

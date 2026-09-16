@@ -12,7 +12,9 @@ vim.opt.rtp:prepend(lazypath)
 -- Load clipboard configuration early
 require("plugins.clipboard").config()
 
-require("lazy").setup({
+local profile = require("profile")
+
+local specs = {
 	require("plugins.blink-cmp").config(),
 	require("plugins.comment").config(),
 	require("plugins.copilot").config(),
@@ -27,14 +29,11 @@ require("lazy").setup({
 	require("plugins.markdown-preview").config(),
 	require("plugins.nvim-tree").config(),
 	require("plugins.neogit").config(),
-	require("plugins.neotest").config(),
 	require("plugins.none-ls").config(),
 	require("plugins.nvim-autopairs").config(),
 	require("plugins.nvim-bqf").config(),
 	require("plugins.nvim-colorizer").config(),
 	require("plugins.nvim-context-vt").config(),
-	require("plugins.nvim-dap").config(),
-	require("plugins.nvim-dbee").config(),
 	require("plugins.nvim-notify").config(),
 	require("plugins.nvim-treesitter-context").config(),
 	require("plugins.nvim-treesitter").config(),
@@ -44,28 +43,42 @@ require("lazy").setup({
 	require("plugins.orgmode").config(),
 	require("plugins.org-bullets").config(),
 	require("plugins.org-roam").config(),
-	require("plugins.package-info").config(),
 	require("plugins.pathtool").config(),
-	require("plugins.rest").config(),
 	require("plugins.sidekick").config(),
 	require("plugins.telescope").config(),
 	require("plugins.todo-comments").config(),
 	require("plugins.toggleterm").config(),
 	require("plugins.tokyonight").config(),
-	require("plugins.tsc").config(),
 	require("plugins.vim-argwrap").config(),
-	require("plugins.vim-bundler").config(),
 	require("plugins.vim-fugitive").config(),
 	require("plugins.vim-illuminate").config(),
 	require("plugins.vim-matchup").config(),
 	require("plugins.quick-scope").config(),
-	require("plugins.vim-rails").config(),
 	require("plugins.vim-sleuth").config(),
 	require("plugins.which-key").config(),
 	require("plugins.yanky").config(),
 	require("plugins.open-browser").config(),
 	require("plugins.oil").config(),
-}, {
+}
+
+if profile.is_full() then
+	local full_only = {
+		require("plugins.neotest").config(),
+		require("plugins.nvim-dap").config(),
+		require("plugins.nvim-dbee").config(),
+		require("plugins.package-info").config(),
+		require("plugins.rest").config(),
+		require("plugins.tsc").config(),
+		require("plugins.vim-bundler").config(),
+		require("plugins.vim-rails").config(),
+	}
+
+	for _, spec in ipairs(full_only) do
+		table.insert(specs, spec)
+	end
+end
+
+require("lazy").setup(specs, {
 	lockfile = os.getenv("HOME") .. "/dotfiles/nix/programs/neovim/nvim/lazy-lock.json",
 	performance = {
 		rtp = {
