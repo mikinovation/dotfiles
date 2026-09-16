@@ -9,20 +9,6 @@
 
 let
   isFull = profile == "full";
-
-  devLanguageServers = (
-    with pkgs;
-    [
-      rust-analyzer
-      vtsls
-      tailwindcss-language-server
-      vscode-langservers-extracted # HTML, CSS, JSON, ESLint
-      solargraph # Ruby
-    ]
-  )
-  ++ [
-    vueLanguageServer # Vue (volar) — local build to avoid nixpkgs pnpm dep
-  ];
 in
 {
   programs.neovim = {
@@ -55,7 +41,14 @@ in
         luajitPackages.luacheck # Lua linter
         luajitPackages.busted # Lua testing framework
       ])
-      ++ lib.optionals isFull devLanguageServers;
+      ++ lib.optionals isFull [
+        pkgs.rust-analyzer
+        pkgs.vtsls
+        pkgs.tailwindcss-language-server
+        pkgs.vscode-langservers-extracted # HTML, CSS, JSON, ESLint
+        pkgs.solargraph # Ruby
+        vueLanguageServer # Vue (volar) — local build to avoid nixpkgs pnpm dep
+      ];
   };
 
   home.file.".config/nvim".source = pkgs.lib.cleanSourceWith {
