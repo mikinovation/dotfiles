@@ -214,15 +214,7 @@
     {
       # NixOS system configuration (WSL)
       nixosConfigurations = {
-        # WSL 機はテキスト編集・設計・要件定義にしか使わないため light プロファイル。
-        # 開発ツール一式が必要になったら `.#nixos-full` に切り替える。
         nixos = mkNixosConfig {
-          username = "nixos";
-          hostname = "nixos";
-          profile = "light";
-        };
-
-        nixos-full = mkNixosConfig {
           username = "nixos";
           hostname = "nixos";
           profile = "full";
@@ -256,6 +248,14 @@
         nixos = mkHomeConfig {
           username = "nixos";
           system = linuxSystem;
+          profile = "full";
+        };
+
+        # Ubuntu (WSL) 専用の軽量構成。テキスト編集・設計・要件定義しかしない
+        # 機体向けで、言語ツールチェーンやブラウザを持たない
+        ubuntu = mkHomeConfig {
+          username = "ubuntu";
+          system = linuxSystem;
           profile = "light";
         };
       };
@@ -267,8 +267,8 @@
       checks = {
         ${linuxSystem} = {
           home-manager-build = self.homeConfigurations.mikinovation.activationPackage;
+          home-manager-ubuntu-build = self.homeConfigurations.ubuntu.activationPackage;
           nixos-build = self.nixosConfigurations.nixos.config.system.build.toplevel;
-          nixos-full-build = self.nixosConfigurations.nixos-full.config.system.build.toplevel;
         };
         ${darwinSystem} = {
           darwin-build = self.darwinConfigurations.mac.system;

@@ -118,5 +118,13 @@ in
         "flakes"
       ];
     };
+
+    # light は Ubuntu (WSL) の standalone Home Manager 前提で、NixOS のような
+    # システム側の GC が無いため、ユーザプロファイルの世代を自前で掃除する
+    gc = lib.mkIf (!isFull) {
+      automatic = true;
+      dates = "weekly";
+      options = "--delete-older-than 14d";
+    };
   };
 }
