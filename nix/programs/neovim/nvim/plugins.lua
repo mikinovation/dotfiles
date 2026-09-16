@@ -61,8 +61,6 @@ local specs = {
 	require("plugins.oil").config(),
 }
 
--- テスト・デバッグ・DB・言語固有ツールはビルドに cargo / npm / go / ruby を
--- 要求するものが多く、light プロファイルではそれらが入っていないため読み込まない
 if profile.is_full() then
 	local full_only = {
 		require("plugins.neotest").config(),

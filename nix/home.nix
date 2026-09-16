@@ -15,8 +15,6 @@
 }:
 
 let
-  # profile = "light" では開発用ツールチェーン一式を入れない。
-  # WSL のようにテキスト編集・設計・要件定義しかしない機体向けの構成。
   isFull = profile == "full";
 in
 {
@@ -48,7 +46,6 @@ in
     ];
 
   imports = [
-    # 両プロファイル共通: 文章・設計ドキュメントを書くのに必要なもの
     ./programs/git
     ./programs/zsh
     ./programs/neovim
@@ -63,7 +60,6 @@ in
     ./programs/direnv
   ]
   ++ lib.optionals isFull [
-    # full のみ: 実行・ビルド・インフラ系
     ./programs/emacs
     ./programs/ruby
     ./programs/rust
@@ -76,7 +72,6 @@ in
   ];
 
   home.sessionVariables = {
-    # nvim の lua 側 (nvim/profile.lua) からプロファイルを参照するための橋渡し
     DOTFILES_PROFILE = profile;
   };
 
@@ -119,8 +114,6 @@ in
       ];
     };
 
-    # light は Ubuntu (WSL) の standalone Home Manager 前提で、NixOS のような
-    # システム側の GC が無いため、ユーザプロファイルの世代を自前で掃除する
     gc = lib.mkIf (!isFull) {
       automatic = true;
       dates = "weekly";

@@ -251,8 +251,6 @@
           profile = "full";
         };
 
-        # Ubuntu (WSL) 専用の軽量構成。テキスト編集・設計・要件定義しかしない
-        # 機体向けで、言語ツールチェーンやブラウザを持たない
         ubuntu = mkHomeConfig {
           username = "ubuntu";
           system = linuxSystem;

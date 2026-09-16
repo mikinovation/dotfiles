@@ -3,8 +3,6 @@ local profile = require("profile")
 local blinkCmp = {}
 
 function blinkCmp.config()
-	-- light プロファイルには Rust ツールチェーンが無いので、
-	-- ネイティブのファジーマッチをビルドせず lua 実装にフォールバックする
 	local is_full = profile.is_full()
 
 	return {

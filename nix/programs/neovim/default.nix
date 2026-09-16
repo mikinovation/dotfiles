@@ -10,7 +10,6 @@
 let
   isFull = profile == "full";
 
-  # light では使わない言語サーバ（Rust / TypeScript / Vue / Tailwind / Ruby）
   devLanguageServers = (
     with pkgs;
     [
@@ -38,13 +37,11 @@ in
     # Install additional packages that neovim plugins might need
     extraPackages =
       (with pkgs; [
-        # Language servers (light でも設定ファイル編集に使う)
+        # Language servers
         lua-language-server
         nil # Nix
 
         # Tree-sitter parser build tools
-        # markdown / typst のハイライトはパーサのコンパイルを伴うため、
-        # light でも C コンパイラと make は残す
         tree-sitter
         (if stdenv.hostPlatform.isDarwin then clang else gcc)
         gnumake

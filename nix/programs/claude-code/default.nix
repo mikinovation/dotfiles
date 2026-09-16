@@ -10,9 +10,6 @@
 }:
 
 let
-  # headroom は onnxruntime / transformers など ML 推論スタック一式を引くため
-  # クロージャが大きい。コンテキスト圧縮の恩恵が出るのは long session を回す
-  # 開発機だけなので light では丸ごと外す
   isFull = profile == "full";
 in
 {
@@ -52,8 +49,6 @@ in
     };
   };
 
-  # headroom を入れない light では、死んだポートに全リクエストが飛ばないよう
-  # ANTHROPIC_BASE_URL 自体を設定しない（素の api.anthropic.com に直接つなぐ）
   home.sessionVariables = lib.mkIf isFull {
     ANTHROPIC_BASE_URL = "http://127.0.0.1:8787";
   };
@@ -70,7 +65,6 @@ in
         url = "https://mcp.deepwiki.com/mcp";
       };
     }
-    # chrome-devtools MCP は chromium を丸ごと引くため light では無効にする
     // lib.optionalAttrs isFull {
       chrome-devtools = {
         command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
@@ -207,10 +201,6 @@ in
         ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-5";
         ANTHROPIC_DEFAULT_SONNET_MODEL = "claude-sonnet-5";
       }
-      # ANTHROPIC_BASE_URL が api.anthropic.com 以外だと Claude Code が
-      # first-party ではないと判定してコンテキスト窓を 1M から 200k に落とすため、
-      # headroom プロキシ経由でも 1M を維持できるようにフラグで打ち消す。
-      # プロキシを使わない light では素で 1M なのでフラグ自体が不要
       // lib.optionalAttrs isFull {
         _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL = "1";
       };

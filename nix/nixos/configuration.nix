@@ -40,9 +40,7 @@
   # Enable zsh system-wide
   programs.zsh.enable = true;
 
-  # Enable nix-ld for dynamically linked executables (e.g. sass-embedded).
-  # pkgs/claude-code.nix の Node.js SEA バイナリは patchelf できず nix-ld に
-  # 依存しているため、無効化しないこと
+  # Enable nix-ld for dynamically linked executables (e.g. sass-embedded)
   programs.nix-ld.enable = true;
 
   # Docker
@@ -73,8 +71,6 @@
     noto-fonts-color-emoji
   ];
 
-  # WSL の ext4.vhdx は一度太ると自動では縮まないため、世代とストアを
-  # 定期的に掃除して肥大そのものを防ぐ
   nix.gc = {
     automatic = true;
     dates = "weekly";

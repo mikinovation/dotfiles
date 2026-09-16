@@ -13,8 +13,6 @@ require("lsp.servers.tinymist")(capabilities)
 
 local enabled_servers = { "lua_ls", "nil_ls", "tinymist" }
 
--- light プロファイルには以下の言語サーバのバイナリが入っていないため、
--- 起動しようとしてエラーになるのを避けて設定ごと読み込まない
 if profile.is_full() then
 	require("lsp.servers.rust_analyzer")(capabilities)
 	require("lsp.servers.typescript")(capabilities)
