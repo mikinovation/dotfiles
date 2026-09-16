@@ -2,19 +2,26 @@
   lib,
   pkgs,
   inputs,
+  profile,
   claudeCode,
   chromeDevtoolsMcp,
   headroom,
   ...
 }:
 
+let
+  # headroom は onnxruntime / transformers など ML 推論スタック一式を引くため
+  # クロージャが大きい。コンテキスト圧縮の恩恵が出るのは long session を回す
+  # 開発機だけなので light では丸ごと外す
+  isFull = profile == "full";
+in
 {
-  home.packages = [ headroom ];
+  home.packages = lib.optionals isFull [ headroom ];
 
   # headroom は claude が起動するたびにプロキシを手動で立ち上げるのを避けるため
   # ユーザーサービスとして常駐させ、ANTHROPIC_BASE_URL で常時経由させる
   # Linux は systemd user unit、macOS は launchd agent で同じ常駐を行う
-  systemd.user.services = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+  systemd.user.services = lib.mkIf (isFull && pkgs.stdenv.hostPlatform.isLinux) {
     headroom-proxy = {
       Unit = {
         Description = "Headroom context compression proxy";
@@ -29,7 +36,7 @@
     };
   };
 
-  launchd.agents = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+  launchd.agents = lib.mkIf (isFull && pkgs.stdenv.hostPlatform.isDarwin) {
     headroom-proxy = {
       enable = true;
       config = {
@@ -45,35 +52,42 @@
     };
   };
 
-  home.sessionVariables = {
+  # headroom を入れない light では、死んだポートに全リクエストが飛ばないよう
+  # ANTHROPIC_BASE_URL 自体を設定しない（素の api.anthropic.com に直接つなぐ）
+  home.sessionVariables = lib.mkIf isFull {
     ANTHROPIC_BASE_URL = "http://127.0.0.1:8787";
   };
 
   mcp-servers.programs = {
     context7.enable = true;
-    terraform.enable = true;
+    terraform.enable = isFull;
   };
 
   programs.mcp = {
     enable = true;
-    servers.deepwiki = {
-      url = "https://mcp.deepwiki.com/mcp";
-    };
-    servers.chrome-devtools = {
-      command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
-      args = [
-        "--executablePath"
-        # nixpkgs の chromium は Linux 専用のため、macOS では
-        # 手動インストールした Google Chrome の実体を指す
-        (
-          if pkgs.stdenv.hostPlatform.isDarwin then
-            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-          else
-            (lib.getExe pkgs.chromium)
-        )
-        "--headless"
-        "--isolated"
-      ];
+    servers = {
+      deepwiki = {
+        url = "https://mcp.deepwiki.com/mcp";
+      };
+    }
+    # chrome-devtools MCP は chromium を丸ごと引くため light では無効にする
+    // lib.optionalAttrs isFull {
+      chrome-devtools = {
+        command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
+        args = [
+          "--executablePath"
+          # nixpkgs の chromium は Linux 専用のため、macOS では
+          # 手動インストールした Google Chrome の実体を指す
+          (
+            if pkgs.stdenv.hostPlatform.isDarwin then
+              "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            else
+              (lib.getExe pkgs.chromium)
+          )
+          "--headless"
+          "--isolated"
+        ];
+      };
     };
   };
 
@@ -88,6 +102,20 @@
 
     # LSP servers
     lspServers = {
+      nix = {
+        command = "nil";
+        extensionToLanguage = {
+          ".nix" = "nix";
+        };
+      };
+      lua = {
+        command = "lua-language-server";
+        extensionToLanguage = {
+          ".lua" = "lua";
+        };
+      };
+    }
+    // lib.optionalAttrs isFull {
       typescript = {
         command = "typescript-language-server";
         args = [ "--stdio" ];
@@ -107,18 +135,6 @@
         args = [ "--stdio" ];
         extensionToLanguage = {
           ".vue" = "vue";
-        };
-      };
-      nix = {
-        command = "nil";
-        extensionToLanguage = {
-          ".nix" = "nix";
-        };
-      };
-      lua = {
-        command = "lua-language-server";
-        extensionToLanguage = {
-          ".lua" = "lua";
         };
       };
       ruby = {
@@ -184,16 +200,19 @@
         command = "sh $HOME/ghq/github.com/mikinovation/dotfiles/nix/programs/claude-code/statusline.sh";
       };
       env = {
-        # ANTHROPIC_BASE_URL が api.anthropic.com 以外だと Claude Code が
-        # first-party ではないと判定してコンテキスト窓を 1M から 200k に落とすため、
-        # headroom プロキシ経由でも 1M を維持できるようにフラグで打ち消す
-        _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL = "1";
         CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS = "1";
         CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR = "1";
         DISABLE_UPDATES = "1";
         CLAUDE_CODE_STOP_HOOK_BLOCK_CAP = "5";
         ANTHROPIC_DEFAULT_OPUS_MODEL = "claude-opus-5";
         ANTHROPIC_DEFAULT_SONNET_MODEL = "claude-sonnet-5";
+      }
+      # ANTHROPIC_BASE_URL が api.anthropic.com 以外だと Claude Code が
+      # first-party ではないと判定してコンテキスト窓を 1M から 200k に落とすため、
+      # headroom プロキシ経由でも 1M を維持できるようにフラグで打ち消す。
+      # プロキシを使わない light では素で 1M なのでフラグ自体が不要
+      // lib.optionalAttrs isFull {
+        _CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL = "1";
       };
       permissions = {
         defaultMode = "bypassPermissions";

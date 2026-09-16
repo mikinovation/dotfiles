@@ -120,6 +120,58 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 
 `./setup.sh` runs `nixos-rebuild switch` to rebuild the full Home Manager environment from the embedded repository.
 
+## profiles
+
+Each configuration is built with a `profile` (`full` or `light`), passed from `nix/flake.nix`
+through `specialArgs` / `extraSpecialArgs`. Modules branch on it via `isFull = profile == "full"`.
+
+| profile | used by | contents |
+| --- | --- | --- |
+| `full` | `darwinConfigurations.mac`, `homeConfigurations.mikinovation`, `nixosConfigurations.nixos-full` | everything |
+| `light` | `nixosConfigurations.nixos` (WSL), `homeConfigurations.nixos` | text editing, documentation and agent work only |
+
+`light` exists because the WSL box is only used for writing, design and requirements work -
+it never runs or builds application code, and the WSL `ext4.vhdx` does not shrink on its own
+once the Nix store has grown. It drops:
+
+- Language toolchains: Rust, Ruby, Python (+ uv), and the Node dev tools (`pnpm`, `typescript`,
+  `typescript-language-server`, `eslint`). `nodejs`, `yarn` and `prettier` stay.
+- Language servers for those languages, in both Neovim and Claude Code
+- `emacs`, `awscli2`, `terraform`, `_1password-cli`, PostgreSQL / SQLite / Prisma engines
+- `playwright-driver.browsers` and the `chrome-devtools` MCP server (which pulls in `chromium`)
+- `headroom` and its `ANTHROPIC_BASE_URL` proxy. It depends on `onnxruntime` and `transformers`,
+  so its closure is large, and context compression only pays off on long coding sessions.
+  Claude Code talks to `api.anthropic.com` directly instead, which keeps the 1M context window
+  without `_CLAUDE_CODE_ASSUME_FIRST_PARTY_BASE_URL`.
+- Docker, system fonts (WSL has no GUI and WezTerm runs on the Windows host), the offline
+  NixOS manual, and `environment.defaultPackages`
+
+`pandoc`, `typst` (with `tinymist`), `textlint`, `nodejs`, `prettier` and the whole Claude Code /
+agent-skills setup are kept in both profiles. `programs.nix-ld` also stays enabled in both:
+`nix/pkgs/claude-code.nix` ships a Node.js SEA binary that cannot be patchelf-ed and relies on it.
+
+A C compiler, `gnumake` and `tree-sitter` are also kept in `light`, because markdown and typst
+highlighting compile their tree-sitter parsers locally.
+
+Neovim reads the profile from the `DOTFILES_PROFILE` environment variable (`nvim/profile.lua`)
+and skips the test, debug, DB and language-specific plugins under `light`. When the variable is
+unset - in CI, for example - it falls back to `full`.
+
+To temporarily get the full environment on the WSL box:
+
+```bash
+sudo nixos-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#nixos-full
+```
+
+The NixOS configuration also enables weekly `nix.gc` (`--delete-older-than 14d`) and
+`nix.optimise.automatic`. Note that garbage collection alone does not return space to Windows:
+the virtual disk has to be compacted afterwards, from an administrator PowerShell prompt.
+
+```powershell
+wsl --shutdown
+wsl --manage nixos --set-sparse true
+```
+
 ## lint, format, test
 
 `nix run ./nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:
