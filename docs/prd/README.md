@@ -1,7 +1,8 @@
 # Product requirement documents
 
-One file per planned change. Written before the work starts, updated while it
-is in progress, frozen when it ships.
+One file per planned change. Written before the work starts and kept current
+afterwards, so it describes what the repository does today rather than what was
+once intended.
 
 ## When to write one
 
@@ -53,9 +54,14 @@ abandoned. There is no approval state: the author and the approver are the same
 person, so the only gate worth keeping is an empty `Open questions` before
 implementation starts.
 
-A shipped or dropped document is not deleted and not rewritten. Update the
-`Status` line and the `ADRs` list, and leave the rest as it was — the value is
-in comparing what was planned against what happened.
+`Shipped` does not mean finished. A shipped document is maintained: when the
+behaviour it describes changes, the body changes with it, so `Goals` and
+`Requirements` always read as statements about the current repository. The
+record of what was originally planned is in the git history of the file, not in
+the file itself.
+
+A dropped document is left as it was, with the reason for dropping it in
+`Open questions`. Nothing in `docs/prd/` is deleted.
 
 ## Index
 

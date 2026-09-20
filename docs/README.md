@@ -6,7 +6,7 @@ Why this repository is shaped the way it is.
 | --- | --- |
 | `README.md` (root) | How to install and use the dotfiles. Written for someone setting up a machine. |
 | `CLAUDE.md` | Instructions for coding agents. Not prose documentation. |
-| `docs/prd/` | What is going to be built, and how we will know it is done. Written before the work. |
+| `docs/prd/` | What is being built, and how we will know it is done. Written before the work and kept current. |
 | `docs/adr/` | Why a structural choice was made, and what it costs. Written when the choice is made. |
 
 A change that is only visible when installing belongs in the root `README.md`,
