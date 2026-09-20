@@ -2,6 +2,12 @@
 
 Dotfiles managed declaratively using Nix and Home Manager.
 
+## documentation
+
+Requirements and decisions live in [`docs/`](./docs/): what is being built in
+[`docs/prd/`](./docs/prd/), why a structural choice was made in
+[`docs/adr/`](./docs/adr/).
+
 ## prerequisite
 
 ### Nix

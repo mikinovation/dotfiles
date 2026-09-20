@@ -235,6 +235,8 @@
       "nix-npm-update" = ./skills/nix-npm-update;
       "grill-me" = ./skills/grill-me;
       "grilling" = ./skills/grilling;
+      "create-prd" = ./skills/create-prd;
+      "create-adr" = ./skills/create-adr;
     };
 
     context = ./CLAUDE.md;
