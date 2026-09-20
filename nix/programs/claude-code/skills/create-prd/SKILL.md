@@ -1,6 +1,6 @@
 ---
 name: create-prd
-description: PRD（要求定義ドキュメント）を docs/prd/ に作成・更新するスキル。次の連番を採番し、テンプレートを埋め、索引を更新する。Draft/Approved/Shipped/Dropped のステータス更新も行う。「PRDを書いて」「要件定義を作成」「create prd」「/create-prd」「PRDをShippedにして」などで使用。
+description: PRD（要求定義ドキュメント）を docs/prd/ に作成・更新するスキル。次の連番を採番し、テンプレートを埋め、索引を更新する。Draft/Shipped/Dropped のステータス更新も行う。「PRDを書いて」「要件定義を作成」「create prd」「/create-prd」「PRDをShippedにして」などで使用。
 ---
 
 # create-prd: PRD作成スキル
@@ -62,7 +62,7 @@ FILE="docs/prd/${NUMBER}-${SLUG}.md"
 `docs/prd/template.md` をコピーして各セクションを埋める。本文は英語で書く
 （このリポジトリのドキュメントは英語で統一されている）。
 
-- Status: 通常は `Draft`。スコープが確定していれば `Approved`
+- Status: 新規作成時は常に `Draft`。承認状態は無い
 - Date: `date +%F` の値
 - ADRs: 既に関連ADRがあればリンク、無ければ `none`
 
@@ -78,7 +78,7 @@ FILE="docs/prd/${NUMBER}-${SLUG}.md"
 - `Goals` が検証可能か。「速くする」のような測れない記述になっていないか
 - `Non-goals` が空でないか。境界を書かないPRDは実装中に膨らむ
 - `Requirements` が番号付きで、プルリクエストから参照できる粒度か
-- Status を `Approved` にする場合、`Open questions` が空になっているか
+- 実装に着手する段階なら、`Open questions` が空になっているか
 
 ### 8. 索引を更新する
 
@@ -92,10 +92,8 @@ FILE="docs/prd/${NUMBER}-${SLUG}.md"
 
 ### 9. 既存PRDを更新する場合
 
-ステータス遷移は `Draft` → `Approved` → `Shipped`、または途中で `Dropped`。
+ステータス遷移は `Draft` → `Shipped`、または途中で `Dropped`。承認状態は無い。
 
-- `Approved` にする: `Open questions` が空であることを確認してから `Status` 行を変更する。
-  空でなければ、残っている問いを解消するかNon-goalに落とすようユーザーに確認する
 - `Shipped` にする: `Status` 行と `ADRs` 行を更新する。本文（Problem以降）は書き換えない。
   計画と実際の差分を後から比較できることがPRDの価値なので、後知恵で辻褄を合わせない
 - `Dropped` にする: `Status` 行を変更し、`Open questions` に中止理由を1行残す

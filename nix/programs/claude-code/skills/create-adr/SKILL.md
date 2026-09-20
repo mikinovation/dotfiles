@@ -59,7 +59,7 @@ FILE="docs/adr/${NUMBER}-${SLUG}.md"
 `docs/adr/template.md` をコピーして各セクションを埋める。本文は英語で書く
 （このリポジトリのドキュメントは英語で統一されている）。
 
-- Status: 議論中なら `Proposed`、合意済みなら `Accepted`
+- Status: 常に `Accepted`。PRのマージが受理にあたるため、中間状態は使わない
 - Date: `date +%F` の値
 - PRD: 発端となったPRDがあれば `[NNNN — Title](../prd/NNNN-slug.md)`、無ければ `none`
 

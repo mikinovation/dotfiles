@@ -28,5 +28,4 @@ Facts the design must obey: platforms, tooling limits, existing structure.
 
 ## Open questions
 
-Unresolved decisions, each with who or what settles it. Empty before the status
-becomes `Approved`.
+Unresolved decisions. Empty before implementation starts.

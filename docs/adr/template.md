@@ -1,6 +1,6 @@
 # NNNN — Title
 
-- Status: Proposed
+- Status: Accepted
 - Date: YYYY-MM-DD
 - PRD: none
 

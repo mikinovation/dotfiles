@@ -22,7 +22,7 @@ is the next unused number.
 ```markdown
 # NNNN — Title
 
-- Status: Draft | Approved | Shipped | Dropped
+- Status: Draft | Shipped | Dropped
 - Date: YYYY-MM-DD
 - ADRs: [NNNN — Title](../adr/NNNN-title.md) | none
 
@@ -44,14 +44,15 @@ Rules that make the document worth keeping:
   the implementation.
 - `Requirements` are numbered so pull requests can cite them.
 - `Constraints` are the facts the design must obey, not preferences.
-- `Open questions` is emptied before the status becomes `Approved`. Anything
-  still open at that point is a non-goal or a blocker.
+- `Open questions` is emptied before implementation starts. Anything still open
+  at that point is a non-goal or a blocker.
 
 ## Lifecycle
 
-`Draft` while being written, `Approved` once the scope is settled and the open
-questions are resolved, `Shipped` when the last requirement is merged,
-`Dropped` if abandoned.
+`Draft` until the last requirement is merged, then `Shipped`, or `Dropped` if
+abandoned. There is no approval state: the author and the approver are the same
+person, so the only gate worth keeping is an empty `Open questions` before
+implementation starts.
 
 A shipped or dropped document is not deleted and not rewritten. Update the
 `Status` line and the `ADRs` list, and leave the rest as it was — the value is

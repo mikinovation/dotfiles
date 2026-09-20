@@ -22,7 +22,7 @@ is the next unused number.
 ```markdown
 # NNNN — Title
 
-- Status: Proposed | Accepted | Superseded by [NNNN](./NNNN-title.md)
+- Status: Accepted | Superseded by [NNNN](./NNNN-title.md)
 - Date: YYYY-MM-DD
 - PRD: [NNNN — Title](../prd/NNNN-title.md) | none
 
@@ -43,9 +43,10 @@ Rules that make the record worth keeping:
 
 ## Lifecycle
 
-`Proposed` while under discussion, `Accepted` once merged. After acceptance the
-file is frozen except for the `Status` line. Reversing a decision means a new
-record plus `Superseded by [NNNN]` on the old one.
+A record is `Accepted` the moment it is merged: the pull request is the review,
+so there is no separate proposal state. After that the file is frozen except
+for the `Status` line. Reversing a decision means a new record plus
+`Superseded by [NNNN]` on the old one.
 
 ## Index
 
