@@ -4,6 +4,40 @@ set -euo pipefail
 DOTFILES_DIR="$HOME/ghq/github.com/mikinovation/dotfiles"
 NIX_CONFIG_DIR="$HOME/.config/nix"
 
+PROFILE=""
+FLAKE_SUFFIX=""
+
+usage() {
+  cat >&2 <<'EOF'
+DOTFILES_PROFILE is required. Set it to "full" or "minimal".
+
+  DOTFILES_PROFILE=full ./setup.sh      # every module (default environment)
+  DOTFILES_PROFILE=minimal ./setup.sh   # zsh, sheldon, git, claude-code, herdr only
+EOF
+}
+
+resolve_profile() {
+  PROFILE="${DOTFILES_PROFILE:-}"
+
+  case "$PROFILE" in
+    full)
+      FLAKE_SUFFIX=""
+      ;;
+    minimal)
+      FLAKE_SUFFIX="-minimal"
+      ;;
+    "")
+      usage
+      exit 1
+      ;;
+    *)
+      echo "Error: unknown DOTFILES_PROFILE '$PROFILE'." >&2
+      usage
+      exit 1
+      ;;
+  esac
+}
+
 # Setup nix.conf (system-level configuration)
 setup_nix_config() {
   if [ ! -d "$NIX_CONFIG_DIR" ]; then
@@ -20,16 +54,16 @@ deploy_nixos() {
   local hostname
   hostname="$(hostname)"
   echo "Deploying NixOS system configuration..."
-  sudo nixos-rebuild switch --flake "$DOTFILES_DIR/nix#$hostname"
+  sudo nixos-rebuild switch --flake "$DOTFILES_DIR/nix#${hostname}${FLAKE_SUFFIX}"
 }
 
 # Deploy nix-darwin system configuration (macOS)
 deploy_darwin() {
   echo "Deploying nix-darwin system configuration..."
   if command -v darwin-rebuild >/dev/null 2>&1; then
-    sudo darwin-rebuild switch --flake "$DOTFILES_DIR/nix#mac"
+    sudo darwin-rebuild switch --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
   else
-    sudo nix run nix-darwin -- switch --flake "$DOTFILES_DIR/nix#mac"
+    sudo nix run nix-darwin -- switch --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
   fi
 }
 
@@ -38,11 +72,13 @@ deploy_home_manager() {
   local username
   username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/nix#$username"
+  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/nix#${username}${FLAKE_SUFFIX}"
 }
 
 main() {
-  echo "Start setup dotfiles..."
+  resolve_profile
+
+  echo "Start setup dotfiles... (profile: $PROFILE)"
 
   if ! command -v npm >/dev/null 2>&1; then
     echo "Warning: npm is not installed or not in PATH"

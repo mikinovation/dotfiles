@@ -2,6 +2,7 @@
   lib,
   pkgs,
   inputs,
+  profile,
   claudeCode,
   chromeDevtoolsMcp,
   headroom,
@@ -56,24 +57,29 @@
 
   programs.mcp = {
     enable = true;
-    servers.deepwiki = {
-      url = "https://mcp.deepwiki.com/mcp";
-    };
-    servers.chrome-devtools = {
-      command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
-      args = [
-        "--executablePath"
-        # nixpkgs の chromium は Linux 専用のため、macOS では
-        # 手動インストールした Google Chrome の実体を指す
-        (
-          if pkgs.stdenv.hostPlatform.isDarwin then
-            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-          else
-            (lib.getExe pkgs.chromium)
-        )
-        "--headless"
-        "--isolated"
-      ];
+    servers = {
+      deepwiki = {
+        url = "https://mcp.deepwiki.com/mcp";
+      };
+    }
+    # chrome-devtools は chromium を閉包に引き込むため minimal プロファイルでは外す
+    // lib.optionalAttrs (profile != "minimal") {
+      chrome-devtools = {
+        command = "${chromeDevtoolsMcp}/bin/chrome-devtools-mcp";
+        args = [
+          "--executablePath"
+          # nixpkgs の chromium は Linux 専用のため、macOS では
+          # 手動インストールした Google Chrome の実体を指す
+          (
+            if pkgs.stdenv.hostPlatform.isDarwin then
+              "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+            else
+              (lib.getExe pkgs.chromium)
+          )
+          "--headless"
+          "--isolated"
+        ];
+      };
     };
   };
 

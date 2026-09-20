@@ -4,6 +4,7 @@
   pkgs,
   inputs,
   username,
+  profile,
   apm,
   claudeCode,
   vueLanguageServer,
@@ -13,6 +14,9 @@
   ...
 }:
 
+let
+  isMinimal = profile == "minimal";
+in
 {
   home.username = username;
   home.homeDirectory =
@@ -20,26 +24,38 @@
 
   home.stateVersion = "24.05"; # Please read the comment before changing.
 
-  home.packages = with pkgs; [
-    fnm # Fast Node Manager
-    zoxide # Smart cd replacement
-    fzf # Fuzzy finder
-    ripgrep # Fast grep alternative
-    ghq # Git repository organizer
-    jq # JSON processor
-    curl # HTTP client
-    lsof # List open files
-    pandoc # Document format converter
-    apm
-    vueLanguageServer
-    vueTypescriptPlugin
-    difit
-    herdr
-  ];
+  home.packages =
+    (with pkgs; [
+      zoxide # Smart cd replacement
+      fzf # Fuzzy finder
+      ripgrep # Fast grep alternative
+      ghq # Git repository organizer
+      jq # JSON processor
+      curl # HTTP client
+    ])
+    ++ [ herdr ]
+    ++ lib.optionals (!isMinimal) (
+      (with pkgs; [
+        fnm # Fast Node Manager
+        lsof # List open files
+        pandoc # Document format converter
+      ])
+      ++ [
+        apm
+        vueLanguageServer
+        vueTypescriptPlugin
+        difit
+      ]
+    );
 
   imports = [
     ./programs/git
     ./programs/zsh
+    ./programs/sheldon
+    ./programs/claude-code
+    ./programs/herdr
+  ]
+  ++ lib.optionals (!isMinimal) [
     ./programs/neovim
     ./programs/emacs
     ./programs/nodejs
@@ -47,13 +63,10 @@
     ./programs/rust
     ./programs/database
     ./programs/agent-browser
-    ./programs/claude-code
     ./programs/textlint
     ./programs/agent-skills
-    ./programs/herdr
     ./programs/aws
     ./programs/wezterm
-    ./programs/sheldon
     ./programs/python
     ./programs/typst
     ./programs/terraform

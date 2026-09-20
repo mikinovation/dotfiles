@@ -54,7 +54,7 @@ jobs:
           tag="wsl-release-$(date -u +%Y%m%d-%H%M%S)"
           gh release create "$tag" nixos.wsl \
             --title "NixOS WSL release image ($tag)" \
-            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of only this repository. Contains no local machine data or other project data. This is a minimal bootstrap image (nixosConfigurations.wsl-bootstrap) -- it does not include the Home Manager environment, but this repository is embedded at ~/ghq/github.com/mikinovation/dotfiles. Recovery steps: 1) wsl --import <name> <install-dir> nixos.wsl; 2) inside the new distro, cd ~/ghq/github.com/mikinovation/dotfiles && ./setup.sh to rebuild the full environment via nixos-rebuild."
+            --notes "Automatically built by GitHub Actions from commit ${GITHUB_SHA}, from a clean checkout of only this repository. Contains no local machine data or other project data. This is a minimal bootstrap image (nixosConfigurations.wsl-bootstrap) -- it does not include the Home Manager environment, but this repository is embedded at ~/ghq/github.com/mikinovation/dotfiles. Recovery steps: 1) wsl --import <name> <install-dir> nixos.wsl; 2) inside the new distro, cd ~/ghq/github.com/mikinovation/dotfiles && DOTFILES_PROFILE=full ./setup.sh to rebuild the full environment via nixos-rebuild (or DOTFILES_PROFILE=minimal for a shell-only build first)."
 
       - name: Delete release assets older than 1 month
         env:
