@@ -11,20 +11,33 @@ if [ "$(uname -s)" = "Darwin" ]; then
   echo ""
   echo "=== Dry-run nix-darwin configuration build ==="
   nix build "$FLAKE_DIR#darwinConfigurations.mac.system" --dry-run
+
+  echo ""
+  echo "=== Dry-run nix-darwin configuration build (minimal) ==="
+  nix build "$FLAKE_DIR#darwinConfigurations.mac-minimal.system" --dry-run
 else
   echo ""
   echo "=== Dry-run home-manager build ==="
   nix build "$FLAKE_DIR#homeConfigurations.mikinovation.activationPackage" --dry-run
 
   echo ""
+  echo "=== Dry-run home-manager build (minimal) ==="
+  nix build "$FLAKE_DIR#homeConfigurations.mikinovation-minimal.activationPackage" --dry-run
+
+  echo ""
   echo "=== Dry-run NixOS configuration build ==="
   nix build "$FLAKE_DIR#nixosConfigurations.nixos.config.system.build.toplevel" --dry-run
+
+  echo ""
+  echo "=== Dry-run NixOS configuration build (minimal) ==="
+  nix build "$FLAKE_DIR#nixosConfigurations.nixos-minimal.config.system.build.toplevel" --dry-run
 
   # Evaluation is cross-platform, so the darwin configuration can be checked
   # for eval-time breakage without a macOS machine.
   echo ""
   echo "=== Eval nix-darwin configuration ==="
   nix eval "$FLAKE_DIR#darwinConfigurations.mac.system.drvPath" --raw > /dev/null
+  nix eval "$FLAKE_DIR#darwinConfigurations.mac-minimal.system.drvPath" --raw > /dev/null
   echo "OK"
 fi
 

@@ -52,17 +52,38 @@ find it.
 
 ### Automatic Installation (Recommended)
 
-Run the setup script, which will automatically detect the environment (NixOS or standalone) and deploy all configurations:
+Run the setup script, which will automatically detect the environment (NixOS or standalone) and deploy the configuration:
 
 ```bash
 ghq get git@github.com:mikinovation/dotfiles.git
 cd ~/ghq/github.com/mikinovation/dotfiles
-./setup.sh
+DOTFILES_PROFILE=full ./setup.sh
 ```
 
 - NixOS (WSL): applies Home Manager as a module via `sudo nixos-rebuild switch`
 - macOS: applies Home Manager as a module via `sudo darwin-rebuild switch`
 - Other Linux: applies via standalone Home Manager
+
+#### Profiles
+
+`DOTFILES_PROFILE` is required; the script exits with an error if it is unset or
+holds anything other than `full` or `minimal`. There is deliberately no default,
+so a run intended to be minimal can never silently deploy the full environment.
+
+| Profile | Contents |
+| --- | --- |
+| `full` | Every module. This is the normal day-to-day environment. |
+| `minimal` | zsh, sheldon, git, claude-code, herdr, and the core CLI tools (zoxide, fzf, ripgrep, ghq, jq, curl). |
+
+`minimal` skips neovim and its language servers, the nodejs/ruby/rust/python
+toolchains, database and terraform tooling, agent-skills, wezterm and the rest,
+and it drops the chrome-devtools MCP server (which pulls in chromium). On NixOS
+it also leaves out Docker and the CJK font packages. Use it to get a usable
+shell quickly on a fresh or broken machine, then re-run with `full`:
+
+```bash
+DOTFILES_PROFILE=minimal ./setup.sh
+```
 
 ### Manual Installation
 
@@ -99,7 +120,7 @@ sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#ma
 
 # Or re-run the setup script
 cd ~/ghq/github.com/mikinovation/dotfiles
-./setup.sh
+DOTFILES_PROFILE=full ./setup.sh
 ```
 
 ### Setting up from a WSL release image
@@ -115,10 +136,10 @@ wsl -d nixos
 ```bash
 # Inside the imported distro
 cd ~/ghq/github.com/mikinovation/dotfiles
-./setup.sh
+DOTFILES_PROFILE=full ./setup.sh
 ```
 
-`./setup.sh` runs `nixos-rebuild switch` to rebuild the full Home Manager environment from the embedded repository.
+`setup.sh` runs `nixos-rebuild switch` to rebuild the Home Manager environment from the embedded repository. If you want a usable shell before waiting on the full build, run `DOTFILES_PROFILE=minimal ./setup.sh` first and re-run with `full` afterwards.
 
 ## lint, format, test
 

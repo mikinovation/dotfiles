@@ -1,5 +1,14 @@
-{ pkgs, username, ... }:
+{
+  lib,
+  pkgs,
+  username,
+  profile,
+  ...
+}:
 
+let
+  isMinimal = profile == "minimal";
+in
 {
   # System-level NixOS configuration
 
@@ -28,8 +37,8 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
-    ];
+    ]
+    ++ lib.optional (!isMinimal) "docker";
     shell = pkgs.zsh;
 
     # WSL では logind のセッションが作られず XDG_RUNTIME_DIR (/run/user/$UID) が存在しないため、
@@ -44,7 +53,7 @@
   programs.nix-ld.enable = true;
 
   # Docker
-  virtualisation.docker.enable = true;
+  virtualisation.docker.enable = !isMinimal;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -64,12 +73,15 @@
   ];
 
   # System fonts
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-cjk-serif
-    noto-fonts-color-emoji
-  ];
+  fonts.packages = lib.optionals (!isMinimal) (
+    with pkgs;
+    [
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+    ]
+  );
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
