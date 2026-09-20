@@ -1,15 +1,14 @@
 # Product requirement documents
 
-One file per change large enough that the reasoning will not fit in an issue.
-Written before the work starts, updated while it is in progress, frozen when it
-ships.
+One file per planned change. Written before the work starts, updated while it
+is in progress, frozen when it ships.
 
 ## When to write one
 
-Write one when the change spans several pull requests, touches more than one
-platform or profile, or has a completion condition that is not obvious from the
-title. Everything smaller belongs in a GitHub issue — the feature request
-template already covers description, motivation and proposed solution.
+Write one for any change that is planned rather than incidental. There is no
+size threshold and no issue-versus-document judgement to make: these documents
+are kept current as the repository changes, so having one costs an edit rather
+than a rewrite.
 
 A PRD says what is being built and how we will know it is done. It does not say
 which design was chosen; that is an ADR.
