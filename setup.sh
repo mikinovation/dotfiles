@@ -12,7 +12,7 @@ usage() {
 DOTFILES_PROFILE is required. Set it to "full" or "minimal".
 
   DOTFILES_PROFILE=full ./setup.sh      # every module (default environment)
-  DOTFILES_PROFILE=minimal ./setup.sh   # zsh, sheldon, git, claude-code, herdr only
+  DOTFILES_PROFILE=minimal ./setup.sh   # zsh, sheldon, git, claude-code, nodejs only
 EOF
 }
 
@@ -54,16 +54,16 @@ deploy_nixos() {
   local hostname
   hostname="$(hostname)"
   echo "Deploying NixOS system configuration..."
-  sudo nixos-rebuild switch --flake "$DOTFILES_DIR/nix#${hostname}${FLAKE_SUFFIX}"
+  sudo nixos-rebuild switch -L --flake "$DOTFILES_DIR/nix#${hostname}${FLAKE_SUFFIX}"
 }
 
 # Deploy nix-darwin system configuration (macOS)
 deploy_darwin() {
   echo "Deploying nix-darwin system configuration..."
   if command -v darwin-rebuild >/dev/null 2>&1; then
-    sudo darwin-rebuild switch --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
+    sudo darwin-rebuild switch -L --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
   else
-    sudo nix run nix-darwin -- switch --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
+    sudo nix run nix-darwin -- switch -L --flake "$DOTFILES_DIR/nix#mac${FLAKE_SUFFIX}"
   fi
 }
 
@@ -72,7 +72,7 @@ deploy_home_manager() {
   local username
   username="$(id -un)"
   echo "Deploying configurations with Home Manager..."
-  nix run home-manager/master -- switch --flake "$DOTFILES_DIR/nix#${username}${FLAKE_SUFFIX}"
+  nix run home-manager/master -- switch -L --flake "$DOTFILES_DIR/nix#${username}${FLAKE_SUFFIX}"
 }
 
 main() {

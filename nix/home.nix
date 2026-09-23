@@ -33,7 +33,6 @@ in
       jq # JSON processor
       curl # HTTP client
     ])
-    ++ [ herdr ]
     ++ lib.optionals (!isMinimal) (
       (with pkgs; [
         fnm # Fast Node Manager
@@ -42,6 +41,7 @@ in
       ])
       ++ [
         apm
+        herdr
         vueLanguageServer
         vueTypescriptPlugin
         difit
@@ -53,12 +53,12 @@ in
     ./programs/zsh
     ./programs/sheldon
     ./programs/claude-code
-    ./programs/herdr
+    ./programs/nodejs
   ]
   ++ lib.optionals (!isMinimal) [
+    ./programs/herdr
     ./programs/neovim
     ./programs/emacs
-    ./programs/nodejs
     ./programs/ruby
     ./programs/rust
     ./programs/database
