@@ -6,6 +6,7 @@
   claudeCode,
   chromeDevtoolsMcp,
   headroom,
+  tanteki,
   ...
 }:
 
@@ -235,6 +236,7 @@
       "nix-npm-update" = ./skills/nix-npm-update;
       "grill-me" = ./skills/grill-me;
       "grilling" = ./skills/grilling;
+      "tanteki" = tanteki;
     };
 
     context = ./CLAUDE.md;

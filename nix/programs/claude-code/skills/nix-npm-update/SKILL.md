@@ -1,11 +1,11 @@
 ---
 name: nix-npm-update
-description: nix管理下のnpm依存を最新化するスキル。package.jsonの通常依存、buildNpmPackage形式のラッパーパッケージ（vue-language-server, vue-typescript-plugin, difit）、tgz直接展開形式（claude-code）、プリビルドバンドル形式（chrome-devtools-mcp）の4種を扱う。「npmを最新化」「nixのnpm更新」「secretlintを上げて」「claude-code更新」「vue-language-server更新」「difit更新」「chrome-devtools-mcp更新」などで使用。
+description: nix管理下のnpm依存を最新化するスキル。package.jsonの通常依存、buildNpmPackage形式のラッパーパッケージ（vue-language-server, vue-typescript-plugin, difit）、tgz直接展開形式（claude-code）、プリビルドバンドル形式（chrome-devtools-mcp）、GitHubソース形式（tanteki）の5種を扱う。「npmを最新化」「nixのnpm更新」「secretlintを上げて」「claude-code更新」「vue-language-server更新」「difit更新」「chrome-devtools-mcp更新」「tanteki更新」などで使用。
 ---
 
 # nix-npm-update: nix管理下のnpm依存更新スキル
 
-このリポジトリにはnpm依存が4種類の形で存在する。常に全種別を対象として、差分があるものだけ更新する。
+このリポジトリにはnpm依存が5種類の形で存在する。常に全種別を対象として、差分があるものだけ更新する。
 
 ## 対象の分類
 
@@ -15,6 +15,7 @@ description: nix管理下のnpm依存を最新化するスキル。package.json�
 | B. buildNpmPackage | `nix/pkgs/vue-language-server.nix`, `nix/pkgs/vue-typescript-plugin.nix`, `nix/pkgs/difit.nix` | tgz fetchUrl + 手書きlock + npmDepsHash |
 | C. tgz直接展開 | `nix/pkgs/claude-code.nix` | mainTgz + nativeTgz (linux-x64) 2本立て |
 | D. プリビルドバンドル | `nix/pkgs/chrome-devtools-mcp.nix` | tgz fetchUrl + 空lock + forceEmptyCache + 手書きinstallPhase |
+| E. GitHubソース | `nix/pkgs/tanteki.nix` | fetchFromGitHub + 上流同梱lock + npmDepsHash |
 
 対象パッケージ:
 - secretlint (種別A)
@@ -23,6 +24,7 @@ description: nix管理下のnpm依存を最新化するスキル。package.json�
 - difit (種別B)
 - claude-code (種別C)
 - chrome-devtools-mcp (種別D)
+- tanteki (種別E)
 
 ## 手順
 
@@ -36,6 +38,7 @@ description: nix管理下のnpm依存を最新化するスキル。package.json�
 - vue-typescript-plugin: `nix/pkgs/vue-typescript-plugin.nix` の `version` 属性
 - difit: `nix/pkgs/difit.nix` の `version` 属性
 - claude-code: `nix/pkgs/claude-code.nix` の `version` 属性
+- tanteki: `nix/pkgs/tanteki.nix` の `src.rev`（npmレジストリではなくGitHubの最新コミットと比較する）
 
 最新版を並列で取得（種別Aだけ version のみ、種別B/C は手順3/4 で tgz情報も使うので最初からまとめて取る）:
 
@@ -157,9 +160,56 @@ SHA512=$(jq -r '.dist.integrity' /tmp/cdm.json)
 nix run nixpkgs#prefetch-npm-deps -- ./nix/pkgs/chrome-devtools-mcp-lock.json
 ```
 
+### 4c. 種別E (tanteki) の更新
+
+tanteki はnpmレジストリではなくGitHubリポジトリを直接取得する。`package-lock.json` は上流の `skills/tanteki` に同梱されているため再生成しない。`src.rev` と `src.hash` と `npmDepsHash` は常に同時に更新する。
+
+#### 4c.1. 最新コミットを取得
+
+```bash
+NEW_REV=$(gh api repos/iwasa-kosui/tanteki/commits/main --jq '.sha')
+NEW_DATE=$(gh api repos/iwasa-kosui/tanteki/commits/main --jq '.commit.committer.date' | cut -dT -f1)
+```
+
+現行の `src.rev` と同じならスキップする。
+
+#### 4c.2. ソースhashを取得
+
+`nix flake prefetch` の出力hashは `fetchFromGitHub` の `hash` にそのまま使える。
+
+```bash
+SRC=$(nix flake prefetch --json "github:iwasa-kosui/tanteki/$NEW_REV")
+echo "$SRC" | jq -r '.hash'
+STORE=$(echo "$SRC" | jq -r '.storePath')
+```
+
+`nix/pkgs/tanteki.nix` の `version`（`0-unstable-$NEW_DATE`）、`src.rev`、`src.hash` を書き換える。
+
+#### 4c.3. npmDepsHash を更新
+
+上流同梱のlockから直接計算する。
+
+```bash
+nix run nixpkgs#prefetch-npm-deps -- "$STORE/skills/tanteki/package-lock.json"
+```
+
+#### 4c.4. postPatch の追随
+
+`postPatch` は `substituteInPlace --replace-fail` で `SKILL.md` と `references/lint.md` の `npm ci` 指示とコマンド例（先頭の `node `）を書き換えている。上流で該当文が変わるとビルドが `--replace-fail` で失敗するため、その場合は新しい文面に合わせて置換元の文字列を直す。`scripts/lint.mjs` の shebang 置換も同様。
+
+#### 4c.5. 動作確認
+
+ビルド後、store上（read-only）でlintが動くことを確認する。
+
+```bash
+TANTEKI=$(nix build --no-link --print-out-paths --impure \
+  --expr 'with import <nixpkgs> { }; callPackage ./nix/pkgs/tanteki.nix { }')
+"$TANTEKI/scripts/lint.mjs" --type design-doc <適当なMarkdownの絶対パス>
+```
+
 ### 5. ビルド検証
 
-種別B/C を更新した場合は home-manager のビルドで npmDepsHash / tgz hash を実評価する:
+種別B/C/E を更新した場合は home-manager のビルドで npmDepsHash / tgz hash / ソースhash を実評価する:
 
 ```bash
 nix build --no-link ./nix#checks.x86_64-linux.home-manager-build

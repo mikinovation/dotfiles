@@ -90,6 +90,7 @@
           difit = pkgs.callPackage ./pkgs/difit.nix { };
           chromeDevtoolsMcp = pkgs.callPackage ./pkgs/chrome-devtools-mcp.nix { };
           headroom = pkgs.callPackage ./pkgs/headroom.nix { };
+          tanteki = pkgs.callPackage ./pkgs/tanteki.nix { };
           herdr = inputs.herdr.packages.${system}.default;
         };
 
