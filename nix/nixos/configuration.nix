@@ -63,6 +63,8 @@ in
     "nix-command"
     "flakes"
   ];
+  nix.settings.max-jobs = 2;
+  nix.settings.cores = 4;
 
   # System packages
   environment.systemPackages = with pkgs; [

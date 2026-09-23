@@ -73,14 +73,16 @@ the full environment.
 | Profile | Contents |
 | --- | --- |
 | `full` | Every module. The normal day-to-day environment. |
-| `minimal` | zsh, sheldon, git, claude-code, herdr, core CLI tools. |
+| `minimal` | zsh, sheldon, git, claude-code, Node.js, core CLI tools. |
 
 The core CLI tools in `minimal` are zoxide, fzf, ripgrep, ghq, jq, and curl.
 
 Everything outside that list is skipped:
 
 - neovim and its language servers
-- the nodejs/ruby/rust/python toolchains
+- herdr
+- the ruby/rust/python toolchains, and the Node.js tooling beyond node itself
+  (yarn, pnpm, typescript, eslint, prettier)
 - database and terraform tooling
 - agent-skills, wezterm, and the remaining program modules
 - the chrome-devtools MCP server, which pulls in chromium
