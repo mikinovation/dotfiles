@@ -5,51 +5,36 @@ description: ブランチを作成するスキル。feat, fix, chore等の一般
 
 # commit-commands:create-branch: ブランチ作成スキル
 
-現在のブランチから、prefix付きの新しいブランチを作成します。
+現在のブランチから、`${PREFIX}/${BRANCH_DESC}` 形式の新しいブランチを作成します。
 
 ## 手順
 
-### 1. 引数を確認する
+### 1. prefixを決める
 
-`$ARGUMENTS` が指定されている場合はそれをブランチの説明（タイトル）として使用し、ステップ2へ進む。
-指定されていない場合はステップ2でprefixを選択した後、ステップ4でタイトルを入力させる。
+`AskUserQuestion` ツールで「ブランチのprefixを選択してください」と尋ね、以下を options フィールドに配列で渡す:
 
-### 2. prefixをAskUserQuestionで選択する
+- `feature` — 新機能
+- `fix` — バグ修正
+- `chore` — 雑務・設定変更
+- `docs` — ドキュメント
+- `refactor` — リファクタリング
+- `test` — テスト追加・修正
+- `style` — コードスタイル（ロジック変更なし）
+- `perf` — パフォーマンス改善
+- `ci` — CI/CD
+- `build` — ビルド関連
+- `revert` — リバート
+- `custom` — カスタム入力
 
-`AskUserQuestion` ツールを使い、以下の選択肢を提示する:
+`custom` が選ばれた場合は、`AskUserQuestion` で「カスタムprefixを入力してください（例: hotfix, spike, wip）」と尋ねて自由入力させる。確定した値を `PREFIX` に格納する。
 
-- 質問: 「ブランチのprefixを選択してください」
-- 選択肢 (options フィールドに配列で渡す):
-  - `feature` — 新機能
-  - `fix` — バグ修正
-  - `chore` — 雑務・設定変更
-  - `docs` — ドキュメント
-  - `refactor` — リファクタリング
-  - `test` — テスト追加・修正
-  - `style` — コードスタイル（ロジック変更なし）
-  - `perf` — パフォーマンス改善
-  - `ci` — CI/CD
-  - `build` — ビルド関連
-  - `revert` — リバート
-  - `custom` — カスタム入力
+### 2. ブランチ説明を決める
 
-### 3. prefixを確定する
-
-確定した値を `PREFIX` 変数に格納する。
-
-- ユーザーが「custom」を選択した場合: `AskUserQuestion` で自由入力させる
-  - 質問: 「カスタムprefixを入力してください（例: hotfix, spike, wip）」
-  - 入力値を `PREFIX` に格納する
-- それ以外: 選択された値を `PREFIX` に格納する
-
-### 4. ブランチ説明を確定する
-
-- `$ARGUMENTS` が指定されていた場合: その値をタイトルとして使用し、このステップはスキップする
-- 指定されていない場合: `AskUserQuestion` でタイトルを入力させる
-  - 質問: 「ブランチ名の説明を入力してください（日本語可、例: ログイン機能追加）」
+`$ARGUMENTS` が指定されていればその値をタイトルとして使う。指定されていなければ、`AskUserQuestion` で「ブランチ名の説明を入力してください（日本語可、例: ログイン機能追加）」と尋ねる。
 
 タイトルが日本語の場合はまず英語に翻訳する（あなた自身が翻訳する。外部ツールは不要）。
 翻訳した英語をkebab-caseに正規化する:
+
 ```bash
 BRANCH_DESC=$(printf '%s' "$ENGLISH_TITLE" \
   | tr '[:upper:]' '[:lower:]' \
@@ -60,9 +45,7 @@ BRANCH_DESC=$(printf '%s' "$ENGLISH_TITLE" \
 - 「ログイン機能追加」 → `add-login-feature`
 - 「認証エラー修正」 → `fix-auth-error`
 
-ブランチ名は `${PREFIX}/${BRANCH_DESC}` の形式にする。
-
-### 5. 現在のブランチを確認してブランチを作成する
+### 3. ブランチを作成する
 
 ```bash
 CURRENT_BRANCH=$(git branch --show-current)
@@ -70,5 +53,5 @@ NEW_BRANCH="${PREFIX}/${BRANCH_DESC}"
 git checkout -b "$NEW_BRANCH"
 ```
 
-作成に成功したら「ブランチ `{新しいブランチ名}` を `{現在のブランチ}` から作成しました」と報告する。
+成功したら「ブランチ `{新しいブランチ名}` を `{現在のブランチ}` から作成しました」と報告する。
 エラーが発生した場合はエラーメッセージを表示し、原因を説明する。
