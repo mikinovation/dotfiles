@@ -23,8 +23,8 @@ On macOS the system layer is managed by [nix-darwin](https://github.com/nix-darw
 No manual install is needed: `./setup.sh` bootstraps it via `nix run nix-darwin`.
 Homebrew is not required, but `/opt/homebrew/bin` is added to `PATH` if it exists.
 
-If you use the Determinate Nix installer, add `nix.enable = false;` to
-`nix/darwin/configuration.nix`, since that installer owns `/etc/nix`.
+The Determinate Nix installer owns `/etc/nix`.
+If you use it, add `nix.enable = false;` to `nix/darwin/configuration.nix`.
 
 ### Terminal
 
@@ -32,8 +32,8 @@ Install Wezterm
 
 https://wezfurlong.org/wezterm/
 
-On macOS, WezTerm is installed by Home Manager and reads `~/.wezterm.lua` directly,
-so no extra step is required.
+On macOS, Home Manager installs WezTerm and it reads `~/.wezterm.lua` directly.
+No extra step is required.
 
 On WSL, WezTerm runs on the Windows host, so copy the config over:
 
@@ -47,12 +47,11 @@ The `chrome-devtools` MCP server uses `pkgs.chromium` on Linux, which is not
 available on macOS. Install Google Chrome to `/Applications` so the server can
 find it.
 
-
 ## install
 
 ### Automatic Installation (Recommended)
 
-Run the setup script, which will automatically detect the environment (NixOS or standalone) and deploy the configuration:
+Run the setup script. It detects the environment and deploys the configuration:
 
 ```bash
 ghq get git@github.com:mikinovation/dotfiles.git
@@ -66,20 +65,29 @@ DOTFILES_PROFILE=full ./setup.sh
 
 #### Profiles
 
-`DOTFILES_PROFILE` is required; the script exits with an error if it is unset or
-holds anything other than `full` or `minimal`. There is deliberately no default,
-so a run intended to be minimal can never silently deploy the full environment.
+`DOTFILES_PROFILE` is required. The script exits with an error if it is unset.
+It also exits if the value is neither `full` nor `minimal`. There is deliberately
+no default. Without one, a run intended to be minimal can never silently deploy
+the full environment.
 
 | Profile | Contents |
 | --- | --- |
-| `full` | Every module. This is the normal day-to-day environment. |
-| `minimal` | zsh, sheldon, git, claude-code, herdr, and the core CLI tools (zoxide, fzf, ripgrep, ghq, jq, curl). |
+| `full` | Every module. The normal day-to-day environment. |
+| `minimal` | zsh, sheldon, git, claude-code, herdr, core CLI tools. |
 
-`minimal` skips neovim and its language servers, the nodejs/ruby/rust/python
-toolchains, database and terraform tooling, agent-skills, wezterm and the rest,
-and it drops the chrome-devtools MCP server (which pulls in chromium). On NixOS
-it also leaves out Docker and the CJK font packages. Use it to get a usable
-shell quickly on a fresh or broken machine, then re-run with `full`:
+The core CLI tools in `minimal` are zoxide, fzf, ripgrep, ghq, jq, and curl.
+
+Everything outside that list is skipped:
+
+- neovim and its language servers
+- the nodejs/ruby/rust/python toolchains
+- database and terraform tooling
+- agent-skills, wezterm, and the remaining program modules
+- the chrome-devtools MCP server, which pulls in chromium
+- on NixOS, Docker and the CJK font packages
+
+Use `minimal` to get a usable shell quickly on a fresh or broken machine, then
+re-run with `full`:
 
 ```bash
 DOTFILES_PROFILE=minimal ./setup.sh
@@ -109,23 +117,28 @@ sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#ma
 
 ### Update Configuration
 
-After making changes to your configuration files:
+After changing configuration files, re-run the switch command for your platform.
+The standalone deploy installs the `home-manager` command itself. After the first
+deploy, use it instead of `nix run home-manager/master --`:
 
 ```bash
-# Using Home Manager directly (standalone)
 home-manager switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mikinovation
+```
 
-# Or on macOS
-sudo darwin-rebuild switch --flake ~/ghq/github.com/mikinovation/dotfiles/nix#mac
+Re-running the setup script works as well:
 
-# Or re-run the setup script
+```bash
 cd ~/ghq/github.com/mikinovation/dotfiles
 DOTFILES_PROFILE=full ./setup.sh
 ```
 
 ### Setting up from a WSL release image
 
-[Build WSL release image](.github/workflows/build-wsl-release.yml) builds a minimal NixOS-WSL image weekly (and on demand via `workflow_dispatch`) and publishes it as a GitHub Release asset. It embeds a copy of this repository, so a broken WSL install can be restored without network access to GitHub:
+The [Build WSL release image](.github/workflows/build-wsl-release.yml) workflow
+builds a minimal NixOS-WSL image. It runs weekly, and on demand via
+`workflow_dispatch`. The image is published as a GitHub Release asset. It embeds
+a copy of this repository. A broken WSL install can therefore be restored without
+network access to GitHub:
 
 ```powershell
 # On Windows: download nixos.wsl from the latest release, then
@@ -139,11 +152,16 @@ cd ~/ghq/github.com/mikinovation/dotfiles
 DOTFILES_PROFILE=full ./setup.sh
 ```
 
-`setup.sh` runs `nixos-rebuild switch` to rebuild the Home Manager environment from the embedded repository. If you want a usable shell before waiting on the full build, run `DOTFILES_PROFILE=minimal ./setup.sh` first and re-run with `full` afterwards.
+`setup.sh` runs `nixos-rebuild switch` against the embedded repository. That
+rebuilds the Home Manager environment. For a shell before the full build
+finishes, run
+`DOTFILES_PROFILE=minimal ./setup.sh` first. Re-run with `full` afterwards.
 
 ## lint, format, test
 
-`nix run ./nix#lint` runs both luacheck and secretlint. secretlint requires node_modules, so run `npm ci` first:
+`nix run ./nix#lint` runs both luacheck and secretlint. secretlint needs
+`node_modules`. The command exits with an error when it is missing, so run
+`npm ci` first:
 
 ```bash
 npm ci
