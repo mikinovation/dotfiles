@@ -235,6 +235,7 @@
       "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
       "create-adr" = ./skills/create-adr;
       "create-prd" = ./skills/create-prd;
+      "create-project-plan" = ./skills/create-project-plan;
       "nix-npm-update" = ./skills/nix-npm-update;
       "grill-me" = ./skills/grill-me;
       "grilling" = ./skills/grilling;
