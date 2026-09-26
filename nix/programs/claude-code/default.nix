@@ -239,6 +239,6 @@
       "tanteki" = tanteki;
     };
 
-    context = ./CLAUDE.md;
+    context = ./AGENTS.md;
   };
 }
