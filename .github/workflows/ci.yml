@@ -12,31 +12,16 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: leafo/gh-actions-lua@6919171ccf181b826f44b9bca76307b577217377 # v13
+      - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
         with:
-          luaVersion: "5.1.5"
+          extra_nix_config: |
+            experimental-features = nix-command flakes
 
-      - uses: leafo/gh-actions-luarocks@35d062def313a7699a0d513e996bcf4352f05389 # v6
-        with:
-          luarocksVersion: "3.12.0"
+      - name: Install dependencies
+        run: npm ci
 
-      - name: build
-        run: |
-          luarocks install luacheck
-          luarocks install busted
-
-      - name: Run Luacheck
-        run: luacheck .
-
-      - name: Install StyLua
-        uses: JohnnyMorganz/stylua-action@76fd70c03e6340ceaf673366712db9b20560b402 # v5.0.0
-        with:
-          version: v2.1.0
-          token: ${{ secrets.GITHUB_TOKEN }}
-          args: --check .
-
-      - name: Run Busted Tests
-        run: busted .
+      - name: Run check (lint, format, test)
+        run: make check
 
   nix-check:
     runs-on: ubuntu-latest
@@ -48,11 +33,8 @@ jobs:
           extra_nix_config: |
             experimental-features = nix-command flakes
 
-      - name: Run Nix format check
-        run: sh ./scripts/nix-fmt.sh
-
-      - name: Run Nix tests
-        run: sh ./scripts/nix-test.sh
+      - name: Run Nix check
+        run: make nix-check
 
   nix-check-darwin:
     runs-on: macos-latest
@@ -65,7 +47,7 @@ jobs:
             experimental-features = nix-command flakes
 
       - name: Run Nix tests
-        run: sh ./scripts/nix-test.sh
+        run: make nix-test
 
   secret-scan:
     runs-on: ubuntu-latest
@@ -74,15 +56,16 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
+      - uses: cachix/install-nix-action@13d8dd58da0234aa297dedd986986ccb8e7f3e24 # v31
+        with:
+          extra_nix_config: |
+            experimental-features = nix-command flakes
+
       - name: Install dependencies
         run: npm ci
 
       - name: Run Secretlint
-        run: |
-          if ! git ls-files -z | xargs -0 ./node_modules/.bin/secretlint; then
-            echo "Secret lint failed! Sensitive data may have been committed."
-            exit 1
-          fi
+        run: make lint
 
   nvim-smoke-test:
     runs-on: ubuntu-latest
@@ -112,5 +95,5 @@ jobs:
             nvim-plugins-
 
       - name: Run Neovim smoke test
-        run: sh ./scripts/nvim-smoke-test.sh
+        run: make nvim-smoke-test
         timeout-minutes: 5
