@@ -36,10 +36,6 @@
       url = "github:antfu/skills";
       flake = false;
     };
-    obra-superpowers = {
-      url = "github:obra/superpowers";
-      flake = false;
-    };
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;

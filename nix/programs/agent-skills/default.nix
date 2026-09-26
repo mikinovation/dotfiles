@@ -22,10 +22,6 @@
         path = inputs.antfu-skills;
         subdir = "skills";
       };
-      obra-superpowers = {
-        path = inputs.obra-superpowers;
-        subdir = "skills";
-      };
       # mattpocock/skills はカテゴリ別に配置されているため、公式プラグインと同じく
       # 安定版の engineering と productivity をカテゴリごとの source として取り込む
       # grill-me は Skill ツールで "grilling" を呼ぶため、idPrefix を付けず上流と同じ ID にする
