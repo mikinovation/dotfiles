@@ -47,7 +47,6 @@
         "skill-creator"
         "vue-best-practices"
         "nuxt"
-        "test-driven-development"
       ];
       enableAll = [
         "mattpocock-engineering"
