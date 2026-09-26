@@ -22,9 +22,18 @@
         path = inputs.antfu-skills;
         subdir = "skills";
       };
-      obra-superpowers = {
-        path = inputs.obra-superpowers;
-        subdir = "skills";
+      # mattpocock/skills はカテゴリ別に配置されているため、公式プラグインと同じく
+      # 安定版の engineering と productivity をカテゴリごとの source として取り込む
+      # grill-me は Skill ツールで "grilling" を呼ぶため、idPrefix を付けず上流と同じ ID にする
+      mattpocock-engineering = {
+        path = inputs.mattpocock-skills;
+        subdir = "skills/engineering";
+        filter.maxDepth = 1;
+      };
+      mattpocock-productivity = {
+        path = inputs.mattpocock-skills;
+        subdir = "skills/productivity";
+        filter.maxDepth = 1;
       };
     };
 
@@ -34,7 +43,10 @@
         "skill-creator"
         "vue-best-practices"
         "nuxt"
-        "test-driven-development"
+      ];
+      enableAll = [
+        "mattpocock-engineering"
+        "mattpocock-productivity"
       ];
     };
 

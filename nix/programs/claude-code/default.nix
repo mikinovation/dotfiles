@@ -236,8 +236,6 @@
       "create-adr" = ./skills/create-adr;
       "create-prd" = ./skills/create-prd;
       "nix-npm-update" = ./skills/nix-npm-update;
-      "grill-me" = ./skills/grill-me;
-      "grilling" = ./skills/grilling;
       "tanteki" = tanteki;
     };
 

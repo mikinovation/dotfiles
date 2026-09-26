@@ -36,8 +36,8 @@
       url = "github:antfu/skills";
       flake = false;
     };
-    obra-superpowers = {
-      url = "github:obra/superpowers";
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
       flake = false;
     };
     claude-code-plugins = {
