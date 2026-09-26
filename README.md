@@ -167,10 +167,16 @@ finishes, run
 
 ```bash
 npm ci
-nix run ./nix#lint   # luacheck + secretlint
-nix run ./nix#fmt    # stylua --check
-nix run ./nix#test   # busted tests
+make lint   # luacheck + secretlint (nix run ./nix#lint)
+make fmt    # stylua --check        (nix run ./nix#fmt)
+make test   # busted tests          (nix run ./nix#test)
+make check  # all of the above
 ```
+
+Run `make` (or `make help`) to list every task, including setup
+(`make setup PROFILE=full`), Nix checks (`make nix-check`), formatters
+(`make fmt-fix`, `make nix-fmt-fix`) and the Neovim smoke test
+(`make nvim-smoke-test`).
 
 To use the dev shell:
 

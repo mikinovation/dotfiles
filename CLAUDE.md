@@ -10,6 +10,8 @@ After completing ANY code changes, you MUST run the following verification steps
 nix run ./nix#lint && nix run ./nix#fmt && nix run ./nix#test
 ```
 
+The same checks are available as `make check` (see `make help` for all tasks).
+
 Note: `nix run ./nix#lint` runs luacheck only (secretlint requires `npm ci` first).
 Each command can also be run individually:
 
