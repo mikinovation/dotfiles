@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   pkgs,
   inputs,
@@ -12,6 +13,8 @@
 
 {
   home.packages = [ headroom ];
+
+  home.file."${config.programs.claude-code.configDir}/AGENTS.md".source = ./AGENTS.md;
 
   # headroom は claude が起動するたびにプロキシを手動で立ち上げるのを避けるため
   # ユーザーサービスとして常駐させ、ANTHROPIC_BASE_URL で常時経由させる
@@ -239,6 +242,6 @@
       "tanteki" = tanteki;
     };
 
-    context = ./AGENTS.md;
+    context = "@AGENTS.md";
   };
 }
