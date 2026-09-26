@@ -26,6 +26,16 @@
         path = inputs.obra-superpowers;
         subdir = "skills";
       };
+      # grill-me は Skill ツールで "grilling" を呼ぶため、idPrefix を付けず上流と同じ ID で取り込む
+      # 他ソースとの ID 衝突を避けるため、使うスキルだけに絞って discover する
+      mattpocock-skills = {
+        path = inputs.mattpocock-skills;
+        subdir = "skills/productivity";
+        filter = {
+          maxDepth = 1;
+          nameRegex = "grilling|grill-me";
+        };
+      };
     };
 
     skills = {
@@ -35,6 +45,8 @@
         "vue-best-practices"
         "nuxt"
         "test-driven-development"
+        "grilling"
+        "grill-me"
       ];
     };
 

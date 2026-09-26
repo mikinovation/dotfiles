@@ -40,6 +40,10 @@
       url = "github:obra/superpowers";
       flake = false;
     };
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
     claude-code-plugins = {
       url = "github:anthropics/claude-code";
       flake = false;
