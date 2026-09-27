@@ -21,3 +21,7 @@ nix run ./nix#fmt   # stylua --check
 nix run ./nix#test  # busted tests
 nix run ./nix#lint  # luacheck + secretlint (requires `npm ci`)
 ```
+
+## Documents
+
+- PRD の保存先: `docs/prd/`
