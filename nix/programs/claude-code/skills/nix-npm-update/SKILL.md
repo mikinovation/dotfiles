@@ -226,7 +226,7 @@ nix build --no-link ./nix#checks.x86_64-linux.home-manager-build
 
 ### 8. Post-Task Verification と報告
 
-CLAUDE.md (project) の Post-Task Verification を実行する。
+AGENTS.md (project) の Post-Task Verification を実行する。
 
 ```bash
 nix run ./nix#lint && nix run ./nix#fmt && nix run ./nix#test
