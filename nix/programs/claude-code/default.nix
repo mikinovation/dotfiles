@@ -233,6 +233,7 @@
 
     skills = {
       "commit-commands:create-branch" = ./skills/commit-commands/create-branch;
+      "commit-commands:create-pr" = ./skills/commit-commands/create-pr;
       "code-to-adr" = ./skills/code-to-adr;
       "code-to-prd" = ./skills/code-to-prd;
       "create-adr" = ./skills/create-adr;
