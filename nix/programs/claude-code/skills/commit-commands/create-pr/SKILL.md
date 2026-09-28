@@ -5,11 +5,12 @@ description: プルリクエストを作成するスキル。commit-push-pr の�
 
 # commit-commands:create-pr: プルリクエスト作成スキル
 
-commit-commands の `/commit-push-pr` と同じ流れで、現在のブランチから Draft PR を作成します。`/commit-push-pr` との違いは次の3点です。
+commit-commands の `/commit-push-pr` と同じ流れ（ブランチ作成、コミット、push、`gh pr create`）で、現在のブランチから PR を作成する。`/commit-push-pr` との違いは次の4点である。
 
 - PR のタイトルと本文を書く言語を選択させる
 - リポジトリの PR テンプレートに沿って本文を書く
 - 作成前に下書きを提示し、承認を得てから作成する
+- 常に Draft PR として作成する
 
 ## 手順
 
@@ -31,10 +32,11 @@ commit-commands の `/commit-push-pr` と同じ流れで、現在のブランチ
 git status
 git branch --show-current
 BASE_BRANCH=$(gh repo view --json defaultBranchRef --jq .defaultBranchRef.name)
+git fetch origin "$BASE_BRANCH"
 gh pr view --json url,state 2>/dev/null
 ```
 
-現在のブランチに開いている PR が既にある場合は、その URL を示して終了する。新しい PR は作らない。
+`gh pr view` の `state` が `OPEN` の場合は、その URL を示して終了する。新しい PR は作らない。`MERGED` や `CLOSED` の PR しかない場合は続ける。
 
 ### 3. ブランチを用意する
 
@@ -68,7 +70,7 @@ PR テンプレートを次の順で探し、最初に見つかったものを�
 タイトルと本文は `LANGUAGE` で書く。
 
 - タイトル: 変更内容を一文で要約する。リポジトリのコミットが Conventional Commits 形式（`feat:`, `fix(scope):` など）なら、同じ prefix を付け、prefix 以降を `LANGUAGE` で書く
-- テンプレートがある場合: 見出しと構成はテンプレートのまま残し、各節の中身を `LANGUAGE` で埋める。HTML コメント（`<!-- -->`）の指示は埋めたら削除する。埋める材料がない節は空欄にせず、下書き確認でユーザーに尋ねる
+- テンプレートがある場合: 見出しと構成はテンプレートのまま残し、各節の中身を `LANGUAGE` で埋める。HTML コメント（`<!-- -->`）の指示は埋めたら削除する。埋める材料がない節は空欄のまま残し、手順7で尋ねる
 - テンプレートがない場合: 「概要」「変更内容」「確認方法」の3節で書き、見出しも `LANGUAGE` で書く
 - 関連 Issue は、ブランチ名とコミットメッセージに Issue 番号があればそれを使う。なければ推測しない
 
@@ -76,12 +78,12 @@ PR テンプレートを次の順で探し、最初に見つかったものを�
 
 ### 7. 下書きを確認する
 
-タイトルと本文の下書きを提示し、`AskUserQuestion` で「この内容で Draft PR を作成してよいですか」と尋ね、以下を options に渡す:
+タイトルと本文の下書きを提示する。材料のない節は、下書きの後に挙げて、書く内容を尋ねる。回答を反映してから、`AskUserQuestion` で「この内容で Draft PR を作成してよいですか」と尋ね、以下を options に渡す:
 
 - `作成する`
 - `修正する` — 修正内容を自由入力
 
-`修正する` が選ばれた場合は、指示に沿って下書きを直し、再度確認する。承認が得られるまで PR を作成しない。
+`修正する` が選ばれた場合は、指示に沿って下書きを直し、再度確認する。承認が得られるまで PR を作成しない。承認されたタイトルを `TITLE` とする。
 
 ### 8. push して Draft PR を作成する
 
