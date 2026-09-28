@@ -22,7 +22,6 @@
         path = inputs.antfu-skills;
         subdir = "skills";
       };
-      # antfu/skills は vendored skills を削除したため、vue-best-practices は上流の vuejs-ai/skills から取り込む
       vuejs-ai-skills = {
         path = inputs.vuejs-ai-skills;
         subdir = "skills";
