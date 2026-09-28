@@ -69,4 +69,3 @@ PRD 0001 の要求から、選べる案は次の条件を満たす必要があ�
 
 - `docs/prd/0001_environment-setup.md`
 - 所有者へのヒアリング（2026-09-27）
-- `nix/flake.nix`、`setup.sh`、`README.md`、`renovate.json`
