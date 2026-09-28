@@ -245,7 +245,8 @@
         "nix-darwin": "nix-darwin",
         "nixos-wsl": "nixos-wsl",
         "nixpkgs": "nixpkgs_2",
-        "vercel-skills": "vercel-skills"
+        "vercel-skills": "vercel-skills",
+        "vuejs-ai-skills": "vuejs-ai-skills"
       }
     },
     "rust-overlay": {
@@ -281,6 +282,22 @@
       },
       "original": {
         "owner": "vercel-labs",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
+    "vuejs-ai-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1774504225,
+        "narHash": "sha256-h/4Zbs/c9a7EiglvTTzZ9hpHIsK5tiwl5sZH7ptGkdM=",
+        "owner": "vuejs-ai",
+        "repo": "skills",
+        "rev": "c9d355ff23f654309dd02006be671859df0a134c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vuejs-ai",
         "repo": "skills",
         "type": "github"
       }

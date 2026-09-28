@@ -36,6 +36,10 @@
       url = "github:antfu/skills";
       flake = false;
     };
+    vuejs-ai-skills = {
+      url = "github:vuejs-ai/skills";
+      flake = false;
+    };
     mattpocock-skills = {
       url = "github:mattpocock/skills";
       flake = false;
