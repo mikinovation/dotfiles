@@ -41,6 +41,9 @@ Neovim は ADR 0001 の共通の Home Manager 設定から、`nix/programs/neovi
 次の案は、それぞれの理由で採らない。
 
 - VS Code: 端末の外で動くため、端末中心の作業に合わない。
+- Cursor: 次の2点から採らない。
+  - 端末の外で動くため、端末中心の作業に合わない。
+  - AI による支援は端末で動く Claude Code で賄うため、エディターに組み込まれた AI 機能を必要としない。
 - Vim: 設定を Lua で書けないため、luacheck や busted で設定を検証できない。
 - Emacs: 所有者は Vim 系のモード型の操作を使いたい。
 - IntelliJ IDEA: 次の2点から採らない。
