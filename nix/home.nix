@@ -54,6 +54,7 @@ in
     ./programs/sheldon
     ./programs/claude-code
     ./programs/nodejs
+    ./programs/agent-skills
   ]
   ++ lib.optionals (!isMinimal) [
     ./programs/herdr
@@ -64,7 +65,6 @@ in
     ./programs/database
     ./programs/agent-browser
     ./programs/textlint
-    ./programs/agent-skills
     ./programs/aws
     ./programs/wezterm
     ./programs/python

@@ -73,7 +73,7 @@ the full environment.
 | Profile | Contents |
 | --- | --- |
 | `full` | Every module. The normal day-to-day environment. |
-| `minimal` | zsh, sheldon, git, claude-code, Node.js, core CLI tools. |
+| `minimal` | zsh, sheldon, git, claude-code with its agent skills, Node.js, core CLI tools. |
 
 The core CLI tools in `minimal` are zoxide, fzf, ripgrep, ghq, jq, and curl.
 
@@ -84,7 +84,7 @@ Everything outside that list is skipped:
 - the ruby/rust/python toolchains, and the Node.js tooling beyond node itself
   (yarn, pnpm, typescript, eslint, prettier)
 - database and terraform tooling
-- agent-skills, wezterm, and the remaining program modules
+- wezterm and the remaining program modules
 - the chrome-devtools MCP server, which pulls in chromium
 - on NixOS, Docker and the CJK font packages
 
